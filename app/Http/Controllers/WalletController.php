@@ -47,7 +47,7 @@ class WalletController extends Controller
             'Content-Type' => 'application/json',
         ])->post($apiUrl, [
             "amount" => $request->amount,
-            "redirect_url" => env('APP_URL') . ":8000/user/fund-confirm",
+            "redirect_url" => env('APP_URL') . "/user/fund-confirm",
             "currency" => "NGN",
             "tx_ref" => $reference,
             "notification_url" => "https://example.com/webhook",
