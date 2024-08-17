@@ -4,9 +4,11 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Wallet;
 
 class User extends Authenticatable
 {
@@ -42,4 +44,31 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function wallets(): HasMany
+    {
+        return $this->hasMany(Wallet::class);
+    }
+
+    public function walletBalance()
+    {
+        $credit = $this->wallets()->where('type', 'credit')->sum('amount');
+        $debit = $this->wallets()->where('type', 'debit')->sum('amount');
+
+        return $credit - $debit;
+    }
+
+    public function amountSpent()
+    {
+        $debit = $this->wallets()->where('type', 'debit')->sum('amount');
+
+        return $debit;
+    }
+
+    public function amountCredited()
+    {
+        $credit = $this->wallets()->where('type', 'credit')->sum('amount');
+
+        return $credit;
+    }
 }

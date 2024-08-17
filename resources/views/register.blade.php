@@ -25,7 +25,7 @@
             <img src="/img/Ellipse 5.png" alt="gradient" class="h-screen w-full">
         </div>
         <div class="flex flex-col justify-center absolute z-10">
-            <a href="index.html"><img src="/img/image_4.jpg" alt="logo"
+            <a href="/"><img src="/img/image_4.jpg" alt="logo"
                     class=" items-center h-[47px] w-[150px] mb-2"></a>
         </div>
         <div class="absolute">
@@ -36,31 +36,53 @@
 
 
             <!-- form section -->
-            <form action="Sign in"
+            <form method="POST" action="/register"
                 class=" bg-white w-[100%] rounded-3xl items-center justify-center p-10 shadow-lg mb-1">
+                @csrf
                 <div class="flex flex-col justify-center">
                     <label for="Name" class="text-[#222222] text-[18px] dm-sans-medium mb-1">Name</label>
-                    <input type="text" id="Name" placeholder="Full name" required
+                    <input type="text" id="Name" name="name" placeholder="Full name" required
                         class="shadow-sm w-76 p-2 border border-gray-200 rounded-lg mb-3 items-center">
+                    @error('name')
+                        <div class="text-red-500 dm-sans-thin italic mb-4">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
 
                 <div class="flex flex-col justify-center">
                     <label for="Email" class="text-[#222222] text-[18px] dm-sans-medium mb-">Email Address</label>
-                    <input type="text" id="Email" placeholder="Email address" required
+                    <input type="text" id="Email" name="email" placeholder="Email address" required
                         class="shadow-sm w-76 p-2 border border-gray-200 rounded-lg items-center">
+                    @error('email')
+                        <div class="text-red-500 dm-sans-thin italic mb-4">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
 
                 <div class="flex flex-col justify-center">
                     <label for="Password" class="dm-sans-medium text-[#222222] text-[18px] mt-3">Password</label>
-                    <input type="text" id="Password" placeholder="Password" required
+                    <input type="text" id="Password" name="password" placeholder="Password" required
                         class="shadow-sm w-76 p-2 border border-gray-200 rounded-lg items-center">
+                    @error('password')
+                        <div class="text-red-500 dm-sans-thin italic mb-4">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
 
                 <div class="flex flex-col justify-center">
                     <label for="Confirm Password" class="dm-sans-medium text-[#222222] text-[18px] mt-3">Confirm
                         Password</label>
-                    <input type="text" id="Confirm Password" placeholder="Enter password again" required
+                    <input type="text" id="Confirm Password" name="password_confirmation"
+                        placeholder="Enter password again" required
                         class="shadow-sm w-76 p-2 border border-gray-200 rounded-lg items-center">
+                    @error('password_confirmation')
+                        <div class="text-red-500 dm-sans-thin italic mb-4">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
 
                 <div class="flex flex-col justify-center mt-8">
