@@ -50,248 +50,56 @@
 
 
             <tbody>
-                <tr class="border-b border-gray-300 text-[#222222] dm-sans-medium text-[14px]">
-                    <td class="px-8 py-5 whitespace-nowrap">115453</td>
-                    <td class="px-8 py-5 whitespace-nowrap">Discord</td>
-                    <td class="px-8 py-5 whitespace-nowrap">18156166321</td>
-                    <td class="px-8 py-5 whitespace-nowrap">26-04-2024</td>
-                    <td class="px-8 py-5">
-                        <div
-                            class="bg-[#16C09861] text-[#008767] w-[90px] h-[30px] flex items-center justify-center border border-[#00B087] rounded-lg">
-                            Active
-                        </div>
-                    </td>
-                    <td class="px-8 py-5 whitespace-nowrap">
-                        <div class="flex flex-row space-x-2">
-                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                xmlns="http://www.w3.org/2000/svg" class="mt-1">
-                                <path
-                                    d="M2.45625 11.472C1.81875 10.644 1.5 10.2293 1.5 9C1.5 7.77 1.81875 7.35675 2.45625 6.528C3.729 4.875 5.8635 3 9 3C12.1365 3 14.271 4.875 15.5438 6.528C16.1813 7.3575 16.5 7.77075 16.5 9C16.5 10.23 16.1813 10.6432 15.5438 11.472C14.271 13.125 12.1365 15 9 15C5.8635 15 3.729 13.125 2.45625 11.472Z"
-                                    stroke="#222222" stroke-width="1.5" />
-                                <path
-                                    d="M11.25 9C11.25 9.59674 11.0129 10.169 10.591 10.591C10.169 11.0129 9.59674 11.25 9 11.25C8.40326 11.25 7.83097 11.0129 7.40901 10.591C6.98705 10.169 6.75 9.59674 6.75 9C6.75 8.40326 6.98705 7.83097 7.40901 7.40901C7.83097 6.98705 8.40326 6.75 9 6.75C9.59674 6.75 10.169 6.98705 10.591 7.40901C11.0129 7.83097 11.25 8.40326 11.25 9Z"
-                                    stroke="#222222" stroke-width="1.5" />
-                            </svg>
-                            <button id="View">View</button>
-                        </div>
-                    </td>
-                </tr>
+                @foreach ($orders as $order)
+                    <tr class="border-b border-gray-300 text-[#222222] dm-sans-medium text-[14px]">
+                        <td class="px-8 py-5 whitespace-nowrap">{{ $order->order_id }}</td>
+                        <td class="px-8 py-5 whitespace-nowrap">{{ $order->service }}</td>
+                        <td class="px-8 py-5 whitespace-nowrap">{{ $order->phone_number }}</td>
+                        <td class="px-8 py-5 whitespace-nowrap">{{ $order->created_at }}</td>
+                        <td class="px-8 py-5">
+                            <div
+                                class="{{ $order->status == 'active' ? 'bg-[#16C09861] text-[#008767] border-[#00B087]' : ($order->status == 'refunded' ? 'bg-[#FFCCCC] text-[#CC0000]' : 'text-blue-600 bg-blue-300') }} w-[90px] h-[30px] flex items-center justify-center border rounded-lg">
+                                {{ $order->status }}
+                            </div>
+                        </td>
 
-
-                <tr class="border-b border-gray-300 text-[#222222] dm-sans-medium text-[14px]">
-                    <td class="px-8 py-5 whitespace-nowrap">115453</td>
-                    <td class="px-8 py-5 whitespace-nowrap">Q1</td>
-                    <td class="px-8 py-5 whitespace-nowrap">18156166321</td>
-                    <td class="px-8 py-5 whitespace-nowrap">26-04-2024</td>
-                    <td class="px-8 py-5">
-                        <div
-                            class="bg-[#16C09861] text-[#008767] w-[90px] h-[30px] flex items-center justify-center border border-[#00B087] rounded-lg">
-                            Active
-                        </div>
-                    </td>
-                    <td class="px-8 py-5 whitespace-nowrap">
-                        <div class="flex flex-row space-x-2">
-                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                xmlns="http://www.w3.org/2000/svg" class="mt-1">
-                                <path
-                                    d="M2.45625 11.472C1.81875 10.644 1.5 10.2293 1.5 9C1.5 7.77 1.81875 7.35675 2.45625 6.528C3.729 4.875 5.8635 3 9 3C12.1365 3 14.271 4.875 15.5438 6.528C16.1813 7.3575 16.5 7.77075 16.5 9C16.5 10.23 16.1813 10.6432 15.5438 11.472C14.271 13.125 12.1365 15 9 15C5.8635 15 3.729 13.125 2.45625 11.472Z"
-                                    stroke="#222222" stroke-width="1.5" />
-                                <path
-                                    d="M11.25 9C11.25 9.59674 11.0129 10.169 10.591 10.591C10.169 11.0129 9.59674 11.25 9 11.25C8.40326 11.25 7.83097 11.0129 7.40901 10.591C6.98705 10.169 6.75 9.59674 6.75 9C6.75 8.40326 6.98705 7.83097 7.40901 7.40901C7.83097 6.98705 8.40326 6.75 9 6.75C9.59674 6.75 10.169 6.98705 10.591 7.40901C11.0129 7.83097 11.25 8.40326 11.25 9Z"
-                                    stroke="#222222" stroke-width="1.5" />
-                            </svg>
-                            <button>View</button>
-                        </div>
-                    </td>
-                </tr>
-
-
-                <tr class="border-b border-gray-300 text-[#222222] dm-sans-medium text-[14px]">
-                    <td class="px-8 py-5 whitespace-nowrap">115453</td>
-                    <td class="px-8 py-5 whitespace-nowrap">Q1</td>
-                    <td class="px-8 py-5 whitespace-nowrap">18156166321</td>
-                    <td class="px-8 py-5 whitespace-nowrap">26-04-2024</td>
-                    <td class="px-8 py-5">
-                        <div
-                            class="bg-[#16C09861] text-[#008767] w-[90px] h-[30px] flex items-center justify-center border border-[#00B087] rounded-lg">
-                            Active
-                        </div>
-                    </td>
-                    <td class="px-8 py-5 whitespace-nowrap">
-                        <div class="flex flex-row space-x-2">
-                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                xmlns="http://www.w3.org/2000/svg" class="mt-1">
-                                <path
-                                    d="M2.45625 11.472C1.81875 10.644 1.5 10.2293 1.5 9C1.5 7.77 1.81875 7.35675 2.45625 6.528C3.729 4.875 5.8635 3 9 3C12.1365 3 14.271 4.875 15.5438 6.528C16.1813 7.3575 16.5 7.77075 16.5 9C16.5 10.23 16.1813 10.6432 15.5438 11.472C14.271 13.125 12.1365 15 9 15C5.8635 15 3.729 13.125 2.45625 11.472Z"
-                                    stroke="#222222" stroke-width="1.5" />
-                                <path
-                                    d="M11.25 9C11.25 9.59674 11.0129 10.169 10.591 10.591C10.169 11.0129 9.59674 11.25 9 11.25C8.40326 11.25 7.83097 11.0129 7.40901 10.591C6.98705 10.169 6.75 9.59674 6.75 9C6.75 8.40326 6.98705 7.83097 7.40901 7.40901C7.83097 6.98705 8.40326 6.75 9 6.75C9.59674 6.75 10.169 6.98705 10.591 7.40901C11.0129 7.83097 11.25 8.40326 11.25 9Z"
-                                    stroke="#222222" stroke-width="1.5" />
-                            </svg>
-                            <button>View</button>
-                        </div>
-                    </td>
-                </tr>
-
-
-                <tr class="border-b border-gray-300 text-[#222222] dm-sans-medium text-[14px]">
-                    <td class="px-8 py-5 whitespace-nowrap">115453</td>
-                    <td class="px-8 py-5 whitespace-nowrap">Q1</td>
-                    <td class="px-8 py-5 whitespace-nowrap">18156166321</td>
-                    <td class="px-8 py-5 whitespace-nowrap">26-04-2024</td>
-                    <td class="px-8 py-5">
-                        <div
-                            class="bg-[#16C09861] text-[#008767] w-[90px] h-[30px] flex items-center justify-center border border-[#00B087] rounded-lg">
-                            Active
-                        </div>
-                    </td>
-                    <td class="px-8 py-5 whitespace-nowrap">
-                        <div class="flex flex-row space-x-2">
-                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                xmlns="http://www.w3.org/2000/svg" class="mt-1">
-                                <path
-                                    d="M2.45625 11.472C1.81875 10.644 1.5 10.2293 1.5 9C1.5 7.77 1.81875 7.35675 2.45625 6.528C3.729 4.875 5.8635 3 9 3C12.1365 3 14.271 4.875 15.5438 6.528C16.1813 7.3575 16.5 7.77075 16.5 9C16.5 10.23 16.1813 10.6432 15.5438 11.472C14.271 13.125 12.1365 15 9 15C5.8635 15 3.729 13.125 2.45625 11.472Z"
-                                    stroke="#222222" stroke-width="1.5" />
-                                <path
-                                    d="M11.25 9C11.25 9.59674 11.0129 10.169 10.591 10.591C10.169 11.0129 9.59674 11.25 9 11.25C8.40326 11.25 7.83097 11.0129 7.40901 10.591C6.98705 10.169 6.75 9.59674 6.75 9C6.75 8.40326 6.98705 7.83097 7.40901 7.40901C7.83097 6.98705 8.40326 6.75 9 6.75C9.59674 6.75 10.169 6.98705 10.591 7.40901C11.0129 7.83097 11.25 8.40326 11.25 9Z"
-                                    stroke="#222222" stroke-width="1.5" />
-                            </svg>
-                            <button>View</button>
-                        </div>
-                    </td>
-                </tr>
-
-
-                <tr class="border-b border-gray-300 text-[#222222] dm-sans-medium text-[14px]">
-                    <td class="px-8 py-5 whitespace-nowrap">115453</td>
-                    <td class="px-8 py-5 whitespace-nowrap">Q1</td>
-                    <td class="px-8 py-5 whitespace-nowrap">18156166321</td>
-                    <td class="px-8 py-5 whitespace-nowrap">26-04-2024</td>
-                    <td class="px-8 py-5">
-                        <div
-                            class="bg-[#16C09861] text-[#008767] w-[90px] h-[30px] flex items-center justify-center border border-[#00B087] rounded-lg">
-                            Active
-                        </div>
-                    </td>
-                    <td class="px-8 py-5 whitespace-nowrap">
-                        <div class="flex flex-row space-x-2">
-                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                xmlns="http://www.w3.org/2000/svg" class="mt-1">
-                                <path
-                                    d="M2.45625 11.472C1.81875 10.644 1.5 10.2293 1.5 9C1.5 7.77 1.81875 7.35675 2.45625 6.528C3.729 4.875 5.8635 3 9 3C12.1365 3 14.271 4.875 15.5438 6.528C16.1813 7.3575 16.5 7.77075 16.5 9C16.5 10.23 16.1813 10.6432 15.5438 11.472C14.271 13.125 12.1365 15 9 15C5.8635 15 3.729 13.125 2.45625 11.472Z"
-                                    stroke="#222222" stroke-width="1.5" />
-                                <path
-                                    d="M11.25 9C11.25 9.59674 11.0129 10.169 10.591 10.591C10.169 11.0129 9.59674 11.25 9 11.25C8.40326 11.25 7.83097 11.0129 7.40901 10.591C6.98705 10.169 6.75 9.59674 6.75 9C6.75 8.40326 6.98705 7.83097 7.40901 7.40901C7.83097 6.98705 8.40326 6.75 9 6.75C9.59674 6.75 10.169 6.98705 10.591 7.40901C11.0129 7.83097 11.25 8.40326 11.25 9Z"
-                                    stroke="#222222" stroke-width="1.5" />
-                            </svg>
-                            <button>View</button>
-                        </div>
-                    </td>
-                </tr>
-
-
-                <tr class="border-b border-gray-300 text-[#222222] dm-sans-medium text-[14px]">
-                    <td class="px-8 py-5 whitespace-nowrap">115453</td>
-                    <td class="px-8 py-5 whitespace-nowrap">Q1</td>
-                    <td class="px-8 py-5 whitespace-nowrap">18156166321</td>
-                    <td class="px-8 py-5 whitespace-nowrap">26-04-2024</td>
-                    <td class="px-8 py-5">
-                        <div
-                            class="bg-[#16C09861] text-[#008767] w-[90px] h-[30px] flex items-center justify-center border border-[#00B087] rounded-lg">
-                            Active
-                        </div>
-                    </td>
-                    <td class="px-8 py-5 whitespace-nowrap">
-                        <div class="flex flex-row space-x-2">
-                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                xmlns="http://www.w3.org/2000/svg" class="mt-1">
-                                <path
-                                    d="M2.45625 11.472C1.81875 10.644 1.5 10.2293 1.5 9C1.5 7.77 1.81875 7.35675 2.45625 6.528C3.729 4.875 5.8635 3 9 3C12.1365 3 14.271 4.875 15.5438 6.528C16.1813 7.3575 16.5 7.77075 16.5 9C16.5 10.23 16.1813 10.6432 15.5438 11.472C14.271 13.125 12.1365 15 9 15C5.8635 15 3.729 13.125 2.45625 11.472Z"
-                                    stroke="#222222" stroke-width="1.5" />
-                                <path
-                                    d="M11.25 9C11.25 9.59674 11.0129 10.169 10.591 10.591C10.169 11.0129 9.59674 11.25 9 11.25C8.40326 11.25 7.83097 11.0129 7.40901 10.591C6.98705 10.169 6.75 9.59674 6.75 9C6.75 8.40326 6.98705 7.83097 7.40901 7.40901C7.83097 6.98705 8.40326 6.75 9 6.75C9.59674 6.75 10.169 6.98705 10.591 7.40901C11.0129 7.83097 11.25 8.40326 11.25 9Z"
-                                    stroke="#222222" stroke-width="1.5" />
-                            </svg>
-                            <button>View</button>
-                        </div>
-                    </td>
-                </tr>
-
-
-                <tr class="border-b border-gray-300 text-[#222222] dm-sans-medium text-[14px]">
-                    <td class="px-8 py-5 whitespace-nowrap">115453</td>
-                    <td class="px-8 py-5 whitespace-nowrap">Q1</td>
-                    <td class="px-8 py-5 whitespace-nowrap">18156166321</td>
-                    <td class="px-8 py-5 whitespace-nowrap">26-04-2024</td>
-                    <td class="px-8 py-5">
-                        <div
-                            class="bg-[#16C09861] text-[#008767] w-[90px] h-[30px] flex items-center justify-center border border-[#00B087] rounded-lg">
-                            Active
-                        </div>
-                    </td>
-                    <td class="px-8 py-5 whitespace-nowrap">
-                        <div class="flex flex-row space-x-2">
-                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                xmlns="http://www.w3.org/2000/svg" class="mt-1">
-                                <path
-                                    d="M2.45625 11.472C1.81875 10.644 1.5 10.2293 1.5 9C1.5 7.77 1.81875 7.35675 2.45625 6.528C3.729 4.875 5.8635 3 9 3C12.1365 3 14.271 4.875 15.5438 6.528C16.1813 7.3575 16.5 7.77075 16.5 9C16.5 10.23 16.1813 10.6432 15.5438 11.472C14.271 13.125 12.1365 15 9 15C5.8635 15 3.729 13.125 2.45625 11.472Z"
-                                    stroke="#222222" stroke-width="1.5" />
-                                <path
-                                    d="M11.25 9C11.25 9.59674 11.0129 10.169 10.591 10.591C10.169 11.0129 9.59674 11.25 9 11.25C8.40326 11.25 7.83097 11.0129 7.40901 10.591C6.98705 10.169 6.75 9.59674 6.75 9C6.75 8.40326 6.98705 7.83097 7.40901 7.40901C7.83097 6.98705 8.40326 6.75 9 6.75C9.59674 6.75 10.169 6.98705 10.591 7.40901C11.0129 7.83097 11.25 8.40326 11.25 9Z"
-                                    stroke="#222222" stroke-width="1.5" />
-                            </svg>
-                            <button>View</button>
-                        </div>
-                    </td>
-                </tr>
-
-
-                <tr class="border-b border-gray-300 text-[#222222] dm-sans-medium text-[14px]">
-                    <td class="px-8 py-5 whitespace-nowrap">115453</td>
-                    <td class="px-8 py-5 whitespace-nowrap">Q1</td>
-                    <td class="px-8 py-5 whitespace-nowrap">18156166321</td>
-                    <td class="px-8 py-5 whitespace-nowrap">26-04-2024</td>
-                    <td class="px-8 py-5">
-                        <div
-                            class="bg-[#16C09861] text-[#008767] w-[90px] h-[30px] flex items-center justify-center border border-[#00B087] rounded-lg">
-                            Active
-                        </div>
-                    </td>
-                    <td class="px-8 py-5 whitespace-nowrap">
-                        <div class="flex flex-row space-x-2">
-                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                xmlns="http://www.w3.org/2000/svg" class="mt-1">
-                                <path
-                                    d="M2.45625 11.472C1.81875 10.644 1.5 10.2293 1.5 9C1.5 7.77 1.81875 7.35675 2.45625 6.528C3.729 4.875 5.8635 3 9 3C12.1365 3 14.271 4.875 15.5438 6.528C16.1813 7.3575 16.5 7.77075 16.5 9C16.5 10.23 16.1813 10.6432 15.5438 11.472C14.271 13.125 12.1365 15 9 15C5.8635 15 3.729 13.125 2.45625 11.472Z"
-                                    stroke="#222222" stroke-width="1.5" />
-                                <path
-                                    d="M11.25 9C11.25 9.59674 11.0129 10.169 10.591 10.591C10.169 11.0129 9.59674 11.25 9 11.25C8.40326 11.25 7.83097 11.0129 7.40901 10.591C6.98705 10.169 6.75 9.59674 6.75 9C6.75 8.40326 6.98705 7.83097 7.40901 7.40901C7.83097 6.98705 8.40326 6.75 9 6.75C9.59674 6.75 10.169 6.98705 10.591 7.40901C11.0129 7.83097 11.25 8.40326 11.25 9Z"
-                                    stroke="#222222" stroke-width="1.5" />
-                            </svg>
-                            <button>View</button>
-                        </div>
-                    </td>
-                </tr>
+                        <td class="px-8 py-5 whitespace-nowrap">
+                            <div class="flex flex-row space-x-2">
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg" class="mt-1">
+                                    <path
+                                        d="M2.45625 11.472C1.81875 10.644 1.5 10.2293 1.5 9C1.5 7.77 1.81875 7.35675 2.45625 6.528C3.729 4.875 5.8635 3 9 3C12.1365 3 14.271 4.875 15.5438 6.528C16.1813 7.3575 16.5 7.77075 16.5 9C16.5 10.23 16.1813 10.6432 15.5438 11.472C14.271 13.125 12.1365 15 9 15C5.8635 15 3.729 13.125 2.45625 11.472Z"
+                                        stroke="#222222" stroke-width="1.5" />
+                                    <path
+                                        d="M11.25 9C11.25 9.59674 11.0129 10.169 10.591 10.591C10.169 11.0129 9.59674 11.25 9 11.25C8.40326 11.25 7.83097 11.0129 7.40901 10.591C6.98705 10.169 6.75 9.59674 6.75 9C6.75 8.40326 6.98705 7.83097 7.40901 7.40901C7.83097 6.98705 8.40326 6.75 9 6.75C9.59674 6.75 10.169 6.98705 10.591 7.40901C11.0129 7.83097 11.25 8.40326 11.25 9Z"
+                                        stroke="#222222" stroke-width="1.5" />
+                                </svg>
+                                <button class="view-btn" data-order-id="{{ $order->id }}">View</button>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
         <div class="flex flex-row justify-between">
             <div class="flex flex-col">
-                <p class="mt-8 pl-8 text-[#22222280] dm-sans-medium text-[14px]">Showing data 1 to 8 of 78
-                    entries</p>
+                {{-- <p class="mt-8 pl-8 text-[#22222280] dm-sans-medium text-[14px]">Showing data
+                    {{ $orders->meta->from }} to 8 of 78
+                    entries</p> --}}
                 <div class="pagination ml-8">
-                    <a href="#" class="bg-[#EEEEEE] border border-[#f5f5f5] p-1 text-[14px]">
-                        << /a> <!-- Left arrow -->
-                            <a href="#"
-                                class="active bg-[#DF5C0C] border p-1 text-white border-[#f5f5f5] text-[14px]"">1</a>
-                            <!-- Active page -->
-                            <a href="#" class="bg-[#EEEEEE] p-1 border border-[#f5f5f5] text-[14px]">2</a>
-                            <a href="#" class="bg-[#EEEEEE] p-1 border border-[#f5f5f5] text-[14px]">3</a>
-                            <a href="#" class="bg-[#EEEEEE] p-1 border border-[#f5f5f5] text-[14px]">4</a>
-                            <span>...</span> <!-- Ellipsis for more pages -->
-                            <a href="#" class="bg-[#EEEEEE] p-1 border border-[#f5f5f5] text-[14px]">10</a>
-                            <!-- Last page number -->
-                            <a href="#" class="bg-[#EEEEEE] p-1 border border-[#f5f5f5] text-[14px]">></a>
-                            <!-- Right arrow -->
+                    {{ $orders->links() }}
+                    {{-- << /a> <!-- Left arrow -->
+                                <a href="#"
+                                    class="active bg-[#DF5C0C] border p-1 text-white border-[#f5f5f5] text-[14px]"">1</a>
+                                <!-- Active page -->
+                                <a href="#" class="bg-[#EEEEEE] p-1 border border-[#f5f5f5] text-[14px]">2</a>
+                                <a href="#" class="bg-[#EEEEEE] p-1 border border-[#f5f5f5] text-[14px]">3</a>
+                                <a href="#" class="bg-[#EEEEEE] p-1 border border-[#f5f5f5] text-[14px]">4</a>
+                                <span>...</span> <!-- Ellipsis for more pages -->
+                                <a href="#" class="bg-[#EEEEEE] p-1 border border-[#f5f5f5] text-[14px]">10</a>
+                                <!-- Last page number -->
+                                <a href="#" class="bg-[#EEEEEE] p-1 border border-[#f5f5f5] text-[14px]">></a>
+                                <!-- Right arrow --> --}}
                 </div>
             </div>
             <div class="flex justify-end items-end mb-4 mt-3">
@@ -302,4 +110,92 @@
             </div>
         </div>
     </div>
+    @include('modal.order-modal')
+
+    <!-- Order modal SCRIPT -->
+    <script>
+        let orderModal = document.getElementById('Order');
+        let openBtn = document.getElementById('NewOrder');
+        let closeBtnX = document.getElementById('CloseX');
+        let closeBtnCancel = document.getElementById('Cancel');
+
+        // Function to open the modal
+        let openOrderModal = () => {
+            orderModal.classList.remove('hidden');
+        };
+
+        // Function to close the modal
+        let closeOrderModal = () => {
+            orderModal.classList.add('hidden');
+        };
+
+        // Open modal when the 'Ordernow' button is clicked
+        openBtn.addEventListener('click', openOrderModal);
+
+        // Close modal when the 'CloseX' button or 'Cancel' button is clicked
+        closeBtnX.addEventListener('click', closeOrderModal);
+        closeBtnCancel.addEventListener('click', closeOrderModal);
+
+        // Close modal when clicking outside of the modal content
+        window.addEventListener('click', (event) => {
+            if (event.target === orderModal) {
+                closeOrderModal();
+            }
+        });
+    </script>
+    <!-- Order modal SCRIPT -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const viewButtons = document.querySelectorAll('.view-btn');
+            const msgModal = document.getElementById('messageModal');
+            const closeViewBtn = document.getElementById('closeModal');
+
+            viewButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const orderId = this.getAttribute('data-order-id');
+
+                    fetch(`/user/orders/${orderId}`, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token if needed
+                            }
+                        }).then(response => response.json()).then(data => {
+                            // Handle the response data
+                            console.log('Order Data:', data);
+
+                            msgModal.classList.remove('hidden');
+
+                            document.getElementById('messageService').innerText = data.service;
+                            document.getElementById('messageNumber').innerText = data.number;
+                            document.getElementById('messageStatus').innerText = data.status;
+                            document.getElementById('messageText').innerText = data.message;
+                            document.getElementById('messageDate').innerText = data.created_at;
+
+                            // You can display the order data in a modal or any other UI component
+                            // For example:
+                            // showModalWithData(data);
+                        })
+                        .catch(error => {
+                            console.error('Error fetching order:', error);
+                        });
+                });
+            });
+
+            // Function to close the modal
+            function closeModal() {
+                msgModal.classList.add('hidden');
+            }
+
+            // When the user clicks on close button (X), close the modal
+            closeViewBtn.addEventListener('click', closeModal);
+
+            window.addEventListener('click', function(event) {
+                if (event.target === msgModal) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
 </x-user-layout>

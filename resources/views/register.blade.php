@@ -17,9 +17,42 @@
         href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 </head>
 
 <body>
+    @if (session('success'))
+        <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <script>
+            Toastify({
+                text: "{{ session('success') }}",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "green",
+                stopOnFocus: true,
+                ariaLive: "polite",
+                onClick: function() {}
+            }).showToast();
+        </script>
+    @endif
+    @if (session('error'))
+        <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <script>
+            Toastify({
+                text: "{{ session('error') }}",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "red",
+                stopOnFocus: true,
+                ariaLive: "polite",
+                onClick: function() {}
+            }).showToast();
+        </script>
+    @endif
     <div class="flex justify-center">
         <div class="flex h-screen w-full relative items-center">
             <img src="/img/Ellipse 5.png" alt="gradient" class="h-screen w-full">

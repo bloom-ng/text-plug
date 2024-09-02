@@ -348,7 +348,7 @@
         <!-- /content -->
 
         @include('modal.add-fund')
-        @include('modal.order-modal')
+        {{-- @include('modal.order-modal') --}}
     </div>
 
     <!-- AlpineJS -->
@@ -392,83 +392,7 @@
     </script>
     <!-- Add fund modal SCRIPT -->
 
-    <!-- Order modal SCRIPT -->
-    <!-- View modal -->
-    <script>
-        // Get the modal element
-        let modal2 = document.getElementById('numberModal2');
 
-        // Get the button that opens the modal
-        let btn2 = document.getElementById('View');
-
-        // Get the element that closes the modal (X button)
-        let closeBtn2 = document.querySelector('#numberModal2 .modal-content a svg');
-
-        // Get the cancel text element that closes the modal
-        let cancelText2 = document.querySelector('#numberModal2 .modal-content p');
-
-        // Function to open the modal
-        function openModal() {
-            modal2.classList.remove('hidden');
-        }
-
-        // Function to close the modal
-        function closeModal() {
-            modal2.classList.add('hidden');
-        }
-
-        // When the user clicks the button, open the modal
-        btn2.addEventListener('click', openModal);
-
-        // When the user clicks on close button (X), close the modal
-        closeBtn2.addEventListener('click', function(event) {
-            event.preventDefault();
-            closeModal();
-        });
-
-        // When the user clicks on the cancel text, close the modal
-        cancelText2.addEventListener('click', closeModal);
-
-        // Close the modal if the user clicks outside of the modal
-        window.addEventListener('click', function(event) {
-            if (event.target === modal2) {
-                closeModal();
-            }
-        });
-    </script>
-
-    <!-- Order modal -->
-    <script>
-        let orderModal = document.getElementById('Order');
-        let openBtn = document.getElementById('NewOrder');
-        let closeBtnX = document.getElementById('CloseX');
-        let closeBtnCancel = document.getElementById('Cancel');
-
-        // Function to open the modal
-        let openOrderModal = () => {
-            orderModal.classList.remove('hidden');
-        };
-
-        // Function to close the modal
-        let closeOrderModal = () => {
-            orderModal.classList.add('hidden');
-        };
-
-        // Open modal when the 'Ordernow' button is clicked
-        openBtn.addEventListener('click', openOrderModal);
-
-        // Close modal when the 'CloseX' button or 'Cancel' button is clicked
-        closeBtnX.addEventListener('click', closeOrderModal);
-        closeBtnCancel.addEventListener('click', closeOrderModal);
-
-        // Close modal when clicking outside of the modal content
-        window.addEventListener('click', (event) => {
-            if (event.target === orderModal) {
-                closeOrderModal();
-            }
-        });
-    </script>
-    <!-- Order modal SCRIPT -->
 </body>
 
 </html>

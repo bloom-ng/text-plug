@@ -29,9 +29,42 @@
     <!--Tailwind Custom Forms - use to standardise form fields - https://github.com/tailwindcss/custom-forms-->
     <link rel="stylesheet" href="/css/font.css">
 
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 </head>
 
 <body class="w-full items-center justify-center leading-relaxed tracking-wide flex flex-col overflow-x-hidden">
+    @if (session('success'))
+        <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <script>
+            Toastify({
+                text: "{{ session('success') }}",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "green",
+                stopOnFocus: true,
+                ariaLive: "polite",
+                onClick: function() {}
+            }).showToast();
+        </script>
+    @endif
+    @if (session('error'))
+        <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <script>
+            Toastify({
+                text: "{{ session('error') }}",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "red",
+                stopOnFocus: true,
+                ariaLive: "polite",
+                onClick: function() {}
+            }).showToast();
+        </script>
+    @endif
     <nav id="header" class="w-full z-30 text-white py-5">
         <div class="w-full container mx-auto flex flex-wrap items-center justify-between px-2">
             <div class="pl-4 flex items-center">
@@ -165,7 +198,8 @@
 
             <!-- Block 4 -->
             <div class="flex items-center mt-8 lg:mt-[60px]">
-                <img src="/img/Icon_3.png" alt="Dedicated" class="lg:h-20 lg:w-20 w-auto h-auto mb-8 lg:mr-6 lg:mb-6">
+                <img src="/img/Icon_3.png" alt="Dedicated"
+                    class="lg:h-20 lg:w-20 w-auto h-auto mb-8 lg:mr-6 lg:mb-6">
                 <div>
                     <h3 class="lg:text-[21px] text-[16px] font-semibold pl-4">Dedicated Support</h3>
                     <p class="lg:text-[16px] text-[12px] text-[#161C2D] dm-sans-regular mt-2 pl-4">TextPlug

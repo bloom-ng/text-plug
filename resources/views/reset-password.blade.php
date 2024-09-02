@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>TextPlug | Reset Password</title>
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
         rel="stylesheet">
@@ -70,21 +70,22 @@
             <a href="/"><img src="/img/image_4.jpg" alt="logo"
                     class=" items-center h-[47px] w-[150px] mt-2 mb-5"></a>
         </div>
-        <div class="absolute">
-            <h1 class="flex-row text-3xl plus-jakarta-sans-bold lg:text-[34px] text-center text-[#222222] mt-28">Sign in
-                to your account</h1>
-            <h3 class="text-[#222222] text-[18px] dm-sans-regular text-center mt-2 mb-5">Sign in to your TextPlug
-                account to access your secure temporary <br>numbers and manage your account settings.</h3>
-
+        <div class="w-full flex flex-col justify-center items-center absolute">
+            <h1 class="flex-row text-3xl plus-jakarta-sans-bold lg:text-[34px] text-center text-[#222222] mt-28">Reset
+                Password</h1>
 
             <!-- form section -->
-            <form action="/login" method="POST"
-                class="mt-0 bg-white w-[100%] rounded-3xl items-center justify-center p-10 shadow-lg">
+            <form action="/reset-password" method="POST"
+                class="mt-5 bg-white lg:w-[50%] w-[90%] rounded-3xl items-center justify-center p-10 shadow-lg">
                 @csrf
+
+                <input type="hidden" name="token" value="{{ $token }}">
+
                 <div class="flex flex-col justify-center">
-                    <label for="Email" class="text-[18px] text-[#222222] dm-sans-medium mb-3">Email address</label>
-                    <input type="text" name="email" id="Email address" placeholder="Email address" required
-                        class="shadow-sm w-76 p-2 border border-gray-200 rounded-lg mb-3 items-center">
+                    <label for="email" class="text-[18px] text-[#222222] dm-sans-medium mb-3">Email address</label>
+                    <input type="email" name="email" id="email" placeholder="Email address" required
+                        class="shadow-sm w-76 p-2 border border-gray-200 rounded-lg mb-3 items-center"
+                        value="{{ $email ?? old('email') }}" autocomplete="email" readonly>
                     @error('email')
                         <div class="text-red-500 dm-sans-thin italic mb-4">
                             {{ $message }}
@@ -93,21 +94,33 @@
                 </div>
 
                 <div class="flex flex-col justify-center">
-                    <label for="Password" class="text-[18px] text-[#222222] dm-sans-medium mb-3">Password</label>
-                    <input type="text" name="password" id="Password" placeholder="Password" required
-                        class="shadow-sm w-76 p-2 border border-gray-200 rounded-lg items-center">
+                    <label for="password" class="text-[18px] text-[#222222] dm-sans-medium mb-3">New Password</label>
+
+                    <input id="password" type="password" placeholder="New Password"
+                        class="shadow-sm w-76 p-2 border border-gray-200 rounded-lg mb-3 items-center" name="password"
+                        required autocomplete="new-password" autofocus>
+
                     @error('password')
                         <div class="text-red-500 dm-sans-thin italic mb-4">
-                            {{ $message }}
+                            <strong>{{ $message }}</strong>
                         </div>
                     @enderror
+
                 </div>
+
+                <div class="flex flex-col justify-center">
+                    <label for="password-confirm" class="text-[18px] text-[#222222] dm-sans-medium mb-3">Confirm
+                        Password</label>
+
+                    <input id="password-confirm" type="password" placeholder="Confirm Password"
+                        class="shadow-sm w-76 p-2 border border-gray-200 rounded-lg mb-3 items-center"
+                        name="password_confirmation" required autocomplete="new-password">
+
+                </div>
+
                 <div class="flex flex-col justify-center mt-10">
                     <button class="rounded-lg shadow-lg p-2 dm-sans-bold text-[18px] bg-[#DF5C0C] border text-[#ffffff]"
-                        type="submit" id="Log in">Log in</button>
-                    <a href="/forgot-password">
-                        <p class="text-[#22222299] text-center mt-4">Forgot your password?</p>
-                    </a>
+                        type="submit" id="Log in">Reset Password</button>
                 </div>
             </form>
         </div>

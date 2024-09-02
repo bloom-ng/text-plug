@@ -75,6 +75,13 @@ class WalletController extends Controller
     public function confirmFunding(Request $request)
     {
         $transaction = Transaction::where('reference_id', $request->query('tx_ref'))->first();
+        if ($request->query('status') == 'cancelled') {
+            $transaction->update([
+                'status' => Transaction::PAYMENT_CANCELLED
+            ]);
+
+            return redirect('/user/wallet')->with('error', 'Wallet funding cancelled');
+        }
 
         if (!$transaction) {
             // Handle the case where the transaction is not found
@@ -83,17 +90,29 @@ class WalletController extends Controller
 
         $user_id = $transaction->user_id;
 
-        Wallet::create(['user_id' => $user_id, 'amount' => $transaction->amount, 'type' => Wallet::CREDIT]);
+        $response = Http::retry(3)->withToken(env('FLUTTERWAVE_SECRET_KEY'), 'Bearer')
+            ->get('https://api.flutterwave.com/v3/transactions/' . $request->query('transaction_id') . '/verify');
 
-        $transaction->update([
-            'status' => Transaction::PAYMENT_SUCCESSFUL
-        ]);
 
-        // Check if the transaction is already successful to avoid double processing
-        if ($transaction->status == Transaction::PAYMENT_SUCCESSFUL) {
-            return redirect('/user/wallet')->with('success', 'Wallet funded successfully.');
+        if ($response->successful() && $response['data']['status'] == 'successful') {
+            Wallet::create(['user_id' => $user_id, 'amount' => $transaction->amount, 'type' => Wallet::CREDIT]);
+
+            $transaction->update([
+                'status' => Transaction::PAYMENT_SUCCESSFUL
+            ]);
+
+            // Check if the transaction is already successful to avoid double processing
+            if ($transaction->status == Transaction::PAYMENT_SUCCESSFUL) {
+                return redirect('/user/wallet')->with('success', 'Wallet funded successfully.');
+            }
+
+            return redirect('/user/wallet')->with('success', 'Wallet funded successfully');
+        } else {
+            $transaction->update([
+                'status' => Transaction::PAYMENT_FAILED
+            ]);
+
+            return redirect('/user/wallet')->with('error', 'Wallet funding failed');
         }
-
-        return redirect('/user/wallet')->with('success', 'Wallet funded successfully');
     }
 }
