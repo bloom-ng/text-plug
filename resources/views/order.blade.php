@@ -62,7 +62,7 @@
                         <td class="px-8 py-5 whitespace-nowrap">{{ $order->order_id }}</td>
                         <td class="px-8 py-5 whitespace-nowrap">{{ $order->service }}</td>
                         <td class="px-8 py-5 whitespace-nowrap">{{ $order->phone_number }}</td>
-                        <td class="px-8 py-5 whitespace-nowrap">{{ $order->created_at }}</td>
+                        <td class="px-8 py-5 whitespace-nowrap">{{ date('d-m-Y', strtotime($order->created_at)) }}</td>
                         <td class="px-8 py-5">
                             <div
                                 class="{{ $order->status == 'active' ? 'bg-[#16C09861] text-[#008767] border-[#00B087]' : ($order->status == 'refunded' ? 'bg-[#FFCCCC] text-[#CC0000]' : 'text-blue-600 bg-blue-300') }} w-[90px] h-[30px] flex items-center justify-center border rounded-lg">

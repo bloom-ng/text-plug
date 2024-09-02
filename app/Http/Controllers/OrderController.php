@@ -53,7 +53,6 @@ class OrderController extends Controller
 
     public function order(Request $request)
     {
-        // dd($request->all());
         //validate
         $validated = $request->validate([
             'server' => 'required|string',
@@ -121,7 +120,8 @@ class OrderController extends Controller
                 'service' => $order['service'],
                 'status' => $order['status'],
                 'message' => $smsExist['message'] ?? '',
-                'created_at' => $order['created_at']
+                'created_at' => date("d-m-Y", strtotime($order['created_at']))
+
             ], 200);
         }
 
@@ -150,7 +150,7 @@ class OrderController extends Controller
                     'service' => $order['service'],
                     'status' => $order['status'],
                     'message' => $smsExist['message'] ?? '',
-                    'created_at' => $order['created_at']
+                    'created_at' => date("d-m-Y", strtotime($order['created_at']))
                 ], 200);
             } else if ($response['status'] == 6) {
                 $order->status = Order::ORDER_REFUNDED;
@@ -163,7 +163,7 @@ class OrderController extends Controller
                     'service' => $order['service'],
                     'status' => $order['status'],
                     'message' => '',
-                    'created_at' => $order['created_at']
+                    'created_at' => date("d-m-Y", strtotime($order['created_at']))
                 ], 200);
             } else {
                 $order->status = Order::ORDER_PENDING;
@@ -176,7 +176,7 @@ class OrderController extends Controller
                     'service' => $order['service'],
                     'status' => $order['status'],
                     'message' => '',
-                    'created_at' => $order['created_at']
+                    'created_at' => date("d-m-Y", strtotime($order['created_at']))
                 ], 200);
             }
         } else {
@@ -202,7 +202,7 @@ class OrderController extends Controller
                     'service' => $order['service'],
                     'status' => $order['status'],
                     'message' => $smsExist['message'] ?? '',
-                    'created_at' => $order['created_at']
+                    'created_at' => date("d-m-Y", strtotime($order['created_at']))
                 ], 200);
             } else if ($response['message'] == "Waiting for SMS" || $response['message'] == "Wrong ID") {
                 $order->status = Order::ORDER_PENDING;
@@ -215,7 +215,7 @@ class OrderController extends Controller
                     'service' => $order['service'],
                     'status' => $order['status'],
                     'message' => '',
-                    'created_at' => $order['created_at']
+                    'created_at' => date("d-m-Y", strtotime($order['created_at']))
                 ], 200);
             } else {
                 $order->status = Order::ORDER_REFUNDED;
@@ -228,7 +228,7 @@ class OrderController extends Controller
                     'service' => $order['service'],
                     'status' => $order['status'],
                     'message' => '',
-                    'created_at' => $order['created_at']
+                    'created_at' => date("d-m-Y", strtotime($order['created_at']))
                 ], 200);
             }
         }

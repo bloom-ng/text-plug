@@ -325,9 +325,7 @@
                         class="pl-5 dm-sans-medium text-[13.5px] {{ $activePage == 'account' ? 'text-[#ffffff]' : 'text-[#222222B2]' }}">Account</span>
                 </a>
 
-                <a href="/user/logout"
-                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                    class="flex items-center py-2 pl-4 nav-item text-[#B22234]">
+                <a href="/user/logout" class="flex items-center py-2 pl-4 nav-item text-[#B22234]">
                     <svg width="21" height="21" viewBox="0 0 21 21" fill="none"
                         xmlns="http://www.w3.org/2000/svg" class="mr-3">
                         <path fill-rule="evenodd" clip-rule="evenodd"
