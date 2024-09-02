@@ -114,7 +114,7 @@
 </div>
 
 <!-- modal2 content -->
-<div id="Order" class="flex fixed w-full h-full bg-black/25 items-center justify-center hidden">
+<div id="Order" class="flex fixed w-full h-full bg-black/25 items-center justify-center hidden overflow-scroll">
     <div class="flex bg-[#ffffff] h-[full] lg:w-[50%] w-[90%] rounded-3xl flex-col mt-10 mb-3">
         <div class="flex flex-row justify-between mt-5 lg:mt-6">
             <div class="items-start flex-row flex ml-6">
@@ -184,9 +184,9 @@
                 <div class="">
                     <div class="flex flex-col">
                         <p class="text-[16px] font-bold">Service</p>
-                        <select name="service"
+                        <select id="smsPoolService" name="service"
                             class="dm-sans-regular text-[14px] h-[45px] text-[#7E7E7E] bg-[#F9FBFF] border border-[#D9D9D9D9] rounded-md">
-                            <option value="">Select A Service</option>
+                            {{-- <option value="">Select A Service</option> --}}
 
 
                             @foreach ($smsPoolServices as $service)
@@ -203,7 +203,7 @@
 
                     <div class="flex flex-col mt-5">
                         <p class="text-[16px] font-bold">Country</p>
-                        <select name="country"
+                        <select id="country_1" name="country"
                             class="dm-sans-regular text-[14px] h-[45px] text-[#7E7E7E] bg-[#F9FBFF] border border-[#D9D9D9D9] rounded-md">
                             {{-- <option>United Kingdom</option> --}}
                             @foreach ($smsPoolCountries as $country)
@@ -220,7 +220,7 @@
                     </div>
                 </div>
 
-                <div id="service_2" class="hidden">
+                {{-- <div id="service_2" class="hidden">
                     <div class="flex flex-col">
                         <p class="text-[16px] font-bold">Service</p>
                         <select name="service"
@@ -239,7 +239,7 @@
                             </svg>
                         </select>
                     </div>
-                </div>
+                </div> --}}
             </div>
 
             <div class="flex flex-row ml-6 mr-5 mt-5 lg:ml-6 rounded-md mb-6">
@@ -258,7 +258,7 @@
                             </clipPath>
                         </defs>
                     </svg>
-                    <p><span class="font-bold">Available Numbers:</span> 365</p>
+                    <p><span class="font-bold">Available Numbers:</span> <span id="availableNumbers">0</span></p>
                 </div>
 
                 <div class="bg-[#DF5C0C0D] flex flex-row ml-5 lg:mr-5 rounded-md lg:h-[36px] w-[35%] items-center">
@@ -275,7 +275,7 @@
                             </clipPath>
                         </defs>
                     </svg>
-                    <p><span class="font-bold">Price:</span> 1700</p>
+                    <p><span class="font-bold">Price:</span> <span id="numberPrice">0</span></p>
                 </div>
             </div>
 

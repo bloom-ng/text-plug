@@ -59,4 +59,26 @@ class SmsPoolService
 
         return $response->json();
     }
+
+    public function checkPrice($service, $country)
+    {
+        $response = Http::asForm()->post('https://api.smspool.net/request/price', [
+            'service' => $service,
+            'country' => $country,
+            'key' => $this->apiKey,
+        ]);
+
+        return $response->json();
+    }
+
+    public function checkAvailableNumber($service, $country)
+    {
+        $response = Http::asForm()->post('https://api.smspool.net/sms/stock', [
+            'service' => $service,
+            'country' => $country,
+            'key' => $this->apiKey,
+        ]);
+
+        return $response->json();
+    }
 }

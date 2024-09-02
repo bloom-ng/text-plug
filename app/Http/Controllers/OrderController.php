@@ -53,6 +53,7 @@ class OrderController extends Controller
 
     public function order(Request $request)
     {
+        // dd($request->all());
         //validate
         $validated = $request->validate([
             'server' => 'required|string',
@@ -227,5 +228,33 @@ class OrderController extends Controller
                 ], 200);
             }
         }
+    }
+
+    public function checkPrice(Request $request)
+    {
+        $validated = $request->validate([
+            'service' => 'required|string',
+            'country' => 'required|string',
+        ]);
+
+        $response = $this->smsPoolService->checkPrice($validated['service'], $validated['country']);
+
+        return response()->json([
+            'price' => $response['high_price'] * 1700,
+        ], 200);
+    }
+
+    public function checkAvailableNumber(Request $request)
+    {
+        $validated = $request->validate([
+            'service' => 'required|string',
+            'country' => 'required|string',
+        ]);
+
+        $response = $this->smsPoolService->checkAvailableNumber($validated['service'], $validated['country']);
+
+        return response()->json([
+            'availableNumbers' => $response['amount'],
+        ], 200);
     }
 }

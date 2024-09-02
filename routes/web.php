@@ -55,6 +55,8 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     Route::get('/orders', [OrderController::class, 'index']);
     Route::post('/orders', [OrderController::class, 'order']);
     Route::get('/orders/{id}', [OrderController::class, 'getCode']);
+    Route::post('/order/check-price', [OrderController::class, 'checkPrice']);
+    Route::post('/order/check-available-number', [OrderController::class, 'checkAvailableNumber']);
 
     Route::get('/account', function () {
         return view('account');

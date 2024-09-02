@@ -198,4 +198,74 @@
             });
         });
     </script>
+
+    <script>
+        //  onchange event for the select element
+        const service = document.getElementById('smsPoolService');
+        const country = document.getElementById('country_1');
+        const numberPrice = document.getElementById('numberPrice');
+        const availableNumbers = document.getElementById('availableNumbers');
+
+        country.addEventListener('change', function() {
+            fetch('/user/order/check-price', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    service: service.value,
+                    country: country.value
+                })
+            }).then(response => response.json()).then(data => {
+                numberPrice.innerHTML = data.price;
+
+            });
+
+            fetch('/user/order/check-available-number', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token if needed
+                },
+                body: JSON.stringify({
+                    service: service.value,
+                    country: country.value
+                })
+            }).then(response => response.json()).then(data => {
+                availableNumbers.innerHTML = data.availableNumbers;
+            });
+        });
+
+        service.addEventListener('change', function() {
+            fetch('/user/order/check-available-number', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token if needed
+                },
+                body: JSON.stringify({
+                    service: service.value,
+                    country: country.value
+                })
+            }).then(response => response.json()).then(data => {
+                availableNumbers.innerHTML = data.availableNumbers;
+            });
+
+            fetch('/user/order/check-price', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    service: service.value,
+                    country: country.value
+                })
+            }).then(response => response.json()).then(data => {
+                numberPrice.innerHTML = data.price;
+
+            });
+        });
+    </script>
 </x-user-layout>
