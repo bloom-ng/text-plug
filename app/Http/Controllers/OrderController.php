@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\SmsCode;
 use App\Models\User;
+use App\Models\Wallet;
 use App\Services\DaisyService;
 use App\Services\SmsPoolService;
 use Illuminate\Http\Request;
@@ -134,7 +135,8 @@ class OrderController extends Controller
                 $sms->message = $response['full_sms'];
                 $sms->save();
 
-                //deduct user balance
+                //TODO: deduct user balance
+                Wallet::create(['user_id' => Auth::user()->id, 'amount' => $order->price * 1700, 'type' => Wallet::DEBIT]);
 
                 return response()->json([
                     'status' => 'success',
@@ -174,7 +176,7 @@ class OrderController extends Controller
             }
         } else {
             $response = $this->daisyService->getCode($order->order_id);
-            dd($response);
+            // dd($response);
             if (str_contains($response['message'], 'STATUS_OK:')) {
                 $order->status = Order::ORDER_DONE;
                 $order->save();
@@ -186,6 +188,7 @@ class OrderController extends Controller
                 $sms->save();
 
                 //TODO: deduct user balance
+                Wallet::create(['user_id' => Auth::user()->id, 'amount' => $order->price * 1700, 'type' => Wallet::DEBIT]);
 
                 return response()->json([
                     'status' => 'success',
