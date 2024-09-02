@@ -1,5 +1,12 @@
 <x-user-layout page="Orders" activePage="orders">
     <div class="flex flex-col bg-white w-[1000px] min-h-[850px] mb-4 rounded-xl">
+        <div class="flex lg:hidden justify-start items-end mb-4 mt-3 ml-6">
+            <button id="NewOrder"
+                class="lg:mt-5 mt-3 w-[180px] h-[49px] bg-[#DF5C0C] text-white lg:py-2 rounded-lg dm-sans-extrabold text[12px] mr-6">
+                New order
+            </button>
+        </div>
+
         <div class="flex flex-row">
             <h1 class="dm-sans-medium text-[22px] text-[#000000] mt-[43px] text-2xl ml-6 font-semibold w-[70%]">
                 History</h1>
@@ -102,7 +109,7 @@
                                 <!-- Right arrow --> --}}
                 </div>
             </div>
-            <div class="flex justify-end items-end mb-4 mt-3">
+            <div class="hidden lg:flex justify-end items-end mb-4 mt-3">
                 <button id="NewOrder"
                     class="lg:mt-5 mt-3 w-[180px] h-[49px] bg-[#DF5C0C] text-white lg:py-2 rounded-lg dm-sans-extrabold text[12px] mr-6">
                     New order

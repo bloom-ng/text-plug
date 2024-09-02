@@ -342,7 +342,7 @@
         <!-- /mobile header -->
 
         <!-- content -->
-        <div class="w-full flex flex-col overflow-y-scroll overflow-x-hidden p-7">
+        <div class="w-full flex flex-col overflow-y-scroll overflow-x-scroll p-7">
             {{ $slot }}
         </div>
         <!-- /content -->

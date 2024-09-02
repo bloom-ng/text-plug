@@ -133,7 +133,7 @@
         <div class="flex text-center justify-center px-3 lg:px-0">
             <a href="/register"
                 class="text-[14px] md:text-sm lg:text-[16px] plus-jakarta-sans-bold text-white bg-[#DF5C0C] shadow-2xl rounded-xl px-16 py-4 lg:px-5 lg:py-4 mt-5 lg:mt-2">
-                Get access to cheap phone numbers
+                Get access to quality phone numbers
             </a>
 
         </div>

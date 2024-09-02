@@ -1,5 +1,5 @@
 <x-user-layout page="Dashboard" activePage="dashboard">
-    <div class="w-full flex flex-col gap-14 lg:flex-row">
+    <div class="w-full flex flex-col-reverse gap-14 lg:flex-row">
         <div class="w-full lg:w-[80%] flex bg-white lg:h-[290px] h-[825px] shadow-lg rounded-xl lg:px-6 px-10">
             <div class="w-full flex flex-col leading-tight">
                 <h1 class="dm-sans-medium text-[#222222] lg:text-2xl text-[28px] font-semibold mt-4">
