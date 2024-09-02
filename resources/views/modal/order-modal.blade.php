@@ -1,6 +1,6 @@
 <!-- modal content -->
-<div id="messageModal" class="flex fixed w-full h-full bg-black/25 items-center justify-center hidden">
-    <div class="flex bg-[#ffffff] h-[full] lg:w-[50%] w-[90%] rounded-3xl flex-col mt-10 mb-3">
+<div id="messageModal" class="flex fixed z-20 w-full h-full bg-black/25 items-center justify-center hidden top-0 left-0">
+    <div class="flex bg-[#ffffff] lg:h-auto lg:w-[50%] w-[90%] h-[95%] rounded-3xl flex-col overflow-scroll">
         <div class="flex flex-row justify-between mt-5 lg:mt-6">
             <div class="items-start flex-row flex ml-6">
                 <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -114,8 +114,8 @@
 </div>
 
 <!-- modal2 content -->
-<div id="Order" class="flex fixed w-full h-full bg-black/25 items-center justify-center hidden overflow-scroll">
-    <div class="flex bg-[#ffffff] h-[full] lg:w-[50%] w-[90%] rounded-3xl flex-col mt-10 mb-3">
+<div id="Order" class="flex fixed z-20 w-full h-full bg-black/25 items-center justify-center hidden top-0 left-0">
+    <div class="flex bg-[#ffffff] lg:h-auto lg:w-[50%] w-[90%] h-[95%] rounded-3xl flex-col overflow-scroll">
         <div class="flex flex-row justify-between mt-5 lg:mt-6">
             <div class="items-start flex-row flex ml-6">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -166,28 +166,25 @@
             @csrf
             <div class="flex flex-col ml-6 mr-5 mt-5 lg:ml-6 rounded-md">
                 <div class="flex flex-col mb-5">
-                    <input hidden type="text" value="server_1" id="server" name="server">
-                    {{-- <p class="text-[16px] font-bold">Select Server</p>
-                    <select hidden value="server_1" id="server" name="server"
+                    <p class="text-[16px] font-bold">Select Provider</p>
+                    <select value="server_1" id="server" name="server"
                         class="dm-sans-regular text-[14px] h-[45px] text-[#7E7E7E] bg-[#F9FBFF] border border-[#D9D9D9D9] rounded-md">
                         <option value="">Choose Option</option>
-                        <option value="server_1">Server 1</option>
-                        <option value="server_2">Server 2</option>
+                        <option value="server_1">SMS Pool</option>
+                        <option value="server_2">Daisy SMS</option>
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                             xmlns="http://www.w3.org/2000/svg",>
                             <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="#3D3C42" stroke-width="1.5"
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                    </select> --}}
+                    </select>
                 </div>
 
-                <div class="">
+                <div id="service_1" class="hidden">
                     <div class="flex flex-col">
                         <p class="text-[16px] font-bold">Service</p>
                         <select id="smsPoolService" name="service"
                             class="dm-sans-regular text-[14px] h-[45px] text-[#7E7E7E] bg-[#F9FBFF] border border-[#D9D9D9D9] rounded-md">
-                            {{-- <option value="">Select A Service</option> --}}
-
 
                             @foreach ($smsPoolServices as $service)
                                 <option value="{{ $service['ID'] }}">{{ $service['name'] }}</option>
@@ -220,7 +217,7 @@
                     </div>
                 </div>
 
-                {{-- <div id="service_2" class="hidden">
+                <div id="service_2" class="hidden">
                     <div class="flex flex-col">
                         <p class="text-[16px] font-bold">Service</p>
                         <select name="service"
@@ -239,10 +236,10 @@
                             </svg>
                         </select>
                     </div>
-                </div> --}}
+                </div>
             </div>
 
-            <div class="flex flex-row ml-6 mr-5 mt-5 lg:ml-6 rounded-md mb-6">
+            <div id="details" class="hidden flex flex-row ml-6 mr-5 mt-5 lg:ml-6 rounded-md mb-6">
                 <div
                     class="bg-[#DF5C0C0D] rounded-md lg:mr-5 flex flex-row lg:h-[36px] w-[60%] lg:w-[265px] items-center">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
@@ -294,7 +291,7 @@
     let server = document.getElementById('server');
     let service_1 = document.getElementById('service_1');
     let service_2 = document.getElementById('service_2');
-
+    let details = document.getElementById('details');
     let orderForm = document.getElementById('orderForm');
 
     service_1.classList.add('hidden');
@@ -304,12 +301,18 @@
         if (e.target.value === 'server_1') {
             service_1.classList.remove('hidden');
             service_2.classList.add('hidden');
+            details.classList.remove('hidden');
+
         } else if (e.target.value === 'server_2') {
             service_1.classList.add('hidden');
             service_2.classList.remove('hidden');
+            details.classList.add('hidden');
+
         } else {
             service_1.classList.add('hidden');
             service_2.classList.add('hidden');
+            details.classList.add('hidden');
+
         }
     });
 

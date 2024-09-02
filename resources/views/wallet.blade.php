@@ -1,5 +1,5 @@
 <x-user-layout activePage="wallet" page="Wallet">
-    <div class="w-full flex lg:flex-row flex-col gap-10 xl:gap-14">
+    <div class="w-full flex lg:flex-row flex-col-reverse gap-10 xl:gap-14">
         <div class="flex bg-white w-full lg:w-[80%] lg:h-[290px] h-fit shadow-lg rounded-xl px-8 pb-8">
             <div class="w-full flex flex-col leading-tight">
                 <h1 class="dm-sans-medium text-[#222222] lg:text-2xl text-[28px] font-semibold mt-4">
@@ -96,7 +96,7 @@
         </div>
     </div>
 
-    <div class="flex flex-col bg-white w-full lg:w-[70%] min-h-[600px] mb-4 mt-8 rounded-xl overflow-x-scroll">
+    <div class="flex flex-col bg-white w-full lg:w-[80%] min-h-[600px] mb-4 mt-8 rounded-xl overflow-x-scroll">
         <div class="flex flex-col md:flex-row">
             <h1 class="dm-sans-medium text-[22px] text-[#000000] mt-[43px] text-2xl ml-6 font-semibold w-[70%]">
                 History

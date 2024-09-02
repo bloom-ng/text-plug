@@ -65,6 +65,10 @@ class OrderController extends Controller
             //SMS POOL IMPLEMENTATION
             $response = $this->smsPoolService->orderSMS($validated['service'], $validated['country']);
 
+            if (str_contains($response, 'Error: ')) {
+                return redirect('/user/orders')->with('error', 'Failed to order number please try again.');
+            }
+
             $responseBody = $response->json();
             if ($responseBody['success'] !== 1) {
                 return redirect('/user/orders')->with('error', 'Failed to order number please try again later');

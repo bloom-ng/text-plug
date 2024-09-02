@@ -1,18 +1,19 @@
 <x-user-layout page="Orders" activePage="orders">
-    <div class="flex flex-col bg-white w-[1000px] min-h-[850px] mb-4 rounded-xl">
+    <div
+        class="flex flex-col bg-white w-full 2xl:w-[7] lg:w-[90%] min-h-[600px] mb-4 mt-8 rounded-xl overflow-x-scroll overflow-y-scroll">
         <div class="flex lg:hidden justify-start items-end mb-4 mt-3 ml-6">
-            <button id="NewOrder"
+            <button id="NewOrderMobile"
                 class="lg:mt-5 mt-3 w-[180px] h-[49px] bg-[#DF5C0C] text-white lg:py-2 rounded-lg dm-sans-extrabold text[12px] mr-6">
                 New order
             </button>
         </div>
-
-        <div class="flex flex-row">
+        <div class="flex flex-col md:flex-row">
             <h1 class="dm-sans-medium text-[22px] text-[#000000] mt-[43px] text-2xl ml-6 font-semibold w-[70%]">
-                History</h1>
+                History
+            </h1>
 
-            <div class="flex flex-row">
-                <button class="flex relative mt-[40px]">
+            <div class="flex flex-col md:flex-row">
+                <button class="flex relative ml-5 lg:ml-0 mt-[40px]">
                     <input type="text" placeholder="Search"
                         class="bg-[#F9FBFF] text-[#22222280] dm-sans-regular text-[12px] rounded-lg w-[216px] h-[38px] pl-11 relative" />
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -32,7 +33,7 @@
                         <option>Sort by : Oldest</option>
                         <option>Sort by : Recent</option>
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                            xmlns="http://www.w3.org/2000/svg",>
+                            xmlns="http://www.w3.org/2000/svg" ,>
                             <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="#3D3C42" stroke-width="1.5"
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
@@ -41,8 +42,7 @@
             </div>
         </div>
 
-        <table class="min-w-full mt-8 ">
-
+        <table class="min-w-full mt-8">
             <thead>
                 <tr class="border-b border-gray-300">
                     <th class="px-8 py-5 text-left  text-[#22222280] dm-sans-medium text-[14px]">Order ID</th>
@@ -123,6 +123,7 @@
     <script>
         let orderModal = document.getElementById('Order');
         let openBtn = document.getElementById('NewOrder');
+        let openBtnMobile = document.getElementById('NewOrderMobile');
         let closeBtnX = document.getElementById('CloseX');
         let closeBtnCancel = document.getElementById('Cancel');
 
@@ -138,6 +139,7 @@
 
         // Open modal when the 'Ordernow' button is clicked
         openBtn.addEventListener('click', openOrderModal);
+        openBtnMobile.addEventListener('click', openOrderModal);
 
         // Close modal when the 'CloseX' button or 'Cancel' button is clicked
         closeBtnX.addEventListener('click', closeOrderModal);

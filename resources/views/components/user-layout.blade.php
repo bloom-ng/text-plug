@@ -211,7 +211,7 @@
         <!-- Mobile Header & Nav -->
         <header x-data="{ isOpen: false }" class="w-full bg-[#ffffff] py-5 px-6 lg:hidden">
             <div class="flex items-center justify-between">
-                <a href="/index">
+                <a href="/">
                     <img class="w-[110px] lg:w-16" src="/img/image_4.jpg" alt="logo" /></a>
 
                 <button @click="isOpen = !isOpen" class="text-black text-3xl focus:outline-none">
@@ -342,7 +342,7 @@
         <!-- /mobile header -->
 
         <!-- content -->
-        <div class="w-full flex flex-col overflow-y-scroll overflow-x-scroll p-7">
+        <div class="w-full flex flex-col overflow-y-scroll p-7">
             {{ $slot }}
         </div>
         <!-- /content -->
