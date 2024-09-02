@@ -166,8 +166,9 @@
             @csrf
             <div class="flex flex-col ml-6 mr-5 mt-5 lg:ml-6 rounded-md">
                 <div class="flex flex-col mb-5">
-                    <p class="text-[16px] font-bold">Select Server</p>
-                    <select id="server" name="server"
+                    <input hidden type="text" value="server_1" id="server" name="server">
+                    {{-- <p class="text-[16px] font-bold">Select Server</p>
+                    <select hidden value="server_1" id="server" name="server"
                         class="dm-sans-regular text-[14px] h-[45px] text-[#7E7E7E] bg-[#F9FBFF] border border-[#D9D9D9D9] rounded-md">
                         <option value="">Choose Option</option>
                         <option value="server_1">Server 1</option>
@@ -177,10 +178,10 @@
                             <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="#3D3C42" stroke-width="1.5"
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                    </select>
+                    </select> --}}
                 </div>
 
-                <div id="service_1" class="hidden">
+                <div class="">
                     <div class="flex flex-col">
                         <p class="text-[16px] font-bold">Service</p>
                         <select name="service"
@@ -274,7 +275,7 @@
                             </clipPath>
                         </defs>
                     </svg>
-                    <p> <span class="font-bold">Price:</span> 1700</p>
+                    <p><span class="font-bold">Price:</span> 1700</p>
                 </div>
             </div>
 

@@ -94,7 +94,7 @@
 
                 <div class="flex flex-col justify-center">
                     <label for="Password" class="text-[18px] text-[#222222] dm-sans-medium mb-3">Password</label>
-                    <input type="text" name="password" id="Password" placeholder="Password" required
+                    <input type="password" name="password" id="Password" placeholder="Password" required
                         class="shadow-sm w-76 p-2 border border-gray-200 rounded-lg items-center">
                     @error('password')
                         <div class="text-red-500 dm-sans-thin italic mb-4">

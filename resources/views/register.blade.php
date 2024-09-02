@@ -96,7 +96,7 @@
 
                 <div class="flex flex-col justify-center">
                     <label for="Password" class="dm-sans-medium text-[#222222] text-[18px] mt-3">Password</label>
-                    <input type="text" id="Password" name="password" placeholder="Password" required
+                    <input type="password" id="Password" name="password" placeholder="Password" required
                         class="shadow-sm w-76 p-2 border border-gray-200 rounded-lg items-center">
                     @error('password')
                         <div class="text-red-500 dm-sans-thin italic mb-4">
@@ -108,7 +108,7 @@
                 <div class="flex flex-col justify-center">
                     <label for="Confirm Password" class="dm-sans-medium text-[#222222] text-[18px] mt-3">Confirm
                         Password</label>
-                    <input type="text" id="Confirm Password" name="password_confirmation"
+                    <input type="password" id="Confirm Password" name="password_confirmation"
                         placeholder="Enter password again" required
                         class="shadow-sm w-76 p-2 border border-gray-200 rounded-lg items-center">
                     @error('password_confirmation')

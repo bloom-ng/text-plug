@@ -215,7 +215,7 @@
             <div class="flex flex-col">
                 <h1 class="lg:text-[32px] text-[24px] text-[#333333] dm-sans-bold">Ready to buy a number?</h1>
                 <p class="flex dm-sans-regular text-[14px] lg:text-[18px] text-[#333333] mt-3 lg:mt-5">Simplify
-                    your verification process with TextPlug's temporary numbers. <br>Get started now for hassle-free
+                    your verification process with TextPlug's quality numbers. <br>Get started now for hassle-free
                     account security.</p>
             </div>
             <a href="/register"
@@ -243,7 +243,7 @@
             <div class="max-w-md mx-auto bg-white rounded-2xl shadow-lg px-5 py-4">
                 <p class="text-[#F59E0B] text-lg">★★★★★</p>
                 <p class="text-gray-700 text-base mb-4">"TextPlug made verifying my accounts <br>a breeze!
-                    Their temporary numbers <br>worked like a charm, and I felt much <br>more secure online.
+                    Their quality numbers <br>worked like a charm, and I felt much <br>more secure online.
                     Highly <br>recommended!."
                 </p>
                 <div class="flex items-center">
