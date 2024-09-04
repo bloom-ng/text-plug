@@ -79,7 +79,9 @@ class OrderController extends Controller
             //DAISY IMPLEMENTATION
             $response = $this->daisyService->rentNumber($validated['service'], null, null);
 
-            // dd($response->headers(), $responseBody);
+            if (str_contains($response, 'Error: ')) {
+                return redirect('/user/orders')->with('error', 'Failed to order number please try again.');
+            }
 
             if ($response['status'] !== 'success') {
                 return redirect('/user/orders')->with('error', 'Failed to order number please try again later');
@@ -135,6 +137,7 @@ class OrderController extends Controller
                 $order->save();
 
                 $sms = new SmsCode();
+                $sms->user_id = Auth::user()->id;
                 $sms->order_id = $order->id;
                 $sms->code = $response['sms'];
                 $sms->message = $response['full_sms'];
@@ -181,12 +184,13 @@ class OrderController extends Controller
             }
         } else {
             $response = $this->daisyService->getCode($order->order_id);
-            // dd($response);
+
             if (str_contains($response['message'], 'STATUS_OK:')) {
                 $order->status = Order::ORDER_DONE;
                 $order->save();
 
                 $sms = new SmsCode();
+                $sms->user_id = Auth::user()->id;
                 $sms->order_id = $order->id;
                 $sms->code = $response['message'];
                 $sms->message = $response['message'];

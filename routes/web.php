@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
@@ -63,4 +65,24 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     });
     Route::post('/update-password', [AuthController::class, 'updatePassword']);
     Route::post('/update-profile', [AuthController::class, 'updateProfile']);
+});
+
+
+// ADMIN SECTION
+Route::get("/admin/login", function () {
+    return view('admin_auth.login');
+});
+Route::post("/admin/login", [AdminAuthController::class, 'login'])->name("admin.login");
+
+Route::group(['prefix' => 'admin', 'middleware' => App\Http\Middleware\Admin::class], function () {
+    Route::get('/dashboard', [DashboardController::class, 'adminIndex']);
+
+    Route::get('/create-admins', [AdminController::class, 'create']);
+    Route::post('/create-admins', [AdminController::class, 'store'])->name("create.admin");
+    Route::get('/delete-admin/{admin}', [AdminController::class, 'destroy']);
+    Route::get('/admins', [AdminController::class, 'index'])->name('admins');
+
+    // Route::get('/users', [UserController::class, 'index']);
+
+    Route::get("/logout", [AdminAuthController::class, 'logout'])->name("logout");
 });

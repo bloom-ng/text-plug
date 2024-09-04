@@ -88,30 +88,13 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="flex flex-row justify-between">
-            <div class="flex flex-col">
-                {{-- <p class="mt-8 pl-8 text-[#22222280] dm-sans-medium text-[14px]">Showing data
-                    {{ $orders->meta->from }} to 8 of 78
-                    entries</p> --}}
-                <div class="pagination ml-8">
-                    {{ $orders->links() }}
-                    {{-- << /a> <!-- Left arrow -->
-                                <a href="#"
-                                    class="active bg-[#DF5C0C] border p-1 text-white border-[#f5f5f5] text-[14px]"">1</a>
-                                <!-- Active page -->
-                                <a href="#" class="bg-[#EEEEEE] p-1 border border-[#f5f5f5] text-[14px]">2</a>
-                                <a href="#" class="bg-[#EEEEEE] p-1 border border-[#f5f5f5] text-[14px]">3</a>
-                                <a href="#" class="bg-[#EEEEEE] p-1 border border-[#f5f5f5] text-[14px]">4</a>
-                                <span>...</span> <!-- Ellipsis for more pages -->
-                                <a href="#" class="bg-[#EEEEEE] p-1 border border-[#f5f5f5] text-[14px]">10</a>
-                                <!-- Last page number -->
-                                <a href="#" class="bg-[#EEEEEE] p-1 border border-[#f5f5f5] text-[14px]">></a>
-                                <!-- Right arrow --> --}}
-                </div>
+        <div class="flex flex-row items-center justify-between mt-5">
+            <div class="ml-6">
+                {{ $orders->links() }}
             </div>
-            <div class="hidden lg:flex justify-end items-end mb-4 mt-3">
+            <div class="hidden lg:flex justify-end items-end">
                 <button id="NewOrder"
-                    class="lg:mt-5 mt-3 w-[180px] h-[49px] bg-[#DF5C0C] text-white lg:py-2 rounded-lg dm-sans-extrabold text[12px] mr-6">
+                    class="w-[180px] h-[49px] bg-[#DF5C0C] text-white lg:py-2 rounded-lg dm-sans-extrabold text[12px] mr-6">
                     New order
                 </button>
             </div>

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\SmsCode;
 use App\Models\User;
+use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,10 +15,27 @@ class DashboardController extends Controller
     {
         $user_id = Auth::user()->id;
         $balance = User::where('id', $user_id)->first()->walletBalance();
-        $orders = 0;
+        $orders = Order::all()->where('user_id', $user_id)->count();
         $amount_spent = User::where('id', $user_id)->first()->amountSpent();
-        $received_codes = 0;
+        $received_codes = SmsCode::where('user_id', $user_id)->count();
         return view('dashboard')->with([
+            'balance' => $balance,
+            'orders' => $orders,
+            'amount_spent' => $amount_spent,
+            'received_codes' => $received_codes,
+        ]);
+    }
+
+    public function adminIndex()
+    {
+        $credit = Wallet::all()->where('type', 'credit')->sum('amount');
+        $debit =  Wallet::all()->where('type', 'debit')->sum('amount');
+        $balance = $credit - $debit;
+        $orders = Order::all()->count();
+        $amount_spent = $debit;
+        $received_codes = SmsCode::all()->count();
+
+        return view('admin.index')->with([
             'balance' => $balance,
             'orders' => $orders,
             'amount_spent' => $amount_spent,

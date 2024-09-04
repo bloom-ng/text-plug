@@ -52,10 +52,11 @@ class SmsPoolService
 
     public function checkSMS($orderId)
     {
-        $response = Http::withToken($this->apiKey)->get('https://api.smspool.net/sms/check', [
+        $params = [
             'orderid' => $orderId,
             'key' => $this->apiKey,
-        ]);
+        ];
+        $response = Http::asForm()->post('https://api.smspool.net/sms/check', $params);
 
         return $response->json();
     }

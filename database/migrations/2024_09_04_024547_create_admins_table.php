@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sms_codes', function (Blueprint $table) {
+        Schema::create('admins', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('order_id')->constrained();
-            $table->string('code');
-            $table->string('message');
+            $table->string('name')->nullable();
+            $table->string('email')->unique();
+            $table->string('phone')->unique();
+            $table->string('password');
+            $table->tinyInteger('type')->comment('1 == Super, 2 == Admin');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sms_codes');
+        Schema::dropIfExists('admins');
     }
 };
