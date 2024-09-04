@@ -1,76 +1,75 @@
-<x-admin-dashboard page="dashboard">
-    <div class="w-full overflow-x-hidden border-t flex flex-col">
-        <main class="w-full flex-grow py-6 px-6 lg:px-24">
-            <h1 class="text-3xl text-black pb-6 font-semibold montserrat-bold">Dashboard</h1>
-            <p class="montserrat-thin font-thin text-[24px]">Overview of your account and campaigns</p>
+<x-admin-dashboard activePage="dashboard" page="Dashboard">
+    <div class="w-full overflow-x-hidden flex flex-col">
+        <div class="w-full lg:w-[80%] flex bg-white lg:h-[290px] h-[825px] shadow-lg rounded-xl lg:px-6 px-10">
+            <div class="w-full flex flex-col leading-tight">
+                <h1 class="dm-sans-medium text-[#222222] lg:text-2xl text-[28px] font-semibold mt-4">
+                    Overview</h1>
+                <p class="dm-sans-medium lg:text-[12px] text-[14px] text-[#22222299]">Your Account
+                    Summary</p>
 
-            <div class="flex flex-col items-center justify-start my-5 lg:flex-row gap-6">
-                <div class="flex-col flex rounded-lg px-6 py-4 max-w-[400px] w-full border border-[#6683A5] gap-4">
-                    <div>
-                        <svg width="44" height="44" viewBox="0 0 44 44" fill="none"
-                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                            <rect width="44" height="44" fill="url(#pattern0_563_447)" />
+                <div class="w-full flex lg:flex-row flex-col justify-center gap-4">
+                    <div class="bg-[#FFE2E5] w-full h-[138px] shadow-lg mt-7 rounded-xl">
+                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" class="ml-4 mt-4">
+                            <circle cx="15" cy="15" r="15" fill="#FA5A7D" />
+                            <path
+                                d="M10.5 21C9.675 21 8.96875 20.7063 8.38125 20.1188C7.79375 19.5313 7.5 18.825 7.5 18V12C7.5 11.175 7.79375 10.4688 8.38125 9.88125C8.96875 9.29375 9.675 9 10.5 9H19.5C20.325 9 21.0313 9.29375 21.6188 9.88125C22.2063 10.4688 22.5 11.175 22.5 12V18C22.5 18.825 22.2063 19.5313 21.6188 20.1188C21.0313 20.7063 20.325 21 19.5 21H10.5ZM10.5 12H19.5C19.775 12 20.0375 12.0312 20.2875 12.0938C20.5375 12.1562 20.775 12.2562 21 12.3937V12C21 11.5875 20.8533 11.2345 20.5597 10.941C20.2662 10.6475 19.913 10.5005 19.5 10.5H10.5C10.0875 10.5 9.7345 10.647 9.441 10.941C9.1475 11.235 9.0005 11.588 9 12V12.3937C9.225 12.2562 9.4625 12.1562 9.7125 12.0938C9.9625 12.0312 10.225 12 10.5 12ZM9.1125 14.4375L17.4562 16.4625C17.5687 16.4875 17.6813 16.4875 17.7938 16.4625C17.9062 16.4375 18.0125 16.3875 18.1125 16.3125L20.7188 14.1375C20.5813 13.95 20.4062 13.797 20.1937 13.6785C19.9812 13.56 19.75 13.5005 19.5 13.5H10.5C10.175 13.5 9.89075 13.5845 9.64725 13.7535C9.40375 13.9225 9.2255 14.1505 9.1125 14.4375Z"
+                                fill="white" />
+                        </svg>
+                        <h1 class="dm-sans-medium text-[18px] text-[#222222] lg:text-2xl font-semibold mt-2 ml-4">
+                            N{{ $balance }}</h1>
+                        <p class="ml-4 dm-sans-medium text-[12px] text-[#22222299]">Total Credit</p>
+                    </div>
+
+                    <div class="bg-[#FFF4DE] w-full h-[138px] shadow-lg mt-7 rounded-xl">
+                        <svg width="31" height="30" viewBox="0 0 31 30" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" class="ml-4 mt-4">
+                            <circle cx="15.25" cy="15" r="15" fill="#FF947A" />
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M12.3135 8.4375C12.5235 7.995 12.9765 7.6875 13.5 7.6875H16.5C17.0235 7.6875 17.4757 7.995 17.6865 8.4375C18.1987 8.442 18.5985 8.46525 18.9555 8.60475C19.3816 8.77145 19.7523 9.05476 20.025 9.42225C20.3002 9.79275 20.43 10.2675 20.607 10.9207L21.1635 12.9622L21.3735 13.593L21.3915 13.6155C22.0672 14.481 21.7455 15.768 21.102 18.3412C20.6925 19.9785 20.4885 20.7968 19.878 21.2738C19.2675 21.75 18.4237 21.75 16.7362 21.75H13.2637C11.5762 21.75 10.7325 21.75 10.122 21.2738C9.51146 20.7968 9.30671 19.9785 8.89796 18.3412C8.25446 15.768 7.93271 14.481 8.60846 13.6155L8.62646 13.593L8.83646 12.9622L9.39296 10.9207C9.57071 10.2675 9.70046 9.792 9.97496 9.4215C10.2478 9.05429 10.6184 8.77125 11.0445 8.60475C11.4015 8.46525 11.8005 8.44125 12.3135 8.4375ZM12.315 9.56475C11.8185 9.57 11.619 9.58875 11.454 9.65325C11.2244 9.74301 11.0248 9.89558 10.878 10.0935C10.746 10.2713 10.668 10.5195 10.4505 11.3197L10.023 12.8865C10.788 12.75 11.8335 12.75 13.263 12.75H16.7362C18.1665 12.75 19.2112 12.75 19.9762 12.885L19.5495 11.3183C19.332 10.518 19.254 10.2697 19.122 10.092C18.9751 9.89408 18.7755 9.74151 18.546 9.65175C18.381 9.58725 18.1815 9.5685 17.685 9.56325C17.5785 9.78739 17.4106 9.97674 17.2009 10.1094C16.9911 10.242 16.7481 10.3124 16.5 10.3125H13.5C13.2519 10.3125 13.0089 10.2421 12.7992 10.1097C12.5895 9.9772 12.4216 9.78874 12.315 9.56475Z"
+                                fill="white" />
+                        </svg>
+                        <h1 class="dm-sans-medium text-[18px] text-[#222222] lg:text-2xl font-semibold mt-2 ml-4">
+                            {{ $orders }}
+                        </h1>
+                        <p class="ml-4 dm-sans-medium text-[12px] text-[#22222299]">Total Orders</p>
+                    </div>
+
+                    <div class="bg-[#DCFCE7] w-full h-[138px] shadow-lg mt-7 rounded-xl">
+                        <svg width="31" height="30" viewBox="0 0 31 30" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" class="ml-4 mt-4">
+                            <circle cx="15.5" cy="15" r="15" fill="#3CD856" />
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M15.0144 8.25C13.3205 8.25 11.7774 8.8095 10.8643 9.26663C10.7818 9.30788 10.7049 9.34837 10.6333 9.38737C10.4915 9.46463 10.3708 9.53663 10.2748 9.6L11.3135 11.1293L11.8025 11.3239C13.7135 12.288 16.2763 12.288 18.1877 11.3239L18.7427 11.0359L19.7248 9.6C19.5214 9.46727 19.3098 9.34741 19.0914 9.24112C18.1828 8.78887 16.6764 8.25 15.0148 8.25M12.599 9.981C12.2312 9.91217 11.8679 9.821 11.5112 9.708C12.3665 9.32812 13.6412 8.925 15.0148 8.925C15.9662 8.925 16.8658 9.1185 17.6098 9.36375C16.7379 9.48638 15.8075 9.6945 14.921 9.95062C14.2235 10.1524 13.4083 10.1306 12.599 9.981ZM18.584 11.88L18.4918 11.9265C16.3895 12.987 13.601 12.987 11.4988 11.9265L11.4114 11.8822C8.25278 15.3476 5.84153 21.7489 15.0144 21.7489C24.1873 21.7489 21.7175 15.2288 18.584 11.88ZM14.6248 15C14.4259 15 14.2351 15.079 14.0944 15.2197C13.9538 15.3603 13.8748 15.5511 13.8748 15.75C13.8748 15.9489 13.9538 16.1397 14.0944 16.2803C14.2351 16.421 14.4259 16.5 14.6248 16.5V15ZM15.3748 14.25V13.875H14.6248V14.25C14.227 14.25 13.8454 14.408 13.5641 14.6893C13.2828 14.9706 13.1248 15.3522 13.1248 15.75C13.1248 16.1478 13.2828 16.5294 13.5641 16.8107C13.8454 17.092 14.227 17.25 14.6248 17.25V18.75C14.2985 18.75 14.0207 18.5419 13.9172 18.2501C13.9018 18.2024 13.877 18.1582 13.8443 18.1202C13.8116 18.0822 13.7716 18.0512 13.7266 18.0289C13.6817 18.0067 13.6328 17.9937 13.5827 17.9906C13.5327 17.9876 13.4825 17.9947 13.4352 18.0114C13.388 18.0281 13.3445 18.0541 13.3075 18.0879C13.2704 18.1217 13.2405 18.1626 13.2196 18.2081C13.1986 18.2536 13.187 18.3029 13.1854 18.353C13.1838 18.4032 13.1922 18.4531 13.2103 18.4999C13.3137 18.7924 13.5053 19.0456 13.7586 19.2247C14.0119 19.4038 14.3145 19.5 14.6248 19.5V19.875H15.3748V19.5C15.7726 19.5 16.1541 19.342 16.4354 19.0607C16.7167 18.7794 16.8748 18.3978 16.8748 18C16.8748 17.6022 16.7167 17.2206 16.4354 16.9393C16.1541 16.658 15.7726 16.5 15.3748 16.5V15C15.701 15 15.9789 15.2081 16.0824 15.4999C16.0978 15.5476 16.1225 15.5918 16.1553 15.6298C16.188 15.6678 16.228 15.6988 16.2729 15.7211C16.3178 15.7433 16.3668 15.7563 16.4168 15.7594C16.4669 15.7624 16.517 15.7553 16.5643 15.7386C16.6116 15.7219 16.655 15.6959 16.6921 15.6621C16.7291 15.6283 16.759 15.5874 16.78 15.5419C16.801 15.4964 16.8126 15.4471 16.8142 15.397C16.8158 15.3468 16.8073 15.2969 16.7893 15.2501C16.6858 14.9576 16.4943 14.7044 16.241 14.5253C15.9876 14.3462 15.685 14.25 15.3748 14.25ZM15.3748 17.25V18.75C15.5737 18.75 15.7645 18.671 15.9051 18.5303C16.0458 18.3897 16.1248 18.1989 16.1248 18C16.1248 17.8011 16.0458 17.6103 15.9051 17.4697C15.7645 17.329 15.5737 17.25 15.3748 17.25Z"
+                                fill="white" />
+                        </svg>
+                        <h1 class="dm-sans-medium text-[18px] text-[#222222] lg:text-2xl font-semibold mt-2 ml-4">
+                            N{{ $amount_spent }}</h1>
+                        <p class="ml-4 dm-sans-medium text-[12px] text-[#22222299]">Total Debit</p>
+                    </div>
+
+                    <div class="bg-[#44B0FF33] w-full h-[138px] shadow-lg mt-7 rounded-xl mb-6">
+                        <svg width="31" height="30" viewBox="0 0 31 30" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" class="ml-4 mt-4">
+                            <circle cx="15.75" cy="15" r="15" fill="#44B0FF" />
+                            <g clip-path="url(#clip0_38_1163)">
+                                <path
+                                    d="M21.5397 11.957C21.211 11.1726 20.7329 10.4597 20.132 9.85791C19.5328 9.25508 18.8211 8.7758 18.0372 8.44726C17.2342 8.10907 16.3714 7.93572 15.5001 7.9375H15.4708C14.5846 7.94189 13.7277 8.11767 12.9205 8.46338C12.1434 8.79528 11.4384 9.27542 10.8449 9.87695C10.2497 10.4774 9.77709 11.1878 9.45325 11.9687C9.1171 12.7808 8.94677 13.6519 8.95228 14.5308C8.95667 15.5474 9.19984 16.5566 9.65394 17.459V19.6855C9.65394 20.0576 9.9557 20.3594 10.3263 20.3594H12.5499C13.4565 20.8168 14.4569 21.0575 15.4723 21.0625H15.5031C16.379 21.0625 17.2272 20.8926 18.027 20.5601C18.8069 20.2354 19.5159 19.7617 20.1144 19.1655C20.7179 18.5664 21.1925 17.8662 21.525 17.0854C21.8693 16.2769 22.0451 15.417 22.0494 14.5293C22.0524 13.6372 21.8795 12.7715 21.5397 11.957ZM12.5763 15.2031C12.1896 15.2031 11.8746 14.8882 11.8746 14.5C11.8746 14.1118 12.1896 13.7969 12.5763 13.7969C12.963 13.7969 13.278 14.1118 13.278 14.5C13.278 14.8882 12.9645 15.2031 12.5763 15.2031ZM15.5001 15.2031C15.1134 15.2031 14.7985 14.8882 14.7985 14.5C14.7985 14.1118 15.1134 13.7969 15.5001 13.7969C15.8868 13.7969 16.2018 14.1118 16.2018 14.5C16.2018 14.8882 15.8868 15.2031 15.5001 15.2031ZM18.424 15.2031C18.0372 15.2031 17.7223 14.8882 17.7223 14.5C17.7223 14.1118 18.0372 13.7969 18.424 13.7969C18.8107 13.7969 19.1256 14.1118 19.1256 14.5C19.1256 14.8882 18.8107 15.2031 18.424 15.2031Z"
+                                    fill="white" />
+                            </g>
                             <defs>
-                                <pattern id="pattern0_563_447" patternContentUnits="objectBoundingBox" width="1"
-                                    height="1">
-                                    <use xlink:href="#image0_563_447" transform="scale(0.0104167)" />
-                                </pattern>
-                                <image id="image0_563_447" width="96" height="96"
-                                    xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAAEeUlEQVR4nO2dS4gcZRDHP42PqBfRHIMi3nziCxQS9aIEDOilq1oTFA8GRTDiReLBQchO1WYT1qghRCI+8CBevYm5qAdPPg4KoqIRgyDRTKZqdkk0afkmGxlnN9ndmZ6ub6brB99tl63+/7vqe2x3dQiO4ziO4ziO4ziO4ziLKA5su1in4XZleDKOuWZ2T/FhtmbxTzqlEQXWJj4ojG8pw1/KWPQOIfxdGJ4vGvddVN5frTlFo3Fhm7MNSrA3Ctwv+lJDCD4q9mSXWcc+1gjnNwoDC8GRlYi+yASGt62vYezoTOd3CsGMMB4eRPT+0Sa41/qakkd25bcIw5QS/FiG6H2l6D3r60uS+ZnsOiV8UQm+K1v0vjL0k/W1JkNrF16vhC8pwTejFL0vA06GOtPhLeuFcLsyfi6Ep6sSvneEutHe/ei6DuE2S9FrZ0BrT3aVEjwe19/C+Le16LUw4Njsw1f+JzrBSWuha2OAULZ14U4/YS1uLQ3QBEQdawOKma1XzM08dm2Hsju0mW+SadginD8nDK8o4T5l+EAZDp3r960FTdqAeAAlnD8gjC/0ihnX3sL4mzDMDxu4JiBqcgZ019uM+5WxNerANQFRkzJAKH9WGaWqwDUBUZMwIJ6TK8OrVQeuCYiahAHK0LAIXBMQ1dwAIbxfGE65AWhkAMMXVneO1j0D4t1vGbjW3YBRTrzqBiyPMHzpBqBlBuAfbgAazgEjXv2ozwHLZoDp5KUJTKyrGfH5olIzwA3AVRoQKwa8UTSeWOsGsGE2EHxS7N10qWcAW5qA+9wAtpwP4JRwdrPPAWxail53A9jQAMZv3QA2LEOEc24AWxoA6gawl6Bl75QwITvhJcZrngFsuAydgpvcAB7TJaifBeEw4n9cNLJLhjbAj6Nx1WUn1v1SzoEWMsD/IcMrN6A9ld0QykQIv6qiXoZz3wA29bvk6xgYJZx1A9DOAH8sBW0zIBJfgPMShHYGtKdxoxD+43MA2hgQUcKX3QC0M6AowgWxsYWvgtDGgLN0mtnTStj2ZSjaGBCZ4+yaeM6hDMd9H4DVG3CWorH58jPvDnTfF/ONGBu9pqoEt7oBWH0G/K93g2dAYWZARBg7ozhDEW9VsDKU4ftRHmId82YdyxpwqKpTxJa3q1mMEL5TlQG9HG8+crU3bOoaADstDOil1i3LujvkhAJvxaZ9DDuE8etaNO1Tzh9KyQCLtpWxF2mwYtjNWKi6cSvjD6VnAOO7wYo4GY6DAUu2Lib4pQwDYtPvYMkwm7Ew7s27CQ5aX8NQm7GQCGPdvn6YzVhI9AMO3ZZsBAeV8M8lhD/SZnwmmQ84DLMZC4kTRVbKb+s2HSTM4udMYraElBh0MyaEp61jnwiUs6cGzICj1rFPBJ0m3DWQAQSfWsc+EcSaKAw/D1CCtlvHPjGc+c7WKsRnPJzEEm5SiM8PKeH7KxMf5jsMd1vHPJlfnSOcPd+RsDD86uJXcEAnhG/Gg6+FPtJHlfGzWPPjIy3BcRzHcRzHcRzHcZxQL/4FTO+Is5sl4I4AAAAASUVORK5CYII=" />
+                                <clipPath id="clip0_38_1163">
+                                    <rect width="15" height="15" fill="white" transform="translate(8 7)" />
+                                </clipPath>
                             </defs>
                         </svg>
+                        <h1 class="dm-sans-medium text-[18px] text-[#222222] lg:text-2xl font-semibold mt-2 ml-4">
+                            {{ $received_codes }}
+                        </h1>
+                        <p class="ml-4 dm-sans-medium text-[15px] text-[#22222299]">Received Codes</p>
                     </div>
-                    <h3 class="font-semibold montserrat-bold text-[20px]">Active Campaigns</h3>
-                    <h2 class="font-semibold montserrat-bold text-[20px]">{{ $campaigns }}</h2>
-                </div>
-
-                <div class="flex-col flex rounded-lg px-6 py-4 max-w-[400px] w-full border border-[#6683A5] gap-4">
-                    <div>
-                        <svg width="44" height="44" viewBox="0 0 44 44" fill="none"
-                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                            <rect width="44" height="44" fill="url(#pattern0_563_462)" />
-                            <defs>
-                                <pattern id="pattern0_563_462" patternContentUnits="objectBoundingBox" width="1"
-                                    height="1">
-                                    <use xlink:href="#image0_563_462" transform="scale(0.0104167)" />
-                                </pattern>
-                                <image id="image0_563_462" width="96" height="96"
-                                    xlink:href="data:image/png;base64,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" />
-                            </defs>
-                        </svg>
-                    </div>
-                    <h3 class="font-semibold montserrat-bold text-[20px]">Account Balance</h3>
-                    <h2 class="font-semibold montserrat-bold text-[20px]">₦{{ $balance }}</h2>
-                </div>
-
-                <div class="flex-col flex rounded-lg px-6 py-4 max-w-[400px] w-full border border-[#6683A5] gap-4">
-                    <div>
-                        <svg width="44" height="44" viewBox="0 0 44 44" fill="none"
-                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                            <rect width="44" height="44" fill="url(#pattern0_563_452)" />
-                            <defs>
-                                <pattern id="pattern0_563_452" patternContentUnits="objectBoundingBox" width="1"
-                                    height="1">
-                                    <use xlink:href="#image0_563_452" transform="scale(0.0104167)" />
-                                </pattern>
-                                <image id="image0_563_452" width="96" height="96"
-                                    xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAAEBklEQVR4nO2cS4hcVRCGT0QjPtCFoPjc6doHLjUrIZgs3NyqK5ONGrJKRgj4QIQGM+mqTuJC4nOlS0X3uhTicxXdZBVXKhqI0Z6qnqCgJ9weQXHsdI/ec+ucvvXBD8MwcM5f/32dqXNvCI7jOI7jOI7jOI7jOE5viYO91yrha8r4izLGf0oYfleGH5XwY2V4djx87CbrOS8VQvjmvxV+loRAhfFwHAyusJ578TRFFMKN7QTwl+DdONh1pbWHHgeAsbl0WXvo3SVo6z2ifsTaQ9HEl6trlOCkEv78H0P4xNrDUhPfOnDVZAgPNoWeFcIGV3dZz3PpOT9YuUEYv5txQ37Cen69QBlP/J/7hfZEQvCtMBxt/SlRhojW5rQgCcFaqwGMh3iPtSktSELwfevrBmUUa2Najs6HthGCTzMwFgvRqdYDUIZXMzAWixDByQQB4FPmxrgQUfVk6wFMqHrA3BgXIqrvaz2A+Mruq4XgN3NznLeaGjW1CilQgq+tDWrmEsavQiqE8B1rg5q5hOHtlAE8bW1QM5dwvZosgPVRtcvaoGaudYKH0/5nlPAPa5OaqZraXODqxpASYfjG2qjmKoKzITXK+IG5Uc5UBO+nD4DgRXOjnKkIX0gfANd7zI1yphrCo8kDmIzq28yNcqZaW7k1dMF0y6K1Wc5MBOdCVwjhR+aGOS8Jw4fdBcDA1oY1MwnhsLsAvEkft54BFXQWgDfpcUsA49Hjd3cWwLRJT7hufdprPpLOt+1fbstiD3Wq0+JvBuBNek3ZhJ8fgDfpNWUTfm4AI7g/g1M/Lm0Tfh5xUO0Uxl/NzfMSN+Hn4U16TNuEn4c36TFtE36BAHrfpJeUTfh5NA1o62uwGmt9hA+ZBdD3Jr100YSfR6+b9NRBE34evW7SUwdN+AUCeL6/AeBz1vXv94r4WHWvdf1DjGHH7PeIl/uV1BjDjpADSvhM7wJgPBxy4dygur5POyWE8Id4fN91ISd0WO/uw5pAGo8j3BtypNkZsPQBMB4JOSMELy1v8eFYKAEhrJThgnXBtDXBeEJ4IJTExhG8UxjfEIaLBR/xF5Xh9Qmv3BFKRY7WtyjBfiV8TwnOKOFP1oWdqWZum3Ns5rpfju+72bp+juM4jpPm2xNcrwrDF9PPIk8/jTz9+VCKbR5dj5c1k7Xq9mY7x8zHP8LTzd+UOl7WxOmROLsYfy9KG0dm1+Nlj3C9uvhCCA+WNl72COGXCxeE8PPSxsse3d7XF6W08bJHt1UQGJc2XvaIX4KsA4BDnd6EOx4ve+L04394eqHHwkG1s7TximDSLIwuU5QkC7EOxyuCuPmGzcHm0e/PG6UI42fN71IciV2P5ziO4ziO4ziO4ziO44TecgkTf9qm/MCf+wAAAABJRU5ErkJggg==" />
-                            </defs>
-                        </svg>
-
-                    </div>
-                    <h3 class="font-semibold montserrat-bold text-[20px]">Total Orders</h3>
-                    <h2 class="font-semibold montserrat-bold text-[20px]">{{ $orders }}</h2>
-                </div>
-
-                <div class="flex-col flex rounded-lg px-6 py-4 max-w-[400px] w-full border border-[#6683A5] gap-4">
-                    <div>
-                        <i class="fa fa-user text-4xl text-[#F48857]" aria-hidden="true"></i>
-                    </div>
-                    <h3 class="font-semibold montserrat-bold text-[20px]">Total Users</h3>
-                    <h2 class="font-semibold montserrat-bold text-[20px]">{{ $users }}</h2>
                 </div>
             </div>
-        </main>
+        </div>
     </div>
 </x-admin-dashboard>

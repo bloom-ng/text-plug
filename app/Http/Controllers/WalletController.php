@@ -19,6 +19,15 @@ class WalletController extends Controller
         return view('wallet')->with(['transactions' => $transactions, 'balance' => $balance, 'amount_spent' => $amount_spent]);
     }
 
+    public function adminIndex()
+    {
+        $transactions = Wallet::with('users')->latest()->paginate(10);
+        $balance = Wallet::where('type', Wallet::CREDIT)->sum('amount');
+        $amount_spent = Wallet::where('type', Wallet::DEBIT)->sum('amount');
+        dd($transactions);
+        return view('admin.wallets.index', compact('transactions', 'balance', 'amount_spent'));
+    }
+
     public function fundWallet(Request $request)
     {
         $request->validate([

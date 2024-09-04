@@ -41,13 +41,34 @@ class OrderController extends Controller
             $can_purchase = true;
         }
 
-        // dd($smsPoolServices);
         return view('order')->with([
             'daisyServices' => json_decode($daisyServices['response'], true),
             'smsPoolServices' => json_decode($smsPoolServices, true),
             'smsPoolCountries' => json_decode($smsPoolCountries, true),
             'can_purchase' => $can_purchase,
             'orders' => $orders
+        ]);
+    }
+
+    public function adminIndex(Request $request)
+    {
+        $query = Order::query(); // Start with all orders
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('order_id', 'like', "%{$search}%")
+                    ->orWhere('service', 'like', "%{$search}%")
+                    ->orWhere('phone_number', 'like', "%{$search}%")
+                    ->orWhere('country', 'like', "%{$search}%");
+            });
+        }
+
+        $orders = $query->latest()->paginate(10);
+
+        return view('admin.orders.index')->with([
+            'orders' => $orders,
+            'search' => $request->input('search')
         ]);
     }
 
@@ -79,13 +100,14 @@ class OrderController extends Controller
             //DAISY IMPLEMENTATION
             $response = $this->daisyService->rentNumber($validated['service'], null, null);
 
-            if (str_contains($response, 'Error: ')) {
-                return redirect('/user/orders')->with('error', 'Failed to order number please try again.');
-            }
+            // if (str_contains($response, 'Error: ')) {
+            //     return redirect('/user/orders')->with('error', 'Failed to order number please try again.');
+            // }
 
             if ($response['status'] !== 'success') {
                 return redirect('/user/orders')->with('error', 'Failed to order number please try again later');
             }
+
             $cost = $response['cost'] ?? 1.0;
             $number = $response['number'];
             $orderId = $response['id'];

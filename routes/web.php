@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Password;
@@ -74,15 +75,19 @@ Route::get("/admin/login", function () {
 });
 Route::post("/admin/login", [AdminAuthController::class, 'login'])->name("admin.login");
 
-Route::group(['prefix' => 'admin', 'middleware' => App\Http\Middleware\Admin::class], function () {
-    Route::get('/dashboard', [DashboardController::class, 'adminIndex']);
+Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
+    Route::get('/dashboard', [DashboardController::class, 'adminIndex'])->name('admin.dashboard');
 
     Route::get('/create-admins', [AdminController::class, 'create']);
     Route::post('/create-admins', [AdminController::class, 'store'])->name("create.admin");
     Route::get('/delete-admin/{admin}', [AdminController::class, 'destroy']);
     Route::get('/admins', [AdminController::class, 'index'])->name('admins');
 
-    // Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users', [UserController::class, 'index']);
+
+    Route::get('/orders', [OrderController::class, 'adminIndex']);
+
+    Route::get('/wallet', [WalletController::class, 'adminIndex']);
 
     Route::get("/logout", [AdminAuthController::class, 'logout'])->name("logout");
 });

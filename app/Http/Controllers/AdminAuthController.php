@@ -18,11 +18,12 @@ class AdminAuthController extends Controller
 
         if (Auth::guard('admin')->attempt($credentials)) {
             $request->session()->regenerate();
-            dd("Got here");
-            return redirect('/admin/dashboard');
-        } else {
-            return redirect("/admin/login")->with('error', 'Invalid credentials. Please try again.');
+            return redirect()->route('admin.dashboard')->with('success', 'Logged in successfully');
         }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
 
     public function updatePassword(Request $request, Admin $admin)
