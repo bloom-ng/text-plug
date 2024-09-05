@@ -65,7 +65,7 @@
                         <td class="px-8 py-5 whitespace-nowrap">{{ date('d-m-Y', strtotime($order->created_at)) }}</td>
                         <td class="px-8 py-5">
                             <div
-                                class="{{ $order->status == 'active' ? 'bg-[#16C09861] text-[#008767] border-[#00B087]' : ($order->status == 'refunded' ? 'bg-[#FFCCCC] text-[#CC0000]' : 'text-blue-600 bg-blue-300') }} w-[90px] h-[30px] flex items-center justify-center border rounded-lg">
+                                class="{{ $order->status == 'done' ? 'bg-[#16C09861] text-[#008767] border-[#00B087]' : ($order->status == 'refunded' ? 'bg-[#FFCCCC] text-[#CC0000]' : 'text-blue-600 bg-blue-300') }} w-[90px] h-[30px] flex items-center justify-center border rounded-lg">
                                 {{ $order->status }}
                             </div>
                         </td>
@@ -257,6 +257,26 @@
             }).then(response => response.json()).then(data => {
                 numberPrice.innerHTML = data.price;
 
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#smsPoolService').select2({
+                placeholder: 'Search or select a service',
+                allowClear: true,
+                width: '100%'
+            });
+            $('#country_1').select2({
+                placeholder: 'Search or select a country',
+                allowClear: true,
+                width: '100%'
+            });
+            $('#service').select2({
+                placeholder: 'Search or select a service',
+                allowClear: true,
+                width: '100%'
             });
         });
     </script>

@@ -186,16 +186,10 @@
                         <p class="text-[16px] font-bold">Service</p>
                         <select id="smsPoolService" name="service"
                             class="dm-sans-regular text-[14px] h-[45px] text-[#7E7E7E] bg-[#F9FBFF] border border-[#D9D9D9D9] rounded-md">
-
+                            <option value="">Search or select a service</option>
                             @foreach ($smsPoolServices as $service)
                                 <option value="{{ $service['ID'] }}">{{ $service['name'] }}</option>
                             @endforeach
-
-                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                xmlns="http://www.w3.org/2000/svg",>
-                                <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="#3D3C42" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
                         </select>
                     </div>
 
@@ -221,7 +215,7 @@
                 <div id="service_2" class="hidden">
                     <div class="flex flex-col">
                         <p class="text-[16px] font-bold">Service</p>
-                        <select name="service"
+                        <select id="service" name="service"
                             class="dm-sans-regular text-[14px] h-[45px] text-[#7E7E7E] bg-[#F9FBFF] border border-[#D9D9D9D9] rounded-md">
                             <option value="">Select A Service</option>
 

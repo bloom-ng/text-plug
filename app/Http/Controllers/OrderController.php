@@ -31,7 +31,7 @@ class OrderController extends Controller
         $balance = User::where('id', Auth::user()->id)->first()->walletBalance();
         $rate = 1650;
 
-        $orders = Order::where('user_id', Auth::user()->id)->paginate(10);
+        $orders = Order::where('user_id', Auth::user()->id)->latest()->paginate(10);
 
         $can_purchase = false;
 
