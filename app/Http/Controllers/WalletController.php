@@ -11,21 +11,53 @@ use Illuminate\Support\Facades\Http;
 
 class WalletController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $transactions = Wallet::where('user_id', auth()->user()->id)->get();
+        $query = Wallet::where('user_id', auth()->user()->id);
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('amount', 'like', "%$search%")
+                    ->orWhere('type', 'like', "%$search%")
+                    ->orWhere('created_at', 'like', "%$search%");
+            });
+        }
+
+        $transactions = $query->latest()->paginate(10);
         $balance = User::where('id', Auth::user()->id)->first()->walletBalance();
         $amount_spent = User::where('id', Auth::user()->id)->first()->amountSpent();
-        return view('wallet')->with(['transactions' => $transactions, 'balance' => $balance, 'amount_spent' => $amount_spent]);
+
+        return view('wallet')->with([
+            'transactions' => $transactions,
+            'balance' => $balance,
+            'amount_spent' => $amount_spent,
+            'search' => $request->input('search')
+        ]);
     }
 
-    public function adminIndex()
+    public function adminIndex(Request $request)
     {
-        $transactions = Wallet::with('users')->latest()->paginate(10);
+        $query = Wallet::with('user')->where('type', Wallet::CREDIT);
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('amount', 'like', "%$search%")
+                    ->orWhereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'like', "%$search%")
+                            ->orWhere('email', 'like', "%$search%");
+                    })
+                    ->orWhere('created_at', 'like', "%$search%");
+            });
+        }
+
+        $transactions = $query->latest()->paginate(10);
         $balance = Wallet::where('type', Wallet::CREDIT)->sum('amount');
         $amount_spent = Wallet::where('type', Wallet::DEBIT)->sum('amount');
-        dd($transactions);
-        return view('admin.wallets.index', compact('transactions', 'balance', 'amount_spent'));
+
+        return view('admin.wallets.index', compact('transactions', 'balance', 'amount_spent'))
+            ->with('search', $request->input('search'));
     }
 
     public function fundWallet(Request $request)

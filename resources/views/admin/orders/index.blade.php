@@ -1,4 +1,4 @@
-<x-user-layout page="Orders" activePage="orders">
+<x-admin-dashboard page="Orders" activePage="orders">
     <div
         class="flex flex-col bg-white w-full 2xl:w-[7] lg:w-[90%] min-h-[600px] mb-4 mt-8 rounded-xl overflow-x-scroll overflow-y-scroll">
         <div class="flex flex-col md:flex-row">
@@ -6,9 +6,9 @@
                 History
             </h1>
 
-            <div class="flex flex-col md:flex-row">
-                <button class="flex relative ml-5 lg:ml-0 mt-[40px]">
-                    <input type="text" placeholder="Search"
+            <form action="/admin/orders" method="GET" class="flex flex-col md:flex-row">
+                <div class="flex relative ml-5 lg:ml-0 mt-[40px]">
+                    <input type="text" name="search" placeholder="Search" value="{{ request('search') }}"
                         class="bg-[#F9FBFF] text-[#22222280] dm-sans-regular text-[12px] rounded-lg w-[216px] h-[38px] pl-11 relative" />
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg" class="m-2 W-[24px] h-[24px] absolute">
@@ -18,14 +18,14 @@
                         <path d="M20.9999 21L16.6499 16.65" stroke="#7E7E7E" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round" />
                     </svg>
-                </button>
+                </div>
 
                 <div class="flex ml-5">
-                    <select
+                    <select name="sort" onchange="this.form.submit()"
                         class="dm-sans-regular text-[12px] text-[#7E7E7E] rounded-lg h-[38px] w-[154px] pl-[14px] mr-[50px] mt-[40px] bg-[#F9FBFF] hover:border-[#F9FBFF]">
-                        <option>Sort by : Newest</option>
-                        <option>Sort by : Oldest</option>
-                        <option>Sort by : Recent</option>
+                        <option value="newest">Sort by : Newest</option>
+                        <option value="oldest">Sort by : Oldest</option>
+                        <option value="recent">Sort by : Recent</option>
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                             xmlns="http://www.w3.org/2000/svg" ,>
                             <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="#3D3C42" stroke-width="1.5"
@@ -33,7 +33,7 @@
                         </svg>
                     </select>
                 </div>
-            </div>
+            </form>
         </div>
 
         <table class="min-w-full mt-8">
@@ -54,12 +54,12 @@
                 @foreach ($orders as $order)
                     <tr class="border-b border-gray-300 text-[#222222] dm-sans-medium text-[14px]">
                         <td class="px-8 py-5 whitespace-nowrap">{{ $order->order_id }}</td>
-                        <td class="px-8 py-5 whitespace-nowrap">{{ $order->service }}</td>
+                        <td class="px-8 py-5 whitespace-nowrap">{{ $order->service_name }}</td>
                         <td class="px-8 py-5 whitespace-nowrap">{{ $order->phone_number }}</td>
                         <td class="px-8 py-5 whitespace-nowrap">{{ date('d-m-Y', strtotime($order->created_at)) }}</td>
                         <td class="px-8 py-5">
                             <div
-                                class="{{ $order->status == 'active' ? 'bg-[#16C09861] text-[#008767] border-[#00B087]' : ($order->status == 'refunded' ? 'bg-[#FFCCCC] text-[#CC0000]' : 'text-blue-600 bg-blue-300') }} w-[90px] h-[30px] flex items-center justify-center border rounded-lg">
+                                class="{{ $order->status == 'done' ? 'bg-[#16C09861] text-[#008767]' : ($order->status == 'refunded' ? 'bg-[#FFCCCC] text-[#CC0000]' : 'text-blue-600 bg-blue-300') }} w-[90px] h-[30px] flex items-center justify-center border rounded-lg">
                                 {{ $order->status }}
                             </div>
                         </td>
@@ -88,15 +88,15 @@
             </div>
         </div>
     </div>
-    {{-- @include('modal.order-modal') --}}
+    @include('modal.admin-order-modal')
 
     <!-- Order modal SCRIPT -->
     <script>
         let orderModal = document.getElementById('Order');
-        let openBtn = document.getElementById('NewOrder');
-        let openBtnMobile = document.getElementById('NewOrderMobile');
-        let closeBtnX = document.getElementById('CloseX');
-        let closeBtnCancel = document.getElementById('Cancel');
+        // let openBtn = document.getElementById('NewOrder');
+        // let openBtnMobile = document.getElementById('NewOrderMobile');
+        // let closeBtnX = document.getElementById('CloseX');
+        // let closeBtnCancel = document.getElementById('Cancel');
 
         // Function to open the modal
         let openOrderModal = () => {
@@ -109,12 +109,12 @@
         };
 
         // Open modal when the 'Ordernow' button is clicked
-        openBtn.addEventListener('click', openOrderModal);
-        openBtnMobile.addEventListener('click', openOrderModal);
+        // openBtn.addEventListener('click', openOrderModal);
+        // openBtnMobile.addEventListener('click', openOrderModal);
 
         // Close modal when the 'CloseX' button or 'Cancel' button is clicked
-        closeBtnX.addEventListener('click', closeOrderModal);
-        closeBtnCancel.addEventListener('click', closeOrderModal);
+        // closeBtnX.addEventListener('click', closeOrderModal);
+        // closeBtnCancel.addEventListener('click', closeOrderModal);
 
         // Close modal when clicking outside of the modal content
         window.addEventListener('click', (event) => {
@@ -135,7 +135,7 @@
                 button.addEventListener('click', function() {
                     const orderId = this.getAttribute('data-order-id');
 
-                    fetch(`/user/orders/${orderId}`, {
+                    fetch(`/admin/orders/${orderId}`, {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -179,7 +179,7 @@
         });
     </script>
 
-    <script>
+    {{-- <script>
         //  onchange event for the select element
         const service = document.getElementById('smsPoolService');
         const country = document.getElementById('country_1');
@@ -247,5 +247,5 @@
 
             });
         });
-    </script>
-</x-user-layout>
+    </script> --}}
+</x-admin-dashboard>

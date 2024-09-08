@@ -1,4 +1,4 @@
-<x-user-layout page="Account" activePage="account">
+<x-admin-dashboard page="Account" activePage="account">
     <div class="w-full flex flex-col gap-14">
         <div class="bg-white lg:w-[725px] shadow-lg rounded-xl px-6 lg:px-10">
             <div class="flex flex-col">
@@ -7,7 +7,7 @@
                 <p class="dm-sans-medium text-[12px] text-[#22222299]">Change your account email
                     address</p>
 
-                <form action="/user/update-profile" method="POST" class="flex flex-col">
+                <form action="/admin/update-profile" method="POST" class="flex flex-col">
                     @csrf
                     <div class="flex flex-col">
                         <input name="name" type="text" value="{{ $user->name }}" placeholder="Name"
@@ -34,7 +34,7 @@
                 <p class="dm-sans-medium text-[12px] text-[#22222299]">Change your account password
                 </p>
 
-                <form action="/user/update-password" method="POST" class="flex flex-col">
+                <form action="/admin/update-password" method="POST" class="flex flex-col">
                     @csrf
                     <div class="flex flex-col">
                         <input name="password" type="text" placeholder="Current Password"
@@ -60,4 +60,4 @@
             </div>
         </div>
     </div>
-</x-user-layout>
+</x-admin-dashboard>

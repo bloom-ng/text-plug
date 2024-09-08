@@ -75,6 +75,24 @@
             }).showToast();
         </script>
     @endif
+    @if ($errors->any())
+        <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        @foreach ($errors->all() as $error)
+            <script>
+                Toastify({
+                    text: "{{ $error }}",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "red",
+                    stopOnFocus: true,
+                    ariaLive: "polite",
+                    onClick: function() {}
+                }).showToast();
+            </script>
+        @endforeach
+    @endif
 
     <!-- side bar -->
     <aside class="relative bg-[#ffffff] h-screen w-[20%] hidden lg:block">
@@ -203,7 +221,8 @@
             <div class="w-full flex flex-row justify-between">
                 <p class=" text-[#222222] plus-jakarta-sans-medium text-[30px] ml-4">{{ $page }}</p>
                 <div class="flex">
-                    <img src="/img/Rectangle 1393.jpg" alt="User" class="w-[45px] h-[45px]">
+                    <img src="https://ui-avatars.com/api/?color=fff&background=df5c0c&name={{ auth()->user()->name }}"
+                        alt="User" class="w-[45px] h-[45px] rounded-full">
                     <div class="ml-2">
                         <p class="text-[12px] text-[#222222] font-semibold">{{ $name }}</p>
                         <p class="text-[10.5px] text-[#22222280]">Account</p>

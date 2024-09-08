@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Config extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'key',
+        'value',
+    ];
+
+    const RATE = 1650;
 }

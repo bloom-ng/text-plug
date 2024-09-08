@@ -6,9 +6,9 @@
                 History
             </h1>
 
-            <div class="flex flex-col md:flex-row">
-                <button class="flex relative ml-5 lg:ml-0 mt-[40px]">
-                    <input type="text" placeholder="Search"
+            <form action="/admin/users" method="GET" class="flex flex-col md:flex-row">
+                <div class="flex relative ml-5 lg:ml-0 mt-[40px]">
+                    <input type="text" name="search" placeholder="Search" value="{{ request('search') }}"
                         class="bg-[#F9FBFF] text-[#22222280] dm-sans-regular text-[12px] rounded-lg w-[216px] h-[38px] pl-11 relative" />
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg" class="m-2 W-[24px] h-[24px] absolute">
@@ -18,14 +18,14 @@
                         <path d="M20.9999 21L16.6499 16.65" stroke="#7E7E7E" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round" />
                     </svg>
-                </button>
+                </div>
 
                 <div class="flex ml-5">
-                    <select
+                    <select name="sort" onchange="this.form.submit()"
                         class="dm-sans-regular text-[12px] text-[#7E7E7E] rounded-lg h-[38px] w-[154px] pl-[14px] mr-[50px] mt-[40px] bg-[#F9FBFF] hover:border-[#F9FBFF]">
-                        <option>Sort by : Newest</option>
-                        <option>Sort by : Oldest</option>
-                        <option>Sort by : Recent</option>
+                        <option value="newest">Sort by : Newest</option>
+                        <option value="oldest">Sort by : Oldest</option>
+                        <option value="recent">Sort by : Recent</option>
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                             xmlns="http://www.w3.org/2000/svg" ,>
                             <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="#3D3C42" stroke-width="1.5"
@@ -33,7 +33,7 @@
                         </svg>
                     </select>
                 </div>
-            </div>
+            </form>
         </div>
 
         <table class="min-w-full mt-8">
@@ -57,14 +57,12 @@
 
                         <td class="px-8 py-5 whitespace-nowrap">
                             <div class="flex flex-row space-x-2">
-                                <span class="manage-btn text-blue-500 hover:text-blue-700 font-bold cursor-pointer mr-2"
-                                    data-user-id="{{ $user->id }}">Manage</span>
-                                <span class="edit-btn text-green-500 hover:text-green-700 font-bold cursor-pointer mr-2"
-                                    data-user-id="{{ $user->id }}">Edit</span>
-                                <span class="delete-btn text-red-500 hover:text-red-700 font-bold cursor-pointer mr-2"
-                                    data-user-id="{{ $user->id }}">Delete</span>
-                                <span class="suspend-btn text-yellow-500 hover:text-yellow-700 font-bold cursor-pointer"
-                                    data-user-id="{{ $user->id }}">Suspend</span>
+                                {{-- <a href="/admin/edit-users/{{ $user->id }}"
+                                    class="text-blue-500 hover:text-blue-700 font-bold mr-2">Manage</a> --}}
+                                <a href="/admin/edit-users/{{ $user->id }}"
+                                    class="text-green-500 hover:text-green-700 font-bold mr-2">Edit</a>
+                                <a href="/admin/delete-users/{{ $user->id }}"
+                                    class="text-red-500 hover:text-red-700 font-bold mr-2">Delete</a>
                             </div>
                         </td>
                     </tr>

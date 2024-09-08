@@ -12,9 +12,9 @@
                 History
             </h1>
 
-            <div class="flex flex-col md:flex-row">
-                <button class="flex relative ml-5 lg:ml-0 mt-[40px]">
-                    <input type="text" placeholder="Search"
+            <form action="/user/orders" method="GET" class="flex flex-col md:flex-row">
+                <div class="flex relative ml-5 lg:ml-0 mt-[40px]">
+                    <input type="text" name="search" placeholder="Search" value="{{ request('search') }}"
                         class="bg-[#F9FBFF] text-[#22222280] dm-sans-regular text-[12px] rounded-lg w-[216px] h-[38px] pl-11 relative" />
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg" class="m-2 W-[24px] h-[24px] absolute">
@@ -24,14 +24,14 @@
                         <path d="M20.9999 21L16.6499 16.65" stroke="#7E7E7E" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round" />
                     </svg>
-                </button>
+                </div>
 
                 <div class="flex ml-5">
-                    <select
+                    <select name="sort" onchange="this.form.submit()"
                         class="dm-sans-regular text-[12px] text-[#7E7E7E] rounded-lg h-[38px] w-[154px] pl-[14px] mr-[50px] mt-[40px] bg-[#F9FBFF] hover:border-[#F9FBFF]">
-                        <option>Sort by : Newest</option>
-                        <option>Sort by : Oldest</option>
-                        <option>Sort by : Recent</option>
+                        <option value="newest">Sort by : Newest</option>
+                        <option value="oldest">Sort by : Oldest</option>
+                        <option value="recent">Sort by : Recent</option>
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                             xmlns="http://www.w3.org/2000/svg" ,>
                             <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="#3D3C42" stroke-width="1.5"
@@ -39,7 +39,7 @@
                         </svg>
                     </select>
                 </div>
-            </div>
+            </form>
         </div>
 
         <table class="min-w-full mt-8">
@@ -60,7 +60,7 @@
                 @foreach ($orders as $order)
                     <tr class="border-b border-gray-300 text-[#222222] dm-sans-medium text-[14px]">
                         <td class="px-8 py-5 whitespace-nowrap">{{ $order->order_id }}</td>
-                        <td class="px-8 py-5 whitespace-nowrap">{{ $order->service }}</td>
+                        <td class="px-8 py-5 whitespace-nowrap">{{ $order->service_name }}</td>
                         <td class="px-8 py-5 whitespace-nowrap">{{ $order->phone_number }}</td>
                         <td class="px-8 py-5 whitespace-nowrap">{{ date('d-m-Y', strtotime($order->created_at)) }}</td>
                         <td class="px-8 py-5">
@@ -198,67 +198,43 @@
         const numberPrice = document.getElementById('numberPrice');
         const availableNumbers = document.getElementById('availableNumbers');
 
-        country.addEventListener('change', function() {
-            fetch('/user/order/check-price', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    service: service.value,
-                    country: country.value
-                })
-            }).then(response => response.json()).then(data => {
-                numberPrice.innerHTML = data.price;
+        let fetchTimeout;
 
-            });
+        function fetchPriceAndAvailability() {
+            clearTimeout(fetchTimeout);
+            fetchTimeout = setTimeout(() => {
+                fetch('/user/order/check-price', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        service: service.value,
+                        country: country.value
+                    })
+                }).then(response => response.json()).then(data => {
+                    numberPrice.innerHTML = data.price;
+                });
 
-            fetch('/user/order/check-available-number', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token if needed
-                },
-                body: JSON.stringify({
-                    service: service.value,
-                    country: country.value
-                })
-            }).then(response => response.json()).then(data => {
-                availableNumbers.innerHTML = data.availableNumbers;
-            });
-        });
+                fetch('/user/order/check-available-number', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        service: service.value,
+                        country: country.value
+                    })
+                }).then(response => response.json()).then(data => {
+                    availableNumbers.innerHTML = data.availableNumbers;
+                });
+            }, 300); // 300ms delay
+        }
 
-        service.addEventListener('change', function() {
-            fetch('/user/order/check-available-number', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token if needed
-                },
-                body: JSON.stringify({
-                    service: service.value,
-                    country: country.value
-                })
-            }).then(response => response.json()).then(data => {
-                availableNumbers.innerHTML = data.availableNumbers;
-            });
-
-            fetch('/user/order/check-price', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    service: service.value,
-                    country: country.value
-                })
-            }).then(response => response.json()).then(data => {
-                numberPrice.innerHTML = data.price;
-
-            });
-        });
+        country.addEventListener('change', fetchPriceAndAvailability);
+        service.addEventListener('change', fetchPriceAndAvailability);
     </script>
 
     <script>
@@ -267,12 +243,18 @@
                 placeholder: 'Search or select a service',
                 allowClear: true,
                 width: '100%'
+            }).on('change', function() {
+                fetchPriceAndAvailability();
             });
+
             $('#country_1').select2({
                 placeholder: 'Search or select a country',
                 allowClear: true,
                 width: '100%'
+            }).on('change', function() {
+                fetchPriceAndAvailability();
             });
+
             $('#service').select2({
                 placeholder: 'Search or select a service',
                 allowClear: true,

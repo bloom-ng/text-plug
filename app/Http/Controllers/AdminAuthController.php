@@ -6,6 +6,7 @@ use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AdminAuthController extends Controller
 {
@@ -26,21 +27,44 @@ class AdminAuthController extends Controller
         ])->onlyInput('email');
     }
 
-    public function updatePassword(Request $request, Admin $admin)
+    public function updateProfile(Request $request)
     {
-        $request->validate([
-            'current_password' => 'required|string',
-            'new_password' => 'required|string|min:8',
-            'confirm_password' => 'required|string|same:new_password',
-        ]);
-
-        if (!Hash::check($request->input('current_password'), $admin->password)) {
-            return back()->with('error', 'Current password is incorrect');
+        // Validate and update the user's profile information
+        $user = auth()->user();
+        if ($request->has('name')) {
+            $user->name = $request->input('name');
         }
 
-        $admin->update(['password' => Hash::make($request->input('new_password'))]);
+        if ($request->has('email')) {
+            $user->email = $request->input('email');
+        }
 
-        return redirect()->route('admins.index')->with('success', 'Password updated successfully!');
+        $user->update();
+
+        return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        // Validate and update the user's password
+        $validator = $request->validate([
+            'password' => 'required|string|min:8',
+            'new_password' => 'required|string|min:8',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput()->with('error', "An error occured try again");
+        }
+
+        // Check if the current password is correct
+        if (!Hash::check($request->input('password'), auth()->user()->password)) {
+            return redirect()->back()->with('error', 'Password Does not match our record');
+        }
+
+        // Update the password
+        auth()->user()->update(['password' => bcrypt($request->input('new_password'))]);
+
+        return redirect()->back()->with('success', 'Password updated successfully!');
     }
 
     public function logout(Request $request)

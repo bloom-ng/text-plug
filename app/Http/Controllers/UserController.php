@@ -7,10 +7,34 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(10);
-        return view('admin.users.index', compact('users'));
+        $query = User::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%");
+            });
+        }
+
+        if ($request->has('sort')) {
+            $sort = $request->input('sort');
+            if ($sort === 'oldest') {
+                $query->oldest();
+            } elseif ($sort === 'newest') {
+                $query->latest();
+            }
+        } else {
+            $query->latest();
+        }
+
+        $users = $query->paginate(10);
+
+        return view('admin.users.index', compact('users'))
+            ->with('search', $request->input('search'))
+            ->with('sort', $request->input('sort'));
     }
 
     public function edit(User $user)

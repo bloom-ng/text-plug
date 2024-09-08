@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Config;
 use App\Models\Order;
 use App\Models\SmsCode;
 use App\Models\User;
@@ -22,53 +23,153 @@ class OrderController extends Controller
         $this->smsPoolService = new SmsPoolService();
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $smsPoolServices = $this->smsPoolService->getServices();
         $daisyServices = $this->daisyService->listServicesWithPrices();
         $smsPoolCountries = $this->smsPoolService->getCountries();
 
         $balance = User::where('id', Auth::user()->id)->first()->walletBalance();
-        $rate = 1650;
+        $rate = Config::where('key', 'rate')->value('value') ??  Config::RATE;
+        $can_purchase = $balance >= $rate;
 
-        $orders = Order::where('user_id', Auth::user()->id)->latest()->paginate(10);
+        $query = Order::where('user_id', Auth::user()->id);
 
-        $can_purchase = false;
+        // Fetch all orders for the user
+        $orders = $query->get();
 
-        if ($balance < $rate * 1) {
-            $can_purchase = false;
+        // Prepare service name mappings
+        $decodedSmsPoolServices = json_decode($smsPoolServices, true);
+        $decodedDaisyServices = json_decode($daisyServices['response'], true);
+
+        // Map service IDs to service names and filter if search is present
+        $filteredOrders = $orders->filter(function ($order) use ($request, $decodedSmsPoolServices, $decodedDaisyServices) {
+            if ($order->server === 'server_1') {
+                $serviceName = collect($decodedSmsPoolServices)->firstWhere('ID', $order->service)['name'] ?? $order->service;
+            } else {
+                $serviceName = $order->service;
+                foreach ($decodedDaisyServices as $key => $serviceDatas) {
+                    foreach ($serviceDatas as $serviceKey => $serviceData) {
+                        if ($key == $order->service) {
+                            $serviceName = $serviceData['name'];
+                            break 2;
+                        }
+                    }
+                }
+            }
+            $order->service_name = $serviceName;
+
+            if ($request->has('search')) {
+                $search = strtolower($request->input('search'));
+                return stripos($order->order_id, $search) !== false
+                    || stripos($order->service, $search) !== false
+                    || stripos($order->phone_number, $search) !== false
+                    || stripos($serviceName, $search) !== false;
+            }
+            return true;
+        });
+
+        // Sort the filtered orders
+        if ($request->has('sort')) {
+            $filteredOrders = $request->input('sort') == 'oldest'
+                ? $filteredOrders->sortBy('created_at')
+                : $filteredOrders->sortByDesc('created_at');
         } else {
-            $can_purchase = true;
+            $filteredOrders = $filteredOrders->sortByDesc('created_at');
         }
 
+        // Paginate the results manually
+        $page = $request->input('page', 1);
+        $perPage = 10;
+        $paginatedOrders = new \Illuminate\Pagination\LengthAwarePaginator(
+            $filteredOrders->forPage($page, $perPage),
+            $filteredOrders->count(),
+            $perPage,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
         return view('order')->with([
-            'daisyServices' => json_decode($daisyServices['response'], true),
-            'smsPoolServices' => json_decode($smsPoolServices, true),
+            'daisyServices' => $decodedDaisyServices,
+            'smsPoolServices' => $decodedSmsPoolServices,
             'smsPoolCountries' => json_decode($smsPoolCountries, true),
             'can_purchase' => $can_purchase,
-            'orders' => $orders
+            'orders' => $paginatedOrders
         ]);
     }
 
     public function adminIndex(Request $request)
     {
-        $query = Order::query(); // Start with all orders
+        $smsPoolServices = $this->smsPoolService->getServices();
+        $daisyServices = $this->daisyService->listServicesWithPrices();
+        $smsPoolCountries = $this->smsPoolService->getCountries();
 
-        if ($request->has('search')) {
-            $search = $request->input('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('order_id', 'like', "%{$search}%")
-                    ->orWhere('service', 'like', "%{$search}%")
-                    ->orWhere('phone_number', 'like', "%{$search}%")
-                    ->orWhere('country', 'like', "%{$search}%");
-            });
+        $balance = User::where('id', Auth::user()->id)->first()->walletBalance();
+        $rate = Config::where('key', 'rate')->value('value') ??  Config::RATE;
+        $can_purchase = $balance >= $rate;
+
+        $query = Order::where('user_id', Auth::user()->id);
+
+        // Fetch all orders for the user
+        $orders = $query->get();
+
+        // Prepare service name mappings
+        $decodedSmsPoolServices = json_decode($smsPoolServices, true);
+        $decodedDaisyServices = json_decode($daisyServices['response'], true);
+
+        // Map service IDs to service names and filter if search is present
+        $filteredOrders = $orders->filter(function ($order) use ($request, $decodedSmsPoolServices, $decodedDaisyServices) {
+            if ($order->server === 'server_1') {
+                $serviceName = collect($decodedSmsPoolServices)->firstWhere('ID', $order->service)['name'] ?? $order->service;
+            } else {
+                $serviceName = $order->service;
+                foreach ($decodedDaisyServices as $key => $serviceDatas) {
+                    foreach ($serviceDatas as $serviceKey => $serviceData) {
+                        if ($key == $order->service) {
+                            $serviceName = $serviceData['name'];
+                            break 2;
+                        }
+                    }
+                }
+            }
+            $order->service_name = $serviceName;
+
+            if ($request->has('search')) {
+                $search = strtolower($request->input('search'));
+                return stripos($order->order_id, $search) !== false
+                    || stripos($order->service, $search) !== false
+                    || stripos($order->phone_number, $search) !== false
+                    || stripos($serviceName, $search) !== false;
+            }
+            return true;
+        });
+
+        // Sort the filtered orders
+        if ($request->has('sort')) {
+            $filteredOrders = $request->input('sort') == 'oldest'
+                ? $filteredOrders->sortBy('created_at')
+                : $filteredOrders->sortByDesc('created_at');
+        } else {
+            $filteredOrders = $filteredOrders->sortByDesc('created_at');
         }
 
-        $orders = $query->latest()->paginate(10);
+        // Paginate the results manually
+        $page = $request->input('page', 1);
+        $perPage = 10;
+        $paginatedOrders = new \Illuminate\Pagination\LengthAwarePaginator(
+            $filteredOrders->forPage($page, $perPage),
+            $filteredOrders->count(),
+            $perPage,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
 
         return view('admin.orders.index')->with([
-            'orders' => $orders,
-            'search' => $request->input('search')
+            'daisyServices' => $decodedDaisyServices,
+            'smsPoolServices' => $decodedSmsPoolServices,
+            'smsPoolCountries' => json_decode($smsPoolCountries, true),
+            'can_purchase' => $can_purchase,
+            'orders' => $paginatedOrders
         ]);
     }
 
@@ -135,6 +236,8 @@ class OrderController extends Controller
 
         $smsExist = SmsCode::where('order_id', $order->id)->first();
 
+        $rate = Config::where('key', 'rate')->value('value') ??  Config::RATE;
+
         //If sms exist then return
         if ($smsExist) {
             return response()->json([
@@ -166,7 +269,7 @@ class OrderController extends Controller
                 $sms->save();
 
                 //TODO: deduct user balance
-                Wallet::create(['user_id' => Auth::user()->id, 'amount' => $order->price * 1700, 'type' => Wallet::DEBIT]);
+                Wallet::create(['user_id' => Auth::user()->id, 'amount' => $order->price * $rate, 'type' => Wallet::DEBIT]);
 
                 return response()->json([
                     'status' => 'success',
@@ -219,7 +322,7 @@ class OrderController extends Controller
                 $sms->save();
 
                 //TODO: deduct user balance
-                Wallet::create(['user_id' => Auth::user()->id, 'amount' => $order->price * 1700, 'type' => Wallet::DEBIT]);
+                Wallet::create(['user_id' => Auth::user()->id, 'amount' => $order->price * $rate, 'type' => Wallet::DEBIT]);
 
                 return response()->json([
                     'status' => 'success',
@@ -267,10 +370,12 @@ class OrderController extends Controller
             'country' => 'required|string',
         ]);
 
+        $rate = Config::where('key', 'rate')->value('value') ??  Config::RATE;
+
         $response = $this->smsPoolService->checkPrice($validated['service'], $validated['country']);
 
         return response()->json([
-            'price' => $response['high_price'] * 1700,
+            'price' => $response['high_price'] * $rate ?? $response['price'] * $rate,
         ], 200);
     }
 

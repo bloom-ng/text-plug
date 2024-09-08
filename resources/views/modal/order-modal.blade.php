@@ -216,12 +216,14 @@
                     <div class="flex flex-col">
                         <p class="text-[16px] font-bold">Service</p>
                         <select id="service" name="service"
-                            class="dm-sans-regular text-[14px] h-[45px] text-[#7E7E7E] bg-[#F9FBFF] border border-[#D9D9D9D9] rounded-md">
+                            class="dm-sans-regular text-[14px] h-[45px] text-[#7E7E7E] bg-[#F9FBFF] border border-[#D9D9D9D9] rounded-md"
+                            onchange="updateDetailPrice(this)">
                             <option value="">Select A Service</option>
 
                             @foreach ($daisyServices as $key => $value)
                                 @foreach ($value as $subKey => $subValue)
-                                    <option value="{{ $key }}">{{ $subValue['name'] }}</option>
+                                    <option value="{{ $key }}" data-cost="{{ $subValue['cost'] }}">
+                                        {{ $subValue['name'] }}</option>
                                 @endforeach
                             @endforeach
                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
@@ -232,11 +234,31 @@
                         </select>
                     </div>
                 </div>
+
+                <script>
+                    function updateDetailPrice(selectElement) {
+                        const selectedOption = selectElement.options[selectElement.selectedIndex];
+                        const cost = selectedOption.getAttribute('data-cost');
+
+                        fetch('/get-rate')
+                            .then(response => response.json())
+                            .then(data => {
+                                const rate = data.rate;
+                                const finalPrice = cost ? (parseFloat(cost) * rate).toFixed(2) : '0';
+                                document.getElementById('numberPrice').innerHTML = finalPrice;
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                const finalPrice = cost ? parseFloat(cost) : '0';
+                                document.getElementById('numberPrice').innerHTML = finalPrice;
+                            });
+                    }
+                </script>
             </div>
 
-            <div id="details" class="hidden flex flex-row ml-6 mr-5 mt-5 lg:ml-6 rounded-md mb-6">
-                <div
-                    class="bg-[#DF5C0C0D] rounded-md lg:mr-5 flex flex-row lg:h-[36px] w-[60%] lg:w-[265px] items-center">
+            <div class="flex flex-row ml-6 mr-5 mt-5 lg:ml-6 rounded-md mb-6">
+                <div id="details"
+                    class="hidden bg-[#DF5C0C0D] rounded-md lg:mr-5 flex flex-row lg:h-[36px] w-[60%] lg:w-[265px] items-center">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                         xmlns="http://www.w3.org/2000/svg" class="lg:mr-1 mr-2 ml-3">
                         <g clip-path="url(#clip0_53_3648)">

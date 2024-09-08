@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
@@ -46,6 +47,7 @@ Route::get('/reset-password/{token}', [AuthController::class, 'resetPasswordView
 
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middleware('guest')->name('password.update');
 
+Route::get('/get-rate', [ConfigController::class, 'getRate']);
 
 Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -62,12 +64,12 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     Route::post('/order/check-available-number', [OrderController::class, 'checkAvailableNumber']);
 
     Route::get('/account', function () {
-        return view('account');
+        $user = auth()->user();
+        return view('account', compact('user'));
     });
     Route::post('/update-password', [AuthController::class, 'updatePassword']);
     Route::post('/update-profile', [AuthController::class, 'updateProfile']);
 });
-
 
 // ADMIN SECTION
 Route::get("/admin/login", function () {
@@ -84,10 +86,28 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('/admins', [AdminController::class, 'index'])->name('admins');
 
     Route::get('/users', [UserController::class, 'index']);
+    Route::get('/edit-users/{user}', [UserController::class, 'edit']);
+    Route::post('/edit-users/{user}', [UserController::class, 'update']);
+    Route::post('/delete-users/{user}', [UserController::class, 'destroy']);
 
     Route::get('/orders', [OrderController::class, 'adminIndex']);
+    Route::get('/orders/{id}', [OrderController::class, 'getCode']);
 
     Route::get('/wallet', [WalletController::class, 'adminIndex']);
+
+    Route::get('/settings', [ConfigController::class, 'index']);
+    Route::get('/add-settings', [ConfigController::class, 'create']);
+    Route::post('/add-settings', [ConfigController::class, 'store']);
+    Route::get('/edit-settings/{config}', [ConfigController::class, 'edit']);
+    Route::post('/edit-settings/{config}', [ConfigController::class, 'update']);
+    Route::post('/delete-settings/{config}', [ConfigController::class, 'destroy']);
+
+    Route::get('/account', function () {
+        $user = auth()->user();
+        return view('admin.account', compact('user'));
+    });
+    Route::post('/update-password', [AdminAuthController::class, 'updatePassword']);
+    Route::post('/update-profile', [AdminAuthController::class, 'updateProfile']);
 
     Route::get("/logout", [AdminAuthController::class, 'logout'])->name("logout");
 });

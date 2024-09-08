@@ -20,7 +20,7 @@ class Wallet extends Model
     const CREDIT = 'credit';
     const DEBIT = 'debit';
 
-    public function users(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
