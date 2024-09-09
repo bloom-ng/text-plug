@@ -310,7 +310,9 @@ class OrderController extends Controller
         } else {
             $response = $this->daisyService->getCode($order->order_id);
 
-            if (str_contains($response['message'], 'STATUS_OK:')) {
+            dd($response);
+
+            if (str_contains($response, 'STATUS_OK:')) {
                 $order->status = Order::ORDER_DONE;
                 $order->save();
 
