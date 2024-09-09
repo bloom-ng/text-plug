@@ -310,17 +310,15 @@ class OrderController extends Controller
         } else {
             $response = $this->daisyService->getCode($order->order_id);
 
-            dd($response);
-
-            if (str_contains($response, 'STATUS_OK:')) {
+            if ($response['status'] == 'success') {
                 $order->status = Order::ORDER_DONE;
                 $order->save();
 
                 $sms = new SmsCode();
                 $sms->user_id = Auth::user()->id;
                 $sms->order_id = $order->id;
-                $sms->code = $response;
-                $sms->message = $response;
+                $sms->code = $response['code'];
+                $sms->message = $response['code'];
                 $sms->save();
 
                 //TODO: deduct user balance
