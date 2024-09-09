@@ -7,9 +7,9 @@
         <hr>
 
         <div class="w-full my-4 flex flex-col">
-            <label for="key">Key</label>
-            <input type="text" value={{ $config->key }} name="key" id="key"
-                class="my-2 border p-3 rounded-xl" placeholder="Key" required>
+            <label for="name">Name</label>
+            <input type="text" value={{ $config->name }} name="name" id="name"
+                class="my-2 border p-3 rounded-xl" placeholder="Name" required>
         </div>
 
         <div class="w-full my-4 flex flex-col">

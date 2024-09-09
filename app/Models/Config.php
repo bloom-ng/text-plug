@@ -12,6 +12,7 @@ class Config extends Model
     protected $fillable = [
         'key',
         'value',
+        'name',
     ];
 
     const RATE = 1650;

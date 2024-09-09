@@ -15,7 +15,8 @@ class ConfigController extends Controller
             $searchTerm = $request->input('search');
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('key', 'LIKE', "%{$searchTerm}%")
-                    ->orWhere('value', 'LIKE', "%{$searchTerm}%");
+                    ->orWhere('value', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('name', 'LIKE', "%{$searchTerm}%");
             });
         }
 

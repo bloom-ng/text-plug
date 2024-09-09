@@ -96,11 +96,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('/wallet', [WalletController::class, 'adminIndex']);
 
     Route::get('/settings', [ConfigController::class, 'index']);
-    Route::get('/add-settings', [ConfigController::class, 'create']);
-    Route::post('/add-settings', [ConfigController::class, 'store']);
+    // Route::get('/add-settings', [ConfigController::class, 'create']);
+    // Route::post('/add-settings', [ConfigController::class, 'store']);
     Route::get('/edit-settings/{config}', [ConfigController::class, 'edit']);
     Route::post('/edit-settings/{config}', [ConfigController::class, 'update']);
-    Route::post('/delete-settings/{config}', [ConfigController::class, 'destroy']);
+    // Route::post('/delete-settings/{config}', [ConfigController::class, 'destroy']);
 
     Route::get('/account', function () {
         $user = auth()->user();

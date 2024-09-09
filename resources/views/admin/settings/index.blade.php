@@ -40,7 +40,7 @@
         <table class="min-w-full mt-8">
             <thead>
                 <tr class="border-b border-gray-300">
-                    <th class="px-8 py-5 text-left  text-[#22222280] dm-sans-medium text-[14px]">Key</th>
+                    <th class="px-8 py-5 text-left  text-[#22222280] dm-sans-medium text-[14px]">Name</th>
                     <th class="px-8 py-5 text-left  text-[#22222280] dm-sans-medium text-[14px]">Value</th>
                     <th class="px-8 py-5 text-left  text-[#22222280] dm-sans-medium text-[14px]"></th>
                 </tr>
@@ -50,7 +50,7 @@
             <tbody>
                 @foreach ($settings as $setting)
                     <tr class="border-b border-gray-300 text-[#222222] dm-sans-medium text-[14px]">
-                        <td class="px-8 py-5 whitespace-nowrap">{{ $setting->key }}</td>
+                        <td class="px-8 py-5 whitespace-nowrap">{{ $setting->name }}</td>
                         <td class="px-8 py-5 whitespace-nowrap">{{ $setting->value }}</td>
                         <td class="px-8 py-5 whitespace-nowrap">
                             <div class="flex flex-row space-x-2">
@@ -71,14 +71,14 @@
             <div class="ml-6">
                 {{ $settings->links() }}
             </div>
-            <div class="hidden lg:flex justify-end items-end">
+            {{-- <div class="hidden lg:flex justify-end items-end">
                 <a href="/admin/add-settings">
                     <button
                         class="w-[180px] h-[49px] bg-[#DF5C0C] text-white lg:py-2 rounded-lg dm-sans-extrabold text[12px] mr-6">
                         Create
                     </button>
                 </a>
-            </div>
+            </div> --}}
         </div>
     </div>
 </x-admin-dashboard>
