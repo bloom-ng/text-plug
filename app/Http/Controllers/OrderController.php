@@ -317,8 +317,8 @@ class OrderController extends Controller
                 $sms = new SmsCode();
                 $sms->user_id = Auth::user()->id;
                 $sms->order_id = $order->id;
-                $sms->code = $response['message'];
-                $sms->message = $response['message'];
+                $sms->code = $response;
+                $sms->message = $response;
                 $sms->save();
 
                 //TODO: deduct user balance
