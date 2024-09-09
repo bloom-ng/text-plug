@@ -16,4 +16,5 @@ class Config extends Model
     ];
 
     const RATE = 1650;
+    const MINIMUMBALANCEUSD = 2;
 }

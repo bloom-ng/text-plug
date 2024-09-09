@@ -30,8 +30,9 @@ class OrderController extends Controller
         $smsPoolCountries = $this->smsPoolService->getCountries();
 
         $balance = User::where('id', Auth::user()->id)->first()->walletBalance();
+        $min_balance = Config::where('key', 'min_balance')->value('value') ??  Config::MINIMUMBALANCEUSD;
         $rate = Config::where('key', 'rate')->value('value') ??  Config::RATE;
-        $can_purchase = $balance >= $rate;
+        $can_purchase = $balance >= $rate * $min_balance;
 
         $query = Order::where('user_id', Auth::user()->id);
 
@@ -237,6 +238,12 @@ class OrderController extends Controller
         $smsExist = SmsCode::where('order_id', $order->id)->first();
 
         $rate = Config::where('key', 'rate')->value('value') ??  Config::RATE;
+
+        $balance = User::where('id', Auth::user()->id)->first()->walletBalance();
+
+        if ($balance < $order->price * $rate) {
+            return redirect('/user/orders')->with('error', 'Insufficient Balance to view number please fund account and try again.');
+        }
 
         //If sms exist then return
         if ($smsExist) {
