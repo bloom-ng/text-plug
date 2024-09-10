@@ -154,6 +154,18 @@
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token if needed
                             }
                         }).then(response => response.json()).then(data => {
+                            if (data.status == 'error') {
+                                Toastify({
+                                    text: data.message,
+                                    duration: 4000,
+                                    close: true,
+                                    gravity: "top",
+                                    position: "right",
+                                    backgroundColor: "red",
+                                    stopOnFocus: true,
+                                    onClick: function() {}
+                                }).showToast();
+                            }
 
                             msgModal.classList.remove('hidden');
 
@@ -168,33 +180,18 @@
                             // showModalWithData(data);
                         })
                         .catch(error => {
-                            if (error.response && error.response.status === 500) {
-                                error.response.json().then(data => {
-                                    Toastify({
-                                        text: data.message,
-                                        duration: 4000,
-                                        close: true,
-                                        gravity: "top",
-                                        position: "right",
-                                        backgroundColor: "red",
-                                        stopOnFocus: true,
-                                        ariaLive: "polite",
-                                        onClick: function() {}
-                                    }).showToast();
-                                });
-                            } else {
-                                Toastify({
-                                    text: "An error occurred while fetching the order.",
-                                    duration: 4000,
-                                    close: true,
-                                    gravity: "top",
-                                    position: "right",
-                                    backgroundColor: "red",
-                                    stopOnFocus: true,
-                                    ariaLive: "polite",
-                                    onClick: function() {}
-                                }).showToast();
-                            }
+                            Toastify({
+                                text: "An error occurred while fetching the order.",
+                                duration: 4000,
+                                close: true,
+                                gravity: "top",
+                                position: "right",
+                                backgroundColor: "red",
+                                stopOnFocus: true,
+                                ariaLive: "polite",
+                                onClick: function() {}
+                            }).showToast();
+
                         });
                 });
             });
