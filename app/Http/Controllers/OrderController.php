@@ -242,7 +242,10 @@ class OrderController extends Controller
         $balance = User::where('id', Auth::user()->id)->first()->walletBalance();
 
         if ($balance < $order->price * $rate) {
-            return redirect('/user/orders')->with('error', 'Insufficient Balance to view number please fund account and try again.');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Insufficient Balance to view number. Please fund your account and try again.'
+            ], 400);
         }
 
         //If sms exist then return

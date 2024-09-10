@@ -154,8 +154,6 @@
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token if needed
                             }
                         }).then(response => response.json()).then(data => {
-                            // Handle the response data
-                            // console.log('Order Data:', data);
 
                             msgModal.classList.remove('hidden');
 
@@ -171,7 +169,7 @@
                         })
                         .catch(error => {
                             Toastify({
-                                text: error,
+                                text: error.message,
                                 duration: 4000,
                                 close: true,
                                 gravity: "top",
