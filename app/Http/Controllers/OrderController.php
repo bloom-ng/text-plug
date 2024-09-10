@@ -183,6 +183,8 @@ class OrderController extends Controller
             'country' => 'nullable|string',
         ]);
 
+        $rate = Config::where('key', 'rate')->value('value') ??  Config::RATE;
+
         if ($validated['server'] == 'server_1') {
             //SMS POOL IMPLEMENTATION
             $response = $this->smsPoolService->orderSMS($validated['service'], $validated['country']);
@@ -214,6 +216,9 @@ class OrderController extends Controller
             $number = $response['number'];
             $orderId = $response['id'];
         }
+
+        //TODO: deduct user balance
+        Wallet::create(['user_id' => Auth::user()->id, 'amount' => $cost * $rate, 'type' => Wallet::DEBIT]);
 
         $order = new Order();
         $order->user_id = Auth::user()->id;
@@ -278,9 +283,6 @@ class OrderController extends Controller
                 $sms->message = $response['full_sms'];
                 $sms->save();
 
-                //TODO: deduct user balance
-                Wallet::create(['user_id' => Auth::user()->id, 'amount' => $order->price * $rate, 'type' => Wallet::DEBIT]);
-
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Order Fulfiled successfully',
@@ -293,6 +295,9 @@ class OrderController extends Controller
             } else if ($response['status'] == 6) {
                 $order->status = Order::ORDER_REFUNDED;
                 $order->save();
+
+                //TODO: refund user balance
+                Wallet::create(['user_id' => Auth::user()->id, 'amount' => $order->price * $rate, 'type' => Wallet::REFUND]);
 
                 return response()->json([
                     'status' => 'success',
@@ -331,9 +336,6 @@ class OrderController extends Controller
                 $sms->message = $response['code'];
                 $sms->save();
 
-                //TODO: deduct user balance
-                Wallet::create(['user_id' => Auth::user()->id, 'amount' => $order->price * $rate, 'type' => Wallet::DEBIT]);
-
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Order Fulfiled successfully',
@@ -359,6 +361,9 @@ class OrderController extends Controller
             } else {
                 $order->status = Order::ORDER_REFUNDED;
                 $order->save();
+
+                //TODO: refund user balance
+                Wallet::create(['user_id' => Auth::user()->id, 'amount' => $order->price * $rate, 'type' => Wallet::REFUND]);
 
                 return response()->json([
                     'status' => 'success',

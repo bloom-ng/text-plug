@@ -19,6 +19,7 @@ class Wallet extends Model
 
     const CREDIT = 'credit';
     const DEBIT = 'debit';
+    const REFUND = 'refund';
 
     public function user(): BelongsTo
     {
