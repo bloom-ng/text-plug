@@ -55,15 +55,17 @@ class User extends Authenticatable
     {
         $credit = $this->wallets()->where('type', 'credit')->sum('amount');
         $debit = $this->wallets()->where('type', 'debit')->sum('amount');
+        $refund = $this->wallets()->where('type', 'refund')->sum('amount');
 
-        return $credit - $debit;
+        return $credit - $debit + $refund;
     }
 
     public function amountSpent()
     {
         $debit = $this->wallets()->where('type', 'debit')->sum('amount');
+        $refund = $this->wallets()->where('type', 'refund')->sum('amount');
 
-        return $debit;
+        return $debit - $refund;
     }
 
     public function amountCredited()

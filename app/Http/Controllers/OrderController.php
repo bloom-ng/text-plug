@@ -246,18 +246,17 @@ class OrderController extends Controller
 
         $balance = User::where('id', Auth::user()->id)->first()->walletBalance();
 
-        if ($balance < $order->price * $rate) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Insufficient Balance to view number. Please fund your account and try again.'
-            ], 500);
-        }
+        // if ($balance < $order->price * $rate) {
+        //     return response()->json([
+        //         'status' => 'error',
+        //         'message' => 'Insufficient Balance to view number. Please fund your account and try again.'
+        //     ], 500);
+        // }
 
         //If sms exist then return
         if ($smsExist) {
             return response()->json([
                 'status' => 'success',
-                'message' => 'Order Fulfiled successfully',
                 'number' => $order['phone_number'],
                 'service' => $order['service'],
                 'status' => $order['status'],
@@ -285,7 +284,6 @@ class OrderController extends Controller
 
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Order Fulfiled successfully',
                     'number' => $order['phone_number'],
                     'service' => $order['service'],
                     'status' => $order['status'],
@@ -301,7 +299,6 @@ class OrderController extends Controller
 
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Order Refunded successfully',
                     'number' => $order['phone_number'],
                     'service' => $order['service'],
                     'status' => $order['status'],
@@ -314,7 +311,6 @@ class OrderController extends Controller
 
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Order Pending successfully',
                     'number' => $order['phone_number'],
                     'service' => $order['service'],
                     'status' => $order['status'],
@@ -324,8 +320,8 @@ class OrderController extends Controller
             }
         } else {
             $response = $this->daisyService->getCode($order->order_id);
-
-            if ($response['status'] == 'success') {
+            // dd($response);
+            if ($response['status'] == 'success' && isset($response['code'])) {
                 $order->status = Order::ORDER_DONE;
                 $order->save();
 
@@ -338,7 +334,6 @@ class OrderController extends Controller
 
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Order Fulfiled successfully',
                     'number' => $order['phone_number'],
                     'service' => $order['service'],
                     'status' => $order['status'],
@@ -351,7 +346,6 @@ class OrderController extends Controller
 
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Order Fulfiled successfully',
                     'number' => $order['phone_number'],
                     'service' => $order['service'],
                     'status' => $order['status'],
@@ -367,7 +361,6 @@ class OrderController extends Controller
 
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Order Fulfiled successfully',
                     'number' => $order['phone_number'],
                     'service' => $order['service'],
                     'status' => $order['status'],
