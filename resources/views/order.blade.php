@@ -168,20 +168,20 @@
                                     ariaLive: "polite",
                                     onClick: function() {}
                                 }).showToast();
+                            } else {
+
+                                msgModal.classList.remove('hidden');
+
+                                document.getElementById('messageService').innerText = data
+                                    .service;
+                                document.getElementById('messageNumber').innerText = data
+                                    .number;
+                                document.getElementById('messageStatus').innerText = data
+                                    .status;
+                                document.getElementById('messageText').innerText = data.message;
+                                document.getElementById('messageDate').innerText = data
+                                    .created_at;
                             }
-
-                            msgModal.classList.remove('hidden');
-
-                            document.getElementById('messageService').innerText = data
-                                .service;
-                            document.getElementById('messageNumber').innerText = data
-                                .number;
-                            document.getElementById('messageStatus').innerText = data
-                                .status;
-                            document.getElementById('messageText').innerText = data.message;
-                            document.getElementById('messageDate').innerText = data
-                                .created_at;
-
                             // You can display the order data in a modal or any other UI component
                             // For example:
                             // showModalWithData(data);
