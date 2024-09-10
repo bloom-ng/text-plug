@@ -140,80 +140,82 @@
     <script script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const viewButtons = document.querySelectorAll('.view-btn');
-            const msgModal = document.getElementById('messageModal');
-            const closeViewBtn = document.getElementById('closeModal');
+                    const viewButtons = document.querySelectorAll('.view-btn');
+                    const msgModal = document.getElementById('messageModal');
+                    const closeViewBtn = document.getElementById('closeModal');
 
-            viewButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const orderId = this.getAttribute('data-order-id');
+                    viewButtons.forEach(button => {
+                            button.addEventListener('click', function() {
+                                    const orderId = this.getAttribute('data-order-id');
 
-                    fetch(`/user/orders/${orderId}`, {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token if needed
-                            }
-                        }).then(response => response.json()).then(data => {
+                                    fetch(`/user/orders/${orderId}`, {
+                                        method: 'GET',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token if needed
+                                        }
+                                    }).then(response => response.json()).then(data => {
 
-                            msgModal.classList.remove('hidden');
+                                            if (data.status == 'error') {
+                                                Toastify({
+                                                    text: data.message,
+                                                    duration: 4000,
+                                                    close: true,
+                                                    gravity: "top",
+                                                    position: "right",
+                                                    backgroundColor: "red",
+                                                    stopOnFocus: true,
+                                                    ariaLive: "polite",
+                                                    onClick: function() {}
+                                                }).showToast();
 
-                            document.getElementById('messageService').innerText = data.service;
-                            document.getElementById('messageNumber').innerText = data.number;
-                            document.getElementById('messageStatus').innerText = data.status;
-                            document.getElementById('messageText').innerText = data.message;
-                            document.getElementById('messageDate').innerText = data.created_at;
+                                                msgModal.classList.remove('hidden');
 
-                            // You can display the order data in a modal or any other UI component
-                            // For example:
-                            // showModalWithData(data);
-                        })
-                        .catch(error => {
-                            if (error.response && error.response.status === 500) {
-                                error.response.json().then(data => {
-                                    Toastify({
-                                        text: data.message,
-                                        duration: 4000,
-                                        close: true,
-                                        gravity: "top",
-                                        position: "right",
-                                        backgroundColor: "red",
-                                        stopOnFocus: true,
-                                        ariaLive: "polite",
-                                        onClick: function() {}
-                                    }).showToast();
-                                });
-                            } else {
-                                Toastify({
-                                    text: "An error occurred while fetching the order.",
-                                    duration: 4000,
-                                    close: true,
-                                    gravity: "top",
-                                    position: "right",
-                                    backgroundColor: "red",
-                                    stopOnFocus: true,
-                                    ariaLive: "polite",
-                                    onClick: function() {}
-                                }).showToast();
+                                                document.getElementById('messageService').innerText = data
+                                                    .service;
+                                                document.getElementById('messageNumber').innerText = data
+                                                    .number;
+                                                document.getElementById('messageStatus').innerText = data
+                                                    .status;
+                                                document.getElementById('messageText').innerText = data.message;
+                                                document.getElementById('messageDate').innerText = data
+                                                    .created_at;
+
+                                                // You can display the order data in a modal or any other UI component
+                                                // For example:
+                                                // showModalWithData(data);
+                                            })
+                                        .catch(error => {
+                                            Toastify({
+                                                text: "An error occurred while fetching the order.",
+                                                duration: 4000,
+                                                close: true,
+                                                gravity: "top",
+                                                position: "right",
+                                                backgroundColor: "red",
+                                                stopOnFocus: true,
+                                                ariaLive: "polite",
+                                                onClick: function() {}
+                                            }).showToast();
+
+                                        });
+                                    });
+                            });
+
+                        // Function to close the modal
+                        function closeModal() {
+                            msgModal.classList.add('hidden');
+                        }
+
+                        // When the user clicks on close button (X), close the modal
+                        closeViewBtn.addEventListener('click', closeModal);
+
+                        window.addEventListener('click', function(event) {
+                            if (event.target === msgModal) {
+                                closeModal();
                             }
                         });
-                });
-            });
-
-            // Function to close the modal
-            function closeModal() {
-                msgModal.classList.add('hidden');
-            }
-
-            // When the user clicks on close button (X), close the modal
-            closeViewBtn.addEventListener('click', closeModal);
-
-            window.addEventListener('click', function(event) {
-                if (event.target === msgModal) {
-                    closeModal();
-                }
-            });
-        });
+                    });
     </script>
 
     <script>
