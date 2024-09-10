@@ -155,6 +155,7 @@
                             }
                         }).then(response => response.json()).then(data => {
                             if (data.status == 'error') {
+                                console.log(data);
                                 Toastify({
                                     text: data.message,
                                     duration: 4000,
@@ -180,6 +181,7 @@
                             // showModalWithData(data);
                         })
                         .catch(error => {
+                            console.log(error, "Error");
                             Toastify({
                                 text: "An error occurred while fetching the order.",
                                 duration: 4000,
