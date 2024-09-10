@@ -245,7 +245,7 @@ class OrderController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Insufficient Balance to view number. Please fund your account and try again.'
-            ], 400);
+            ], 500);
         }
 
         //If sms exist then return
