@@ -155,7 +155,7 @@
                             }
                         }).then(response => response.json()).then(data => {
                             // Handle the response data
-                            console.log('Order Data:', data);
+                            // console.log('Order Data:', data);
 
                             msgModal.classList.remove('hidden');
 
@@ -170,7 +170,18 @@
                             // showModalWithData(data);
                         })
                         .catch(error => {
-                            console.error('Error fetching order:', error);
+                            Toastify({
+                                text: error,
+                                duration: 4000,
+                                close: true,
+                                gravity: "top",
+                                position: "right",
+                                backgroundColor: "red",
+                                stopOnFocus: true,
+                                ariaLive: "polite",
+                                onClick: function() {}
+                            }).showToast();
+                            // console.error('Error fetching order:', error);
                         });
                 });
             });
