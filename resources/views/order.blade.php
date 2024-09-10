@@ -168,18 +168,33 @@
                             // showModalWithData(data);
                         })
                         .catch(error => {
-                            Toastify({
-                                text: error.message,
-                                duration: 4000,
-                                close: true,
-                                gravity: "top",
-                                position: "right",
-                                backgroundColor: "red",
-                                stopOnFocus: true,
-                                ariaLive: "polite",
-                                onClick: function() {}
-                            }).showToast();
-                            // console.error('Error fetching order:', error);
+                            if (error.response && error.response.status === 500) {
+                                error.response.json().then(data => {
+                                    Toastify({
+                                        text: data.message,
+                                        duration: 4000,
+                                        close: true,
+                                        gravity: "top",
+                                        position: "right",
+                                        backgroundColor: "red",
+                                        stopOnFocus: true,
+                                        ariaLive: "polite",
+                                        onClick: function() {}
+                                    }).showToast();
+                                });
+                            } else {
+                                Toastify({
+                                    text: "An error occurred while fetching the order.",
+                                    duration: 4000,
+                                    close: true,
+                                    gravity: "top",
+                                    position: "right",
+                                    backgroundColor: "red",
+                                    stopOnFocus: true,
+                                    ariaLive: "polite",
+                                    onClick: function() {}
+                                }).showToast();
+                            }
                         });
                 });
             });
