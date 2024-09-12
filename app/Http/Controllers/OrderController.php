@@ -109,9 +109,9 @@ class OrderController extends Controller
         $rate = Config::where('key', 'rate')->value('value') ??  Config::RATE;
         $can_purchase = $balance >= $rate;
 
-        $query = Order::where('user_id', Auth::user()->id);
+        $query = Order::query();
 
-        // Fetch all orders for the user
+        // Fetch all orders
         $orders = $query->get();
 
         // Prepare service name mappings
