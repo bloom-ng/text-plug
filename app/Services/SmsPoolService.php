@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Config;
 use  Illuminate\Support\Facades\Http;
 
 class SmsPoolService
@@ -11,7 +12,7 @@ class SmsPoolService
 
     public function __construct()
     {
-        $this->apiKey = env('SMS_POOL_API_KEY');
+        $this->apiKey = Config::where('key', 'sms_pool')->first()->value ?? env('SMS_POOL_API_KEY');
         $this->baseUrl = 'https://api.smspool.net';
     }
 

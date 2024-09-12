@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Config;
 use Illuminate\Support\Facades\Http;
 
 class DaisyService
@@ -11,7 +12,7 @@ class DaisyService
 
     public function __construct()
     {
-        $this->apiKey = env('DAISY_API_KEY');
+        $this->apiKey = Config::where('key', 'daisy')->first()->value ?? env('DAISY_API_KEY');
         $this->baseUrl = 'https://daisysms.com/stubs/handler_api.php';
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Config;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Wallet;
@@ -11,6 +12,13 @@ use Illuminate\Support\Facades\Http;
 
 class WalletController extends Controller
 {
+    protected $apiKey;
+
+    public function __construct()
+    {
+        $this->apiKey = Config::where('key', 'flutterwave')->first()->value ?? env('FLUTTERWAVE_SECRET_KEY');
+    }
+
     public function index(Request $request)
     {
         $query = Wallet::where('user_id', auth()->user()->id)->where('type', '!=', Wallet::REFUND);
@@ -69,7 +77,7 @@ class WalletController extends Controller
         // $currency = $this->getCurrency($request->user()->country);
 
         $apiUrl = "https://api.flutterwave.com/v3/payments";
-        $apiKey = env('FLUTTERWAVE_SECRET_KEY');
+        $apiKey = $this->apiKey;
 
         do {
             $reference = uniqid('txn_', false);
@@ -131,7 +139,7 @@ class WalletController extends Controller
 
         $user_id = $transaction->user_id;
 
-        $response = Http::retry(3)->withToken(env('FLUTTERWAVE_SECRET_KEY'), 'Bearer')
+        $response = Http::retry(3)->withToken($this->apiKey, 'Bearer')
             ->get('https://api.flutterwave.com/v3/transactions/' . $request->query('transaction_id') . '/verify');
 
 
