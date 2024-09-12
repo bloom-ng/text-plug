@@ -49,15 +49,21 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
         ]);
 
-        $user->update($validated);
+        if ($request->has('name')) {
+            $user->update(['name' => $request->input('name')]);
+        }
 
-        return redirect()->route('admin.users.index')->with('success', 'User updated successfully');
+        if ($request->has('email')) {
+            $user->update(['email' => $request->input('email')]);
+        }
+
+        return redirect('/admin/users')->with('success', 'User updated successfully');
     }
 
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully');
+        return redirect('/admin/users')->with('success', 'User deleted successfully');
     }
 
     public function suspend(User $user)
