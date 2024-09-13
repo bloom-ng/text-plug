@@ -56,11 +56,11 @@
                             <div class="flex flex-row space-x-2">
                                 <a href="/admin/edit-settings/{{ $setting->id }}"
                                     class="text-green-500 hover:text-green-700 font-bold mr-2">Edit</a>
-                                <form action="/admin/delete-settings/{{ $setting->id }}" method="POST" class="inline">
+                                {{-- <form action="/admin/delete-settings/{{ $setting->id }}" method="POST" class="inline">
                                     @csrf
                                     <button type="submit"
                                         class="text-red-500 hover:text-red-700 font-bold mr-2">Delete</button>
-                                </form>
+                                </form> --}}
                             </div>
                         </td>
                     </tr>
