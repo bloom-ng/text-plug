@@ -66,11 +66,14 @@ class ConfigController extends Controller
     public function update(Request $request, Config $config)
     {
         $validated = $request->validate([
-            'key' => 'required|string|unique:configs,key,' . $config->id,
+            'name' => 'required|string',
             'value' => 'required|string',
         ]);
 
-        $config->update($validated);
+        $config->update([
+            'name' => $validated['name'],
+            'value' => $validated['value']
+        ]);
 
         return redirect('/admin/settings')->with('success', 'Setting updated successfully');
     }
