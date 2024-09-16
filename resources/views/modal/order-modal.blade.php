@@ -171,7 +171,7 @@
                         class="dm-sans-regular text-[14px] h-[45px] text-[#7E7E7E] bg-[#F9FBFF] border border-[#D9D9D9D9] rounded-md">
                         <option value="">Choose Option</option>
                         <option value="server_1">Dynamic SMS</option>
-                        <option value="server_2">Swift SMS (recommended for WhatsApp and telegram verification)
+                        <option value="server_2">Swift SMS (recommended for USA verifications)
                         </option>
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                             xmlns="http://www.w3.org/2000/svg",>
