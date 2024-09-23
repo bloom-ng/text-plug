@@ -37,7 +37,6 @@ class OrderController extends Controller
         $query = Order::where('user_id', Auth::user()->id);
 
         $pending_orders = Order::where('user_id', Auth::user()->id)->where('status', Order::ORDER_PENDING)->get();
-        // dd($pending_orders);
         foreach ($pending_orders as $order) {
             // Update the order stats for each service
             if ($order->server == 'server_2') {
@@ -54,6 +53,20 @@ class OrderController extends Controller
         $decodedSmsPoolServices = json_decode($smsPoolServices, true);
         $decodedDaisyServices = json_decode($daisyServices['response'], true);
 
+        // Update the prices for 'tg' and 'wa' in the daisyServices array
+        foreach ($decodedDaisyServices as $key => &$serviceDatas) {
+            if ($key === 'tg') {
+                foreach ($serviceDatas as &$serviceData) {
+                    $serviceData['cost'] = Config::where('key', 'telegram_price')->first()->value ?? $serviceData['cost'];
+                }
+            }
+            if ($key === 'wa') {
+                foreach ($serviceDatas as &$serviceData) {
+                    $serviceData['cost'] = Config::where('key', 'whatsapp_price')->first()->value ?? $serviceData['cost'];
+                }
+            }
+        }
+
         // Map service IDs to service names and filter if search is present
         $filteredOrders = $orders->filter(function ($order) use ($request, $decodedSmsPoolServices, $decodedDaisyServices) {
             if ($order->server === 'server_1') {
@@ -62,6 +75,7 @@ class OrderController extends Controller
                 $serviceName = $order->service;
                 foreach ($decodedDaisyServices as $key => $serviceDatas) {
                     foreach ($serviceDatas as $serviceKey => $serviceData) {
+
                         if ($key == $order->service) {
                             $serviceName = $serviceData['name'];
                             break 2;
