@@ -61,6 +61,10 @@
                                     class="text-blue-500 hover:text-blue-700 font-bold mr-2">Manage</a> --}}
                                 <a href="/admin/edit-users/{{ $user->id }}"
                                     class="text-green-500 hover:text-green-700 font-bold mr-2">Edit</a>
+                                <a href="/admin/credit-users/{{ $user->id }}"
+                                    class="text-blue-500 hover:text-blue-700 font-bold mr-2">Credit</a>
+                                <a href="/admin/debit-users/{{ $user->id }}"
+                                    class="text-orange-500 hover:text-orange-700 font-bold mr-2">Debit</a>
                                 <form action="/admin/delete-users/{{ $user->id }}" method="POST" class="inline">
                                     @csrf
                                     <button type="submit"

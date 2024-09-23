@@ -164,4 +164,42 @@ class WalletController extends Controller
             return redirect('/user/wallet')->with('error', 'Wallet funding failed');
         }
     }
+
+    public function adminCreditShow(Request $request, User $user)
+    {
+        return view('admin.users.credit', compact('user'));
+    }
+
+    public function adminCredit(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'name' => 'required',
+            'user_id' => 'required|integer',
+            'amount' => 'required|integer',
+        ]);
+
+        Wallet::create(['user_id' => $request->user_id, 'amount' => $request->amount, 'type' => Wallet::CREDIT]);
+
+        return redirect('/admin/users')->with('success', 'Wallet credited successfully');
+    }
+
+    public function adminDebitShow(Request $request, User $user)
+    {
+        return view('admin.users.debit', compact('user'));
+    }
+
+    public function adminDebit(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'name' => 'required',
+            'user_id' => 'required|integer',
+            'amount' => 'required|integer',
+        ]);
+
+        Wallet::create(['user_id' => $request->user_id, 'amount' => $request->amount, 'type' => Wallet::DEBIT]);
+
+        return redirect('/admin/users')->with('success', 'Wallet debited successfully');
+    }
 }

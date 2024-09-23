@@ -3,6 +3,10 @@
 namespace App\Services;
 
 use App\Models\Config;
+use App\Models\Order;
+use App\Models\SmsCode;
+use App\Models\Wallet;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 class DaisyService
@@ -134,5 +138,90 @@ class DaisyService
         } else {
             return ['status' => 'error', 'message' => 'Unknown error', 'response' => $response];
         }
+    }
+
+    public function checkStatus($order, $response, $rate)
+    {
+        // dd($response['message']);
+        if ($response['status'] == 'success' && isset($response['code'])) {
+            $order->status = Order::ORDER_DONE;
+            $order->save();
+
+            $sms = new SmsCode();
+            $sms->user_id = Auth::user()->id;
+            $sms->order_id = $order->id;
+            $sms->code = $response['code'];
+            $sms->message = $response['code'];
+            $sms->save();
+
+            return response()->json([
+                'status' => 'success',
+                'number' => $order['phone_number'],
+                'service' => $order['service'],
+                'status' => $order['status'],
+                'message' => $smsExist['message'] ?? '',
+                'created_at' => date("d-m-Y", strtotime($order['created_at']))
+            ], 200);
+        } else if ($response['message'] == "Waiting for SMS") {
+            $order->status = Order::ORDER_PENDING;
+            $order->save();
+
+            return response()->json([
+                'status' => 'success',
+                'number' => $order['phone_number'],
+                'service' => $order['service'],
+                'status' => $order['status'],
+                'message' => '',
+                'created_at' => date("d-m-Y", strtotime($order['created_at']))
+            ], 200);
+        } else if ($response['message'] == "Wrong ID" || $response['message'] == "Rental cancelled") {
+            $order->status = Order::ORDER_REFUNDED;
+            $order->save();
+
+            //TODO: refund user balance
+            Wallet::create(['user_id' => Auth::user()->id, 'amount' => $order->price * $rate, 'type' => Wallet::REFUND]);
+
+            return response()->json([
+                'status' => 'success',
+                'number' => $order['phone_number'],
+                'service' => $order['service'],
+                'status' => $order['status'],
+                'message' => '',
+                'created_at' => date("d-m-Y", strtotime($order['created_at']))
+            ], 200);
+        } else {
+            return;
+        }
+    }
+
+    public function checkPendingStatus($order, $response, $rate)
+    {
+        if ($response['status'] == 'success' && isset($response['code'])) {
+            $order->status = Order::ORDER_DONE;
+            $order->save();
+
+            $sms = new SmsCode();
+            $sms->user_id = Auth::user()->id;
+            $sms->order_id = $order->id;
+            $sms->code = $response['code'];
+            $sms->message = $response['code'];
+            $sms->save();
+
+            return;
+        } else if ($response['message'] == "Waiting for SMS") {
+            $order->status = Order::ORDER_PENDING;
+            $order->save();
+
+            return;
+        } else if ($response['message'] == "Rental cancelled" || $response['message'] == "Wrong ID") {
+            $order->status = Order::ORDER_REFUNDED;
+            $order->save();
+
+            //TODO: refund user balance
+            Wallet::create(['user_id' => Auth::user()->id, 'amount' => $order->price * $rate, 'type' => Wallet::REFUND]);
+
+            return;
+        }
+        return;
     }
 }

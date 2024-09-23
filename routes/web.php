@@ -90,6 +90,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::post('/edit-users/{user}', [UserController::class, 'update']);
     Route::post('/delete-users/{user}', [UserController::class, 'destroy']);
 
+    Route::get('/credit-users/{user}', [WalletController::class, 'adminCreditShow']);
+    Route::post('/credit-users/{user}', [WalletController::class, 'adminCredit']);
+
+    Route::post('/debit-users/{user}', [WalletController::class, 'adminDebit']);
+    Route::get('/debit-users/{user}', [WalletController::class, 'adminDebitShow']);
+
     Route::get('/orders', [OrderController::class, 'adminIndex']);
     Route::get('/orders/{id}', [OrderController::class, 'getCode']);
 

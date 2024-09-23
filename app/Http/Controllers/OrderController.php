@@ -36,6 +36,17 @@ class OrderController extends Controller
 
         $query = Order::where('user_id', Auth::user()->id);
 
+        $pending_orders = Order::where('user_id', Auth::user()->id)->where('status', Order::ORDER_PENDING)->get();
+        // dd($pending_orders);
+        foreach ($pending_orders as $order) {
+            // Update the order stats for each service
+            if ($order->server == 'server_2') {
+                $response = $this->daisyService->getCode($order->order_id);
+                $this->daisyService->checkPendingStatus($order, $response, $rate);
+            }
+            $order->save();
+        }
+
         // Fetch all orders for the user
         $orders = $query->get();
 
@@ -266,108 +277,16 @@ class OrderController extends Controller
             ], 200);
         }
 
+        // dd($order->server);
         if ($order->server == 'server_1') {
             //check if sms exist in sms pool
             $response = $this->smsPoolService->checkSMS($order->order_id);
-            // dd($response);
-            if ($response['status'] == 3) {
-                //if sms exist then return
-                $order->status = Order::ORDER_DONE;
-                $order->save();
 
-                $sms = new SmsCode();
-                $sms->user_id = Auth::user()->id;
-                $sms->order_id = $order->id;
-                $sms->code = $response['sms'];
-                $sms->message = $response['full_sms'];
-                $sms->save();
-
-                return response()->json([
-                    'status' => 'success',
-                    'number' => $order['phone_number'],
-                    'service' => $order['service'],
-                    'status' => $order['status'],
-                    'message' => $smsExist['message'] ?? '',
-                    'created_at' => date("d-m-Y", strtotime($order['created_at']))
-                ], 200);
-            } else if ($response['status'] == 6) {
-                $order->status = Order::ORDER_REFUNDED;
-                $order->save();
-
-                //TODO: refund user balance
-                Wallet::create(['user_id' => Auth::user()->id, 'amount' => $order->price * $rate, 'type' => Wallet::REFUND]);
-
-                return response()->json([
-                    'status' => 'success',
-                    'number' => $order['phone_number'],
-                    'service' => $order['service'],
-                    'status' => $order['status'],
-                    'message' => '',
-                    'created_at' => date("d-m-Y", strtotime($order['created_at']))
-                ], 200);
-            } else {
-                $order->status = Order::ORDER_PENDING;
-                $order->save();
-
-                return response()->json([
-                    'status' => 'success',
-                    'number' => $order['phone_number'],
-                    'service' => $order['service'],
-                    'status' => $order['status'],
-                    'message' => '',
-                    'created_at' => date("d-m-Y", strtotime($order['created_at']))
-                ], 200);
-            }
+            return $this->smsPoolService->checkStatus($order, $response, $rate);
         } else {
             $response = $this->daisyService->getCode($order->order_id);
-            // dd($response);
-            if ($response['status'] == 'success' && isset($response['code'])) {
-                $order->status = Order::ORDER_DONE;
-                $order->save();
 
-                $sms = new SmsCode();
-                $sms->user_id = Auth::user()->id;
-                $sms->order_id = $order->id;
-                $sms->code = $response['code'];
-                $sms->message = $response['code'];
-                $sms->save();
-
-                return response()->json([
-                    'status' => 'success',
-                    'number' => $order['phone_number'],
-                    'service' => $order['service'],
-                    'status' => $order['status'],
-                    'message' => $smsExist['message'] ?? '',
-                    'created_at' => date("d-m-Y", strtotime($order['created_at']))
-                ], 200);
-            } else if ($response['message'] == "Waiting for SMS" || $response['message'] == "Wrong ID") {
-                $order->status = Order::ORDER_PENDING;
-                $order->save();
-
-                return response()->json([
-                    'status' => 'success',
-                    'number' => $order['phone_number'],
-                    'service' => $order['service'],
-                    'status' => $order['status'],
-                    'message' => '',
-                    'created_at' => date("d-m-Y", strtotime($order['created_at']))
-                ], 200);
-            } else {
-                $order->status = Order::ORDER_REFUNDED;
-                $order->save();
-
-                //TODO: refund user balance
-                Wallet::create(['user_id' => Auth::user()->id, 'amount' => $order->price * $rate, 'type' => Wallet::REFUND]);
-
-                return response()->json([
-                    'status' => 'success',
-                    'number' => $order['phone_number'],
-                    'service' => $order['service'],
-                    'status' => $order['status'],
-                    'message' => '',
-                    'created_at' => date("d-m-Y", strtotime($order['created_at']))
-                ], 200);
-            }
+            return $this->daisyService->checkStatus($order, $response, $rate);
         }
     }
 
