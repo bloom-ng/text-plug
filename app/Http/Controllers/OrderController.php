@@ -42,6 +42,10 @@ class OrderController extends Controller
             if ($order->server == 'server_2') {
                 $response = $this->daisyService->getCode($order->order_id);
                 $this->daisyService->checkPendingStatus($order, $response, $rate);
+            } else {
+                $response = $this->smsPoolService->checkSMS($order->order_id);
+
+                $this->smsPoolService->checkStatus($order, $response, $rate);
             }
             $order->save();
         }
