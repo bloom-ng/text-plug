@@ -7,6 +7,12 @@
                 New order
             </button>
         </div>
+        <div class="hidden lg:flex justify-start items-end mt-3 ml-6">
+            <button id="NewOrder"
+                class="w-[180px] h-[49px] bg-[#DF5C0C] text-white lg:py-2 rounded-lg dm-sans-extrabold text[12px] mr-6">
+                New order
+            </button>
+        </div>
         <div class="flex flex-col md:flex-row">
             <h1 class="dm-sans-medium text-[22px] text-[#000000] mt-[43px] text-2xl ml-6 font-semibold w-[70%]">
                 History
@@ -91,12 +97,6 @@
         <div class="flex flex-row items-center justify-between mt-5">
             <div class="ml-6">
                 {{ $orders->links() }}
-            </div>
-            <div class="hidden lg:flex justify-end items-end">
-                <button id="NewOrder"
-                    class="w-[180px] h-[49px] bg-[#DF5C0C] text-white lg:py-2 rounded-lg dm-sans-extrabold text[12px] mr-6">
-                    New order
-                </button>
             </div>
         </div>
     </div>
