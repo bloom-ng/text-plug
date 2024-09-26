@@ -136,12 +136,19 @@
                     <tr class="border-b border-gray-300 text-[#222222] dm-sans-medium text-[14px]">
                         <td class="px-8 py-5 whitespace-nowrap">{{ $transaction->user->email }}</td>
                         <td class="px-8 py-5 whitespace-nowrap">
-                            {{ $transaction->type == 'credit' ? 'Account Funding' : 'Purchased Number' }}</td>
+                            {{ $transaction->type == 'refund' ? 'Purchase Refunded' : ($transaction->type == 'credit' ? 'Account Funding' : 'Purchased Number') }}
+                        </td>
                         <td class="px-8 py-5 whitespace-nowrap">
                             {{ \Carbon\Carbon::parse($transaction->updated_at)->format('jS F, Y') }}</td>
                         <td
-                            class="px-8 py-5 whitespace-nowrap {{ $transaction->type == 'credit' ? 'text-[#00B087]' : 'text-[#DF5C0C]' }}">
-                            {{ $transaction->type == 'credit' ? '+' : '-' }}{{ $transaction->amount }}
+                            class="px-8 py-5 whitespace-nowrap {{ $transaction->type == 'credit' ? 'text-[#00B087]' : ($transaction->type == 'refund' ? 'text-blue-400' : 'text-[#DF5C0C]') }}">
+                            @if ($transaction->type == 'credit')
+                                +{{ number_format($transaction->amount, 2) }}
+                            @elseif ($transaction->type == 'refund')
+                                +{{ number_format($transaction->amount, 2) }} (Refunded)
+                            @else
+                                -{{ number_format($transaction->amount, 2) }}
+                            @endif
                         </td>
                     </tr>
                 @endforeach

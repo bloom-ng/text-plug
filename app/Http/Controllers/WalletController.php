@@ -21,7 +21,8 @@ class WalletController extends Controller
 
     public function index(Request $request)
     {
-        $query = Wallet::where('user_id', auth()->user()->id)->where('type', '!=', Wallet::REFUND);
+        // ->where('type', '!=', Wallet::REFUND)
+        $query = Wallet::where('user_id', auth()->user()->id);
 
         if ($request->has('search')) {
             $search = $request->input('search');
