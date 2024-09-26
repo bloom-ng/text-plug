@@ -233,12 +233,14 @@ class OrderController extends Controller
             //DAISY IMPLEMENTATION
             $response = $this->daisyService->rentNumber($validated['service'], null, null);
 
-            // if (str_contains($response, 'Error: ')) {
-            //     return redirect('/user/orders')->with('error', 'Failed to order number please try again.');
-            // }
-
             if ($response['status'] !== 'success') {
                 return redirect('/user/orders')->with('error', 'Failed to order number please try again later');
+            }
+
+            if ($response['id'] === 'tg') {
+                $response['cost'] = Config::where('key', 'telegram_price')->first()->value ?? $response['cost'];
+            } elseif ($response['id'] === 'wa') {
+                $response['cost'] = Config::where('key', 'whatsapp_price')->first()->value ?? $response['cost'];
             }
 
             $cost = $response['cost'] ?? 1.0;
@@ -292,6 +294,17 @@ class OrderController extends Controller
                 'message' => $smsExist['message'] ?? '',
                 'created_at' => date("d-m-Y", strtotime($order['created_at']))
 
+            ], 200);
+        }
+
+        if ($order->status == Order::ORDER_REFUNDED) {
+            return response()->json([
+                'status' => 'success',
+                'number' => $order['phone_number'],
+                'service' => $order['service'],
+                'status' => $order['status'],
+                'message' => '',
+                'created_at' => date("d-m-Y", strtotime($order['created_at']))
             ], 200);
         }
 
