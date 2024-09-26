@@ -236,11 +236,14 @@ class OrderController extends Controller
             if ($response['status'] !== 'success') {
                 return redirect('/user/orders')->with('error', 'Failed to order number please try again later');
             }
-
-            if ($response['id'] === 'tg') {
+            // dd($response, "Daisy");
+            if ($validated['service'] === 'tg') {
                 $response['cost'] = Config::where('key', 'telegram_price')->first()->value ?? $response['cost'];
-            } elseif ($response['id'] === 'wa') {
+                dd($response, "Telegram");
+            } elseif ($validated['service'] === 'wa') {
                 $response['cost'] = Config::where('key', 'whatsapp_price')->first()->value ?? $response['cost'];
+
+                dd($response, "Whatsapp");
             }
 
             $cost = $response['cost'] ?? 1.0;
