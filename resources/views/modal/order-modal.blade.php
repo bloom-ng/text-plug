@@ -234,26 +234,6 @@
                         </select>
                     </div>
                 </div>
-
-                <script>
-                    function updateDetailPrice(selectElement) {
-                        const selectedOption = selectElement.options[selectElement.selectedIndex];
-                        const cost = selectedOption.getAttribute('data-cost');
-
-                        fetch('/get-rate')
-                            .then(response => response.json())
-                            .then(data => {
-                                const rate = data.rate;
-                                const finalPrice = cost ? (parseFloat(cost) * rate).toFixed(2) : '0';
-                                document.getElementById('numberPrice').innerHTML = finalPrice;
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                                const finalPrice = cost ? parseFloat(cost) : '0';
-                                document.getElementById('numberPrice').innerHTML = finalPrice;
-                            });
-                    }
-                </script>
             </div>
 
             <div class="flex flex-row ml-6 mr-5 mt-5 lg:ml-6 rounded-md mb-6">
@@ -354,4 +334,24 @@
             });
         }
     });
+</script>
+
+<script>
+    function updateDetailPrice(selectElement) {
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        const cost = selectedOption.getAttribute('data-cost');
+
+        fetch('/get-rate')
+            .then(response => response.json())
+            .then(data => {
+                const rate = data.rate;
+                const finalPrice = cost ? (parseFloat(cost) * rate).toFixed(2) : '0';
+                document.getElementById('numberPrice').innerHTML = finalPrice;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const finalPrice = cost ? parseFloat(cost) : '0';
+                document.getElementById('numberPrice').innerHTML = finalPrice;
+            });
+    }
 </script>
