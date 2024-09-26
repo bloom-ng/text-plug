@@ -210,6 +210,7 @@ class OrderController extends Controller
             'server' => 'required|string',
             'service' => 'required|string',
             'country' => 'nullable|string',
+            'sms_pool_price' => 'nullable|string',
         ]);
 
         $rate = Config::where('key', 'rate')->value('value') ??  Config::RATE;
@@ -226,7 +227,7 @@ class OrderController extends Controller
             if ($responseBody['success'] !== 1) {
                 return redirect('/user/orders')->with('error', 'Failed to order number please try again later');
             }
-            $cost = $responseBody['cost'] ?? 1.0;
+            $cost = $validated['sms_pool_price'] / $rate ?? $responseBody['cost'];
             $number = $response['phone_number'] ?? $response['number'];
             $orderId = $response['order_id'];
         } else {

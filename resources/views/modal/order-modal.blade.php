@@ -182,6 +182,7 @@
                 </div>
 
                 <div id="service_1" class="hidden">
+                    <input type="text" name="sms_pool_price" id="sms_pool_price" />
                     <div class="flex flex-col">
                         <p class="text-[16px] font-bold">Service</p>
                         <select id="smsPoolService" name="service"

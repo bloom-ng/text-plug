@@ -225,6 +225,7 @@
         const country = document.getElementById('country_1');
         const numberPrice = document.getElementById('numberPrice');
         const availableNumbers = document.getElementById('availableNumbers');
+        const smsPoolPrice = document.getElementById('sms_pool_price');
 
         let fetchTimeout;
 
@@ -243,6 +244,7 @@
                     })
                 }).then(response => response.json()).then(data => {
                     numberPrice.innerHTML = data.price;
+                    smsPoolPrice.value = data.price;
                 });
 
                 fetch('/user/order/check-available-number', {
