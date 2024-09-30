@@ -38,9 +38,9 @@
     @if ($globalMessage)
         <script>
             Swal.fire({
-                title: 'Welcome to TextPlug!',
+                title: 'NOTICE !',
                 text: "{{ $globalMessage }}",
-                icon: 'success',
+                icon: 'info',
                 confirmButtonText: 'Get Started',
                 confirmButtonColor: '#DF5C0C',
             });
