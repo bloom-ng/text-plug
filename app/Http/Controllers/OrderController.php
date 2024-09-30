@@ -29,7 +29,7 @@ class OrderController extends Controller
         $daisyServices = $this->daisyService->listServicesWithPrices();
         $smsPoolCountries = $this->smsPoolService->getCountries();
 
-        $balance = User::where('id', Auth::user()->id)->first()->walletBalance();
+        $balance = User::where('id', Auth::user()->id)->first()->walletBalance() ?? 0;
         $min_balance = Config::where('key', 'min_balance')->value('value') ??  Config::MINIMUMBALANCEUSD;
         $rate = Config::where('key', 'rate')->value('value') ??  Config::RATE;
         $can_purchase = $balance >= $rate * $min_balance;
@@ -55,7 +55,7 @@ class OrderController extends Controller
 
         // Prepare service name mappings
         $decodedSmsPoolServices = json_decode($smsPoolServices, true);
-        $decodedDaisyServices = json_decode($daisyServices['response'], true);
+        $decodedDaisyServices = isset($daisyServices['response']) ? json_decode($daisyServices['response'], true) : [];
 
         // Update the prices for 'tg' and 'wa' in the daisyServices array
         foreach ($decodedDaisyServices as $key => &$serviceDatas) {
