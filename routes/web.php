@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
+use App\Models\Config;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +25,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index');
+    $globalMessage = Config::where('key', 'global_message')->first()->value ?? "Welcome to TextPlug!";
+    return view('index', compact('globalMessage'));
 });
 
 Route::get('/login', function () {
@@ -117,3 +119,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     Route::get("/logout", [AdminAuthController::class, 'logout'])->name("logout");
 });
+
+// Route::get('/import-users', function () {
+//     return view('import-users');
+// });
+
+// Route::post('/import-users', [UserController::class, 'import'])->name('import-users');
+
+// Route::post('/verify-users', [UserController::class, 'verify'])->name('verify-users');
+
+// Route::post('/credit-users', [UserController::class, 'processWalletCredits'])->name('credit-users');

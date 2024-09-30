@@ -30,9 +30,18 @@
     <link rel="stylesheet" href="/css/font.css">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 
 <body class="w-full items-center justify-center leading-relaxed tracking-wide flex flex-col overflow-x-hidden">
+    <script>
+        Swal.fire({
+            title: 'Welcome to TextPlug!',
+            text: "{{ $globalMessage }}",
+            icon: 'success',
+            confirmButtonText: 'Get Started'
+        });
+    </script>
     @if (session('success'))
         <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script>
