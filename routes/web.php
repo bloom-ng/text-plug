@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $globalMessage = Config::where('key', 'global_message')->first()->value ?? "Welcome to TextPlug!";
+    $globalMessage = Config::where('key', 'global_message')->first()->value ?? null;
     return view('index', compact('globalMessage'));
 });
 
