@@ -48,7 +48,7 @@
             <div class="flex flex-col ml-6 mr-5 mt-5 lg:ml-6 rounded-md">
                 <div class="flex flex-col">
                     <p class="text-[16px] font-bold">Amount</p>
-                    <input type="number" min="500" name="amount"
+                    <input type="number" min="500" value="500" name="amount"
                         class="rounded-md border border-[#D9D9D9D9] bg-[#FCFCFD] p-2">
                 </div>
             </div>
