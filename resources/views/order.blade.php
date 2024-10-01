@@ -226,6 +226,7 @@
         const numberPrice = document.getElementById('numberPrice');
         const availableNumbers = document.getElementById('availableNumbers');
         const smsPoolPrice = document.getElementById('sms_pool_price');
+        const purchaseButton = document.getElementById('purchaseButton');
 
         let fetchTimeout;
 
@@ -245,6 +246,18 @@
                 }).then(response => response.json()).then(data => {
                     numberPrice.innerHTML = data.price;
                     smsPoolPrice.value = data.price;
+
+                    const price = data.price;
+                    const balance = {{ $balance }};
+                    const currentPrice = parseFloat(price);
+
+                    if (currentPrice > balance) {
+                        purchaseButton.disabled = true;
+                        purchaseButton.textContent = 'Insufficient Funds';
+                    } else {
+                        purchaseButton.disabled = false;
+                        purchaseButton.textContent = 'Purchase';
+                    }
                 });
 
                 fetch('/user/order/check-available-number', {
@@ -267,13 +280,32 @@
         service.addEventListener('change', fetchPriceAndAvailability);
     </script>
 
+    {{-- <script>
+        const price = document.getElementById('numberPrice').innerHTML;
+        const balance = {{ $balance }};
+        const canPurchase = document.getElementById('canPurchase');
+
+
+        price.addEventListener('change', function() {
+            console.log(price);
+            console.log(balance);
+
+            const currentPrice = parseFloat(price.textContent);
+            if (currentPrice > balance) {
+                canPurchase.textContent = 'No, you do not have enough balance.';
+            } else {
+                canPurchase.textContent = 'Yes, you have enough balance.';
+            }
+        });
+    </script> --}}
+
     <script>
         $(document).ready(function() {
             $('#smsPoolService').select2({
                 placeholder: 'Search or select a service',
                 allowClear: true,
                 width: '100%'
-            }).on('change', function() {
+            }).on('change', async function() {
                 fetchPriceAndAvailability();
             });
 
@@ -289,7 +321,7 @@
                 placeholder: 'Search or select a service',
                 allowClear: true,
                 width: '100%'
-            });
+            })
         });
     </script>
 </x-user-layout>

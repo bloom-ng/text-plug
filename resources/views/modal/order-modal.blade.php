@@ -139,29 +139,6 @@
             </div>
         </div>
 
-        <div class="flex flex-row bg-[#DF5C0C1A] rounded-xl lg:w-[94%] w-[90%] h-full ml-6 lg:mt-6 mt-5">
-            <div class="flex-row lg:mt-20 mt-[157px] ml-4">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                    xmlns="http://www.w3.org/2000/svg" class="items-center">
-                    <path
-                        d="M9 0.75C4.425 0.75 0.75 4.425 0.75 9C0.75 13.575 4.425 17.25 9 17.25C13.575 17.25 17.25 13.575 17.25 9C17.25 4.425 13.575 0.75 9 0.75ZM10.125 14.25H7.875V8.25H10.125V14.25ZM9 6.75C8.175 6.75 7.5 6.075 7.5 5.25C7.5 4.425 8.175 3.75 9 3.75C9.825 3.75 10.5 4.425 10.5 5.25C10.5 6.075 9.825 6.75 9 6.75Z"
-                        fill="#9E9E9E" />
-                </svg>
-            </div>
-            <div class="mt-3 ml-4 lg:ml-6 lg:mr-4 mr-2 mb-3 leading-loose">
-                <p class="dm-sans-regular text-[14px]"><strong>1.</strong> If you do not receive SMS within 25
-                    minutes you'll be refunded.</p>
-                <p class="dm-sans-regular text-[14px]"><strong>2.</strong> You can use phone number to verify
-                    account only bought service, different SMS will rejected.</p>
-                <p class="dm-sans-regular text-[14px]"><strong>3.</strong> Forbidden to use the service for any
-                    illegal purposes as well as not to take actions that harm the service and (or) third parties.
-                </p>
-                <p class="dm-sans-regular text-[14px]"><strong>4.</strong> All phone numbers are temporary (not
-                    permanent), when sms has been received with phone number it'll become invalid.category and start
-                    performing tasks to earn money.</p>
-            </div>
-        </div>
-
         <form id="orderForm" action="/user/orders" method="post">
             @csrf
             <div class="flex flex-col ml-6 mr-5 mt-5 lg:ml-6 rounded-md">
@@ -275,20 +252,40 @@
             </div>
 
             <div class="flex justify-end items-end mb-4">
-                <script>
-                    console.log($can_purchase);
-                </script>
-                @if ($can_purchase)
-                    <button type="submit"
+                @if (!$can_purchase)
+                    <button id="purchaseButton" type="submit"
                         class="bg-[#DF5C0C]/100 cursor-pointer lg:mt-5 mt-3 lg:w-[180px] lg:h-[49px] text-white lg:py-2 p-2 rounded-lg dm-sans-extrabold text[12px] mr-6">
                         Order Now
                     </button>
-                    {{-- @else
+                @else
                     <a href="/user/wallet"
                         class="bg-[#DF5C0C]/100 cursor-pointer lg:mt-5 mt-3 lg:w-[180px] lg:h-[49px] text-white lg:py-2 p-2 rounded-lg dm-sans-extrabold text[12px] mr-6 inline-block text-center">
                         Fund Wallet
-                    </a> --}}
+                    </a>
                 @endif
+            </div>
+
+            <div class="mb-5 flex flex-row bg-[#DF5C0C1A] rounded-xl lg:w-[94%] w-[90%] h-fit ml-6 lg:mt-6 mt-5">
+                <div class="flex-row lg:mt-20 mt-[157px] ml-4">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                        xmlns="http://www.w3.org/2000/svg" class="items-center">
+                        <path
+                            d="M9 0.75C4.425 0.75 0.75 4.425 0.75 9C0.75 13.575 4.425 17.25 9 17.25C13.575 17.25 17.25 13.575 17.25 9C17.25 4.425 13.575 0.75 9 0.75ZM10.125 14.25H7.875V8.25H10.125V14.25ZM9 6.75C8.175 6.75 7.5 6.075 7.5 5.25C7.5 4.425 8.175 3.75 9 3.75C9.825 3.75 10.5 4.425 10.5 5.25C10.5 6.075 9.825 6.75 9 6.75Z"
+                            fill="#9E9E9E" />
+                    </svg>
+                </div>
+                <div class="mt-3 ml-4 lg:ml-6 lg:mr-4 mr-2 mb-3 leading-loose">
+                    <p class="dm-sans-regular text-[14px]"><strong>1.</strong> If you do not receive SMS within 25
+                        minutes you'll be refunded.</p>
+                    <p class="dm-sans-regular text-[14px]"><strong>2.</strong> You can use phone number to verify
+                        account only bought service, different SMS will rejected.</p>
+                    <p class="dm-sans-regular text-[14px]"><strong>3.</strong> Forbidden to use the service for any
+                        illegal purposes as well as not to take actions that harm the service and (or) third parties.
+                    </p>
+                    <p class="dm-sans-regular text-[14px]"><strong>4.</strong> All phone numbers are temporary (not
+                        permanent), when sms has been received with phone number it'll become invalid.category and start
+                        performing tasks to earn money.</p>
+                </div>
             </div>
         </form>
     </div>
@@ -345,17 +342,34 @@
         const selectedOption = selectElement.options[selectElement.selectedIndex];
         const cost = selectedOption.getAttribute('data-cost');
 
+        const purchaseButton = document.getElementById('purchaseButton');
+        const balance = {{ $balance }};
+
         fetch('/get-rate')
             .then(response => response.json())
             .then(data => {
                 const rate = data.rate;
                 const finalPrice = cost ? (parseFloat(cost) * rate).toFixed(2) : '0';
                 document.getElementById('numberPrice').innerHTML = finalPrice;
+
+                var newPrice = finalPrice;
+
+                console.log(newPrice, "Current Price");
+                console.log(balance, "Balance");
+
+                if (newPrice > balance) {
+                    purchaseButton.disabled = true;
+                    purchaseButton.textContent = 'Insufficient Funds';
+                } else {
+                    purchaseButton.disabled = false;
+                    purchaseButton.textContent = 'Purchase';
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
                 const finalPrice = cost ? parseFloat(cost) : '0';
                 document.getElementById('numberPrice').innerHTML = finalPrice;
             });
+
     }
 </script>

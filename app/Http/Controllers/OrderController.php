@@ -32,8 +32,8 @@ class OrderController extends Controller
         $balance = User::where('id', Auth::user()->id)->first()->walletBalance();
         $min_balance = Config::where('key', 'min_balance')->value('value') ??  Config::MINIMUMBALANCEUSD;
         $rate = Config::where('key', 'rate')->value('value') ??  Config::RATE;
-        $can_purchase = $balance >= $rate;
-        // $can_purchase = $balance >= $rate * $min_balance;
+        // $can_purchase = $balance >= $rate;
+        $can_purchase = $balance >= $rate * $min_balance;
 
         $query = Order::where('user_id', Auth::user()->id);
 
@@ -125,7 +125,8 @@ class OrderController extends Controller
             'smsPoolServices' => $decodedSmsPoolServices,
             'smsPoolCountries' => json_decode($smsPoolCountries, true),
             'can_purchase' => $can_purchase,
-            'orders' => $paginatedOrders
+            'orders' => $paginatedOrders,
+            'balance' => $balance,
         ]);
     }
 
