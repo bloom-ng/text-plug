@@ -55,7 +55,7 @@ class OrderController extends Controller
         $orders = $query->get();
 
         // Prepare service name mappings
-        $decodedSmsPoolServices = json_decode($smsPoolServices, true);
+        $decodedSmsPoolServices = json_decode($smsPoolServices, true) ?? [];
         $decodedDaisyServices = isset($daisyServices['response']) ? json_decode($daisyServices['response'], true) : [];
 
         // Update the prices for 'tg' and 'wa' in the daisyServices array
