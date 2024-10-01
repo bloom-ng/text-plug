@@ -29,6 +29,10 @@ Route::get('/', function () {
     return view('index', compact('globalMessage'));
 });
 
+Route::get('/dashboard', function () {
+    return redirect('/');
+});
+
 Route::get('/login', function () {
     return view('login');
 })->name('login');

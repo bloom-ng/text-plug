@@ -47,8 +47,11 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // Login the user after creation
+        Auth::login($user);
+
         // Redirect to a success page or the login page
-        return redirect('/')->with('success', 'Account registered successfully. Please log in.');
+        return redirect('/user/dashboard')->with('success', 'Account registered successfully.');
     }
 
     public function logout(Request $request)

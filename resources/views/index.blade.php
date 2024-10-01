@@ -32,6 +32,7 @@
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script defer src="https://static.getbutton.io/widget/bundle.js?id=hnXnK"></script>
 </head>
 
 <body class="w-full items-center justify-center leading-relaxed tracking-wide flex flex-col overflow-x-hidden">

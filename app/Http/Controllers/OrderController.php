@@ -29,10 +29,11 @@ class OrderController extends Controller
         $daisyServices = $this->daisyService->listServicesWithPrices();
         $smsPoolCountries = $this->smsPoolService->getCountries();
 
-        $balance = User::where('id', Auth::user()->id)->first()->walletBalance() ?? 0;
+        $balance = User::where('id', Auth::user()->id)->first()->walletBalance();
         $min_balance = Config::where('key', 'min_balance')->value('value') ??  Config::MINIMUMBALANCEUSD;
         $rate = Config::where('key', 'rate')->value('value') ??  Config::RATE;
-        $can_purchase = $balance >= $rate * $min_balance;
+        $can_purchase = $balance >= $rate;
+        // $can_purchase = $balance >= $rate * $min_balance;
 
         $query = Order::where('user_id', Auth::user()->id);
 

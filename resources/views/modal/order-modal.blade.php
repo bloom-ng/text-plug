@@ -275,16 +275,19 @@
             </div>
 
             <div class="flex justify-end items-end mb-4">
+                <script>
+                    console.log($can_purchase);
+                </script>
                 @if ($can_purchase)
                     <button type="submit"
                         class="bg-[#DF5C0C]/100 cursor-pointer lg:mt-5 mt-3 lg:w-[180px] lg:h-[49px] text-white lg:py-2 p-2 rounded-lg dm-sans-extrabold text[12px] mr-6">
                         Order Now
                     </button>
-                @else
+                    {{-- @else
                     <a href="/user/wallet"
                         class="bg-[#DF5C0C]/100 cursor-pointer lg:mt-5 mt-3 lg:w-[180px] lg:h-[49px] text-white lg:py-2 p-2 rounded-lg dm-sans-extrabold text[12px] mr-6 inline-block text-center">
                         Fund Wallet
-                    </a>
+                    </a> --}}
                 @endif
             </div>
         </form>
