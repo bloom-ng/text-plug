@@ -105,13 +105,13 @@
             </svg>
         </a> --}}
 
-        <iframe class="lg:hidden block self-center w-full h-auto" width="560" height="315"
-            src="{{ $youtube }}" title="YouTube video player" frameborder="0"
+        <iframe class="lg:hidden block self-center w-full" width="560" height="400" src="{{ $youtube }}"
+            title="YouTube video player" frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
 
-    <iframe class="hidden lg:block w-full h-auto" width="560" height="315" src="{{ $youtube }}"
+    <iframe class="hidden lg:block w-full" width="560" height="500" src="{{ $youtube }}"
         title="YouTube video player" frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
