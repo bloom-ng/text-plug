@@ -214,6 +214,7 @@ class WalletController extends Controller
             ]);
 
         Log::info('Transaction verification attempt for ID: ' . $transaction['id']);
+        Log::info('Transaction response body: ' . $response->body());
 
         if ($response->successful() && $response['data']['status'] == 'successful') {
             Wallet::create(['user_id' => $transaction['user_id'], 'amount' => $transaction['amount'], 'type' => Wallet::CREDIT]);
