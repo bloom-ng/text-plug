@@ -242,7 +242,34 @@ class WalletController extends Controller
             try {
                 $this->adminVerify($transaction);
             } catch (\Exception $e) {
-                if ($e->getCode() == 400) {
+                if ($e->getCode() == 400 && str_contains(strtolower($e->getMessage()), 'no transaction was found')) {
+                    $transaction->update([
+                        'status' => Transaction::PAYMENT_FAILED
+                    ]);
+                    Log::error('Transaction ID: ' . $transaction['id'] . ' verification failed due to a 400 error: ' . $e->getMessage());
+                }
+
+                Log::error('Transaction ID: ' . $transaction['id'] . ' verification failed due to an error: ' . $e->getMessage());
+
+                continue;
+            }
+        }
+
+        return;
+    }
+
+    public function checkFailed(Request $request)
+    {
+        $transactions = Transaction::where('status', Transaction::PAYMENT_FAILED)
+            ->where('updated_at', '<', now()->subDays(1))
+            ->latest()
+            ->get();
+
+        foreach ($transactions as $transaction) {
+            try {
+                $this->adminVerify($transaction);
+            } catch (\Exception $e) {
+                if ($e->getCode() == 400 && str_contains(strtolower($e->getMessage()), 'no transaction was found')) {
                     $transaction->update([
                         'status' => Transaction::PAYMENT_FAILED
                     ]);
