@@ -364,13 +364,22 @@ class OrderController extends Controller
             // Update the order stats for each service
             if ($order->server == 'server_2') {
                 $response = $this->daisyService->getCode($order->order_id);
-                $this->daisyService->checkPendingStatus($order, $response, $rate);
-                Log::info('Daisy service checkPendingStatus ran for order ID: ' . $order->order_id);
+                try {
+                    $this->daisyService->checkPendingStatus($order, $response, $rate);
+                    Log::info('Daisy service checkPendingStatus ran for order ID: ' . $order->order_id);
+                } catch (\Exception $e) {
+                    Log::error('Daisy service checkPendingStatus failed for order ID: ' . $order->order_id . ' with error: ' . $e->getMessage());
+                    continue;
+                }
             } else {
                 $response = $this->smsPoolService->checkSMS($order->order_id);
-
-                $this->smsPoolService->checkStatus($order, $response, $rate);
-                Log::info('SMS Pool service checkStatus ran for order ID: ' . $order->order_id);
+                try {
+                    $this->smsPoolService->checkStatus($order, $response, $rate);
+                    Log::info('SMS Pool service checkStatus ran for order ID: ' . $order->order_id);
+                } catch (\Exception $e) {
+                    Log::error('SMS Pool service checkStatus failed for order ID: ' . $order->order_id . ' with error: ' . $e->getMessage());
+                    continue;
+                }
             }
             $order->save();
         }
