@@ -207,28 +207,29 @@ class WalletController extends Controller
 
     private function adminVerify(Transaction $transaction)
     {
+        // dump($transaction['reference_id']);
         $response = Http::retry(3)->withToken($this->apiKey, 'Bearer')
             ->get('https://api.flutterwave.com/v3/transactions/verify_by_reference/', [
-                'txref' => $transaction->reference_id
+                'tx_ref' => $transaction['reference_id']
             ]);
 
-        Log::info('Transaction verification attempt for ID: ' . $transaction->id);
+        Log::info('Transaction verification attempt for ID: ' . $transaction['id']);
 
         if ($response->successful() && $response['data']['status'] == 'successful') {
-            Wallet::create(['user_id' => $transaction->user_id, 'amount' => $transaction->amount, 'type' => Wallet::CREDIT]);
+            Wallet::create(['user_id' => $transaction['user_id'], 'amount' => $transaction['amount'], 'type' => Wallet::CREDIT]);
 
             $transaction->update([
                 'status' => Transaction::PAYMENT_SUCCESSFUL
             ]);
 
-            Log::info('Transaction ID: ' . $transaction->id . ' verification successful');
+            Log::info('Transaction ID: ' . $transaction['id'] . ' verification successful');
             return;
         } else {
             $transaction->update([
                 'status' => Transaction::PAYMENT_FAILED
             ]);
 
-            Log::error('Transaction ID: ' . $transaction->id . ' verification failed');
+            Log::error('Transaction ID: ' . $transaction['id'] . ' verification failed');
             return;
         }
     }
@@ -238,7 +239,12 @@ class WalletController extends Controller
         $transactions = Transaction::where('status', Transaction::PAYMENT_PENDING)->get();
 
         foreach ($transactions as $transaction) {
-            $this->adminVerify($transaction);
+            try {
+                $this->adminVerify($transaction);
+            } catch (\Exception $e) {
+                Log::error('Transaction ID: ' . $transaction['id'] . ' verification failed due to an error: ' . $e->getMessage());
+                continue;
+            }
         }
 
         return;
