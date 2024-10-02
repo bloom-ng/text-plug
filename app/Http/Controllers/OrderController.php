@@ -11,6 +11,7 @@ use App\Services\DaisyService;
 use App\Services\SmsPoolService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -352,5 +353,28 @@ class OrderController extends Controller
         return response()->json([
             'availableNumbers' => $response['amount'],
         ], 200);
+    }
+
+    public function verifyPendingOrders(Request $request)
+    {
+        $rate = Config::where('key', 'rate')->value('value') ??  Config::RATE;
+
+        $pending_orders = Order::where('status', Order::ORDER_PENDING)->get();
+        foreach ($pending_orders as $order) {
+            // Update the order stats for each service
+            if ($order->server == 'server_2') {
+                $response = $this->daisyService->getCode($order->order_id);
+                $this->daisyService->checkPendingStatus($order, $response, $rate);
+                Log::info('Daisy service checkPendingStatus ran for order ID: ' . $order->order_id);
+            } else {
+                $response = $this->smsPoolService->checkSMS($order->order_id);
+
+                $this->smsPoolService->checkStatus($order, $response, $rate);
+                Log::info('SMS Pool service checkStatus ran for order ID: ' . $order->order_id);
+            }
+            $order->save();
+        }
+
+        return;
     }
 }

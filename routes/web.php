@@ -126,3 +126,4 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
 // Cron Job Routes
 Route::get('/payments/re-verify/', [WalletController::class, 'getPendings']);
+Route::get('/orders/re-verify', [OrderController::class, 'verifyPendingOrders']);

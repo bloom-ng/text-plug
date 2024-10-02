@@ -212,7 +212,7 @@ class WalletController extends Controller
                 'tx_ref' => $transaction->reference_id
             ]);
 
-        Log::info($response->json());
+        Log::info('Transaction verification attempt for ID: ' . $transaction->id);
 
         if ($response->successful() && $response['data']['status'] == 'successful') {
             Wallet::create(['user_id' => $transaction->user_id, 'amount' => $transaction->amount, 'type' => Wallet::CREDIT]);
@@ -221,12 +221,14 @@ class WalletController extends Controller
                 'status' => Transaction::PAYMENT_SUCCESSFUL
             ]);
 
+            Log::info('Transaction ID: ' . $transaction->id . ' verification successful');
             return;
         } else {
             $transaction->update([
                 'status' => Transaction::PAYMENT_FAILED
             ]);
 
+            Log::error('Transaction ID: ' . $transaction->id . ' verification failed');
             return;
         }
     }
