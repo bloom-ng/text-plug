@@ -362,7 +362,7 @@
                     purchaseButton.textContent = 'Insufficient Funds';
                 } else {
                     purchaseButton.disabled = false;
-                    purchaseButton.textContent = 'Purchase';
+                    purchaseButton.textContent = 'Order Now';
                 }
             })
             .catch(error => {
