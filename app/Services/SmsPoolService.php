@@ -191,4 +191,56 @@ class SmsPoolService
             ], 200);
         }
     }
+
+    public function checkCronPendingStatus($order, $response, $rate)
+    {
+        if ($response['status'] == 3) {
+            //if sms exist then return
+            $order->status = Order::ORDER_DONE;
+            $order->save();
+
+            $sms = new SmsCode();
+            $sms->user_id = $order->user_id;
+            $sms->order_id = $order->id;
+            $sms->code = $response['sms'];
+            $sms->message = $response['full_sms'];
+            $sms->save();
+
+            return response()->json([
+                'status' => 'success',
+                'number' => $order['phone_number'],
+                'service' => $order['service'],
+                'status' => $order['status'],
+                'message' => $smsExist['message'] ?? '',
+                'created_at' => date("d-m-Y", strtotime($order['created_at']))
+            ], 200);
+        } else if ($response['status'] == 6) {
+            $order->status = Order::ORDER_REFUNDED;
+            $order->save();
+
+            //TODO: refund user balance
+            Wallet::create(['user_id' => $order->user_id, 'amount' => $order->price * $rate, 'type' => Wallet::REFUND]);
+
+            return response()->json([
+                'status' => 'success',
+                'number' => $order['phone_number'],
+                'service' => $order['service'],
+                'status' => $order['status'],
+                'message' => '',
+                'created_at' => date("d-m-Y", strtotime($order['created_at']))
+            ], 200);
+        } else {
+            $order->status = Order::ORDER_PENDING;
+            $order->save();
+
+            return response()->json([
+                'status' => 'success',
+                'number' => $order['phone_number'],
+                'service' => $order['service'],
+                'status' => $order['status'],
+                'message' => '',
+                'created_at' => date("d-m-Y", strtotime($order['created_at']))
+            ], 200);
+        }
+    }
 }

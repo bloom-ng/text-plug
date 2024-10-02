@@ -374,7 +374,7 @@ class OrderController extends Controller
             } else {
                 $response = $this->smsPoolService->checkSMS($order->order_id);
                 try {
-                    $this->smsPoolService->checkStatus($order, $response, $rate);
+                    $this->smsPoolService->checkCronPendingStatus($order, $response, $rate);
                     Log::info('SMS Pool service checkStatus ran for order ID: ' . $order->order_id);
                 } catch (\Exception $e) {
                     Log::error('SMS Pool service checkStatus failed for order ID: ' . $order->order_id . ' with error: ' . $e->getMessage());

@@ -201,7 +201,7 @@ class DaisyService
             $order->save();
 
             $sms = new SmsCode();
-            $sms->user_id = Auth::user()->id;
+            $sms->user_id = $order->user_id;
             $sms->order_id = $order->id;
             $sms->code = $response['code'];
             $sms->message = $response['code'];
@@ -218,7 +218,7 @@ class DaisyService
             $order->save();
 
             //TODO: refund user balance
-            Wallet::create(['user_id' => Auth::user()->id, 'amount' => $order->price * $rate, 'type' => Wallet::REFUND]);
+            Wallet::create(['user_id' => $order->user_id, 'amount' => $order->price * $rate, 'type' => Wallet::REFUND]);
 
             return;
         }
