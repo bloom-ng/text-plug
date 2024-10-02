@@ -242,7 +242,15 @@ class WalletController extends Controller
             try {
                 $this->adminVerify($transaction);
             } catch (\Exception $e) {
+                if ($e->getCode() == 400) {
+                    $transaction->update([
+                        'status' => Transaction::PAYMENT_FAILED
+                    ]);
+                    Log::error('Transaction ID: ' . $transaction['id'] . ' verification failed due to a 400 error: ' . $e->getMessage());
+                }
+
                 Log::error('Transaction ID: ' . $transaction['id'] . ' verification failed due to an error: ' . $e->getMessage());
+
                 continue;
             }
         }
