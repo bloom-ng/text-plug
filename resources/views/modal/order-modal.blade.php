@@ -252,17 +252,17 @@
             </div>
 
             <div class="flex justify-end items-end mb-4">
-                @if ($can_purchase)
-                    <button id="purchaseButton" type="submit"
-                        class="bg-[#DF5C0C]/100 cursor-pointer lg:mt-5 mt-3 lg:w-[180px] lg:h-[49px] text-white lg:py-2 p-2 rounded-lg dm-sans-extrabold text[12px] mr-6">
-                        Order Now
-                    </button>
-                @else
+                {{-- @if ($can_purchase) --}}
+                <button id="purchaseButton" type="submit"
+                    class="bg-[#DF5C0C]/100 cursor-pointer lg:mt-5 mt-3 lg:w-[180px] lg:h-[49px] text-white lg:py-2 p-2 rounded-lg dm-sans-extrabold text[12px] mr-6">
+                    Order Now
+                </button>
+                {{-- @else
                     <a href="/user/wallet"
                         class="bg-[#DF5C0C]/100 cursor-pointer lg:mt-5 mt-3 lg:w-[180px] lg:h-[49px] text-white lg:py-2 p-2 rounded-lg dm-sans-extrabold text[12px] mr-6 inline-block text-center">
                         Fund Wallet
                     </a>
-                @endif
+                @endif --}}
             </div>
 
             <div class="mb-5 flex flex-row bg-[#DF5C0C1A] rounded-xl lg:w-[94%] w-[90%] h-fit ml-6 lg:mt-6 mt-5">
@@ -352,12 +352,9 @@
                 const finalPrice = cost ? (parseFloat(cost) * rate).toFixed(2) : '0';
                 document.getElementById('numberPrice').innerHTML = finalPrice;
 
-                var newPrice = finalPrice;
+                // var newPrice = finalPrice;
 
-                console.log(newPrice, "Current Price");
-                console.log(balance, "Balance");
-
-                if (newPrice > balance) {
+                if (finalPrice > balance) {
                     purchaseButton.disabled = true;
                     purchaseButton.textContent = 'Insufficient Funds';
                 } else {

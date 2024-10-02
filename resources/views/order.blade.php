@@ -256,7 +256,7 @@
                         purchaseButton.textContent = 'Insufficient Funds';
                     } else {
                         purchaseButton.disabled = false;
-                        purchaseButton.textContent = 'Purchase';
+                        purchaseButton.textContent = 'Order Now';
                     }
                 });
 
@@ -279,25 +279,6 @@
         country.addEventListener('change', fetchPriceAndAvailability);
         service.addEventListener('change', fetchPriceAndAvailability);
     </script>
-
-    {{-- <script>
-        const price = document.getElementById('numberPrice').innerHTML;
-        const balance = {{ $balance }};
-        const canPurchase = document.getElementById('canPurchase');
-
-
-        price.addEventListener('change', function() {
-            console.log(price);
-            console.log(balance);
-
-            const currentPrice = parseFloat(price.textContent);
-            if (currentPrice > balance) {
-                canPurchase.textContent = 'No, you do not have enough balance.';
-            } else {
-                canPurchase.textContent = 'Yes, you have enough balance.';
-            }
-        });
-    </script> --}}
 
     <script>
         $(document).ready(function() {
