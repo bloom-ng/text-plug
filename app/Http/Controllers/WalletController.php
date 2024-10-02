@@ -239,6 +239,7 @@ class WalletController extends Controller
         $transactions = Transaction::where('status', Transaction::PAYMENT_PENDING)->get();
 
         foreach ($transactions as $transaction) {
+            sleep(5); // Add a 5 second delay before processing each transaction
             try {
                 $this->adminVerify($transaction);
             } catch (\Exception $e) {
@@ -266,6 +267,7 @@ class WalletController extends Controller
             ->get();
 
         foreach ($transactions as $transaction) {
+            sleep(5); // Add a 5 second delay before processing each transaction
             try {
                 $this->adminVerify($transaction);
             } catch (\Exception $e) {
