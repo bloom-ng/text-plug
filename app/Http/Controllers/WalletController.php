@@ -9,6 +9,7 @@ use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class WalletController extends Controller
 {
@@ -202,5 +203,42 @@ class WalletController extends Controller
         Wallet::create(['user_id' => $request->user_id, 'amount' => $request->amount, 'type' => Wallet::DEBIT]);
 
         return redirect('/admin/users')->with('success', 'Wallet debited successfully');
+    }
+
+    private function adminVerify(Transaction $transaction)
+    {
+        $response = Http::retry(3)->withToken($this->apiKey, 'Bearer')
+            ->get('https://api.flutterwave.com/v3/transactions/verify_by_reference/', [
+                'tx_ref' => $transaction->reference_id
+            ]);
+
+        Log::info($response->json());
+
+        if ($response->successful() && $response['data']['status'] == 'successful') {
+            Wallet::create(['user_id' => $transaction->user_id, 'amount' => $transaction->amount, 'type' => Wallet::CREDIT]);
+
+            $transaction->update([
+                'status' => Transaction::PAYMENT_SUCCESSFUL
+            ]);
+
+            return;
+        } else {
+            $transaction->update([
+                'status' => Transaction::PAYMENT_FAILED
+            ]);
+
+            return;
+        }
+    }
+
+    public function getPendings(Request $request)
+    {
+        $transactions = Transaction::where('status', Transaction::PAYMENT_PENDING)->get();
+
+        foreach ($transactions as $transaction) {
+            $this->adminVerify($transaction);
+        }
+
+        return;
     }
 }

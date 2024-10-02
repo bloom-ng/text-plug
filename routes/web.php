@@ -124,12 +124,5 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get("/logout", [AdminAuthController::class, 'logout'])->name("logout");
 });
 
-// Route::get('/import-users', function () {
-//     return view('import-users');
-// });
-
-// Route::post('/import-users', [UserController::class, 'import'])->name('import-users');
-
-// Route::post('/verify-users', [UserController::class, 'verify'])->name('verify-users');
-
-// Route::post('/credit-users', [UserController::class, 'processWalletCredits'])->name('credit-users');
+// Cron Job Routes
+Route::get('/payments/re-verify/', [WalletController::class, 'getPendings']);
