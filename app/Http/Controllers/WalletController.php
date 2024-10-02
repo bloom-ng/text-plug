@@ -209,8 +209,7 @@ class WalletController extends Controller
     {
         $response = Http::retry(3)->withToken($this->apiKey, 'Bearer')
             ->get('https://api.flutterwave.com/v3/transactions/verify_by_reference/', [
-                'id' => $transaction->reference_id
-                // 'tx_ref' => $transaction->reference_id
+                'txref' => $transaction->reference_id
             ]);
 
         Log::info('Transaction verification attempt for ID: ' . $transaction->id);
