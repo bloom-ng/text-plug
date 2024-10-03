@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Http\Controllers\WalletController;
 
 class VerifyPendingTransaction extends Command
 {
@@ -25,6 +26,7 @@ class VerifyPendingTransaction extends Command
      */
     public function handle()
     {
-        //
+        $controller = new WalletController();
+        $controller->getPendings();
     }
 }
