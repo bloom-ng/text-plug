@@ -208,7 +208,7 @@ class WalletController extends Controller
     private function adminVerify(Transaction $transaction)
     {
         // dump($transaction['reference_id']);
-        $response = Http::retry(3)->withToken($this->apiKey, 'Bearer')
+        $response = Http::retry(3, 500)->withToken($this->apiKey, 'Bearer')
             ->get('https://api.flutterwave.com/v3/transactions/verify_by_reference/', [
                 'tx_ref' => $transaction['reference_id']
             ]);
@@ -235,13 +235,13 @@ class WalletController extends Controller
         } 
     }
 
-    public function getPendings(Request $request)
+    public function getPendings()
     {
         ini_set('max_execution_time', 600);
         $transactions = Transaction::where('status', Transaction::PAYMENT_PENDING)->get();
 
         foreach ($transactions as $transaction) {
-            sleep(30); // Add a 5 second delay before processing each transaction
+            sleep(10); // Add a 5 second delay before processing each transaction
             try {
                 $this->adminVerify($transaction);
             } catch (\Exception $e) {
@@ -261,7 +261,7 @@ class WalletController extends Controller
         return;
     }
 
-    public function checkFailed(Request $request)
+    public function checkFailed()
     {
         ini_set('max_execution_time', 600);
         $transactions = Transaction::where('status', Transaction::PAYMENT_FAILED)
@@ -270,7 +270,7 @@ class WalletController extends Controller
             ->get();
 
         foreach ($transactions as $transaction) {
-            sleep(30); // Add a 5 second delay before processing each transaction
+            sleep(10); // Add a 5 second delay before processing each transaction
             try {
                 $this->adminVerify($transaction);
             } catch (\Exception $e) {
