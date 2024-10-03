@@ -236,9 +236,6 @@ class WalletController extends Controller
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Authorization: Bearer ' . $apiKey
         ]);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-            'tx_ref' => $transactionReferenceId
-        ]));
 
         $maxRetries = 3;
         $retries = 0;
