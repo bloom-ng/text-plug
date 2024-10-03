@@ -213,7 +213,7 @@ class WalletController extends Controller
                 'tx_ref' => $transaction['reference_id']
             ]);
 
-        Log::info('Transaction verification attempt for ID: ' . $transaction['id']);
+        Log::info('Transaction verification attempt for ID: ' . $transaction['id'] . ' with reference ID: ' . $transaction['reference_id']);
         Log::info('Transaction response body: ' . $response->body());
 
         if ($response->successful() && $response['data']['status'] == 'successful') {
