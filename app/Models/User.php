@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Wallet;
+use App\Models\Order;
 use Illuminate\Auth\Passwords\CanResetPassword;
 
 class User extends Authenticatable
@@ -73,5 +74,10 @@ class User extends Authenticatable
         $credit = $this->wallets()->where('type', 'credit')->sum('amount');
 
         return $credit;
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }
