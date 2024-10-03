@@ -69,6 +69,8 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     Route::post('/order/check-price', [OrderController::class, 'checkPrice']);
     Route::post('/order/check-available-number', [OrderController::class, 'checkAvailableNumber']);
 
+    Route::get('/payments/re-verify/{transaction}', [WalletController::class, 'userReVerify']);
+
     Route::get('/account', function () {
         $user = auth()->user();
         return view('account', compact('user'));
@@ -113,6 +115,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('/edit-settings/{config}', [ConfigController::class, 'edit']);
     Route::post('/edit-settings/{config}', [ConfigController::class, 'update']);
     // Route::post('/delete-settings/{config}', [ConfigController::class, 'destroy']);
+
+    Route::get('/payments/re-verify/{transaction}', [WalletController::class, 'adminReVerify']);
 
     Route::get('/account', function () {
         $user = auth()->user();

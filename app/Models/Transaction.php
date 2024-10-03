@@ -21,7 +21,7 @@ class Transaction extends Model
     const PAYMENT_SUCCESSFUL = 'successful';
     const PAYMENT_CANCELLED = 'cancelled';
 
-    public function users(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }

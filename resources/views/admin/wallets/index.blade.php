@@ -44,36 +44,94 @@
                 </div>
             </div>
         </div>
-
-        {{-- <div
-            class="flex flex-col bg-[#DF5C0C] w-full lg:w-[30%] lg:h-[292.24px] shadow-xl rounded-xl justify-center items-center mb-4">
-            <svg width="43" height="41" viewBox="0 0 43 41" fill="none" xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink" class="items-center mt-6 w-[43px] h-[41px]">
-                <rect width="43" height="41" fill="url(#pattern0_42_3076)" />
-                <defs>
-                    <pattern id="pattern0_42_3076" patternContentUnits="objectBoundingBox" width="1"
-                        height="1">
-                        <use xlink:href="#image0_42_3076" transform="scale(0.0100775 0.0105691)" />
-                    </pattern>
-                    <image id="image0_42_3076" width="300" height="94"
-                        xlink:href="data:image/png;base64,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" />
-                </defs>
-            </svg>
-            <p class="dm-sans-medium lg:text-[16px] text-[18px] text-[#ffffff] text-center p-2">
-                TextPlug
-            </p>
-            <p class="dm-sans-medium lg:text-[14px] text-[16px] text-[#ffffff] text-center p-2">
-                Need a new number for <br />verification?
-            </p>
-            <a href="/user/orders">
-                <button
-                    class="px-16 py-3 mt-2 dm-sans-medium rounded-lg text-[#DF5C0C] text-[12px] bg-[#ffffff] text-center mb-6">
-                    Buy Now
-                </button>
-            </a>
-        </div> --}}
     </div>
 
+    <div class="flex flex-col bg-white w-full lg:w-[80%] min-h-[600px] mb-4 mt-8 rounded-xl overflow-x-scroll">
+        <div class="flex flex-col md:flex-row">
+            <h1 class="dm-sans-medium text-[22px] text-[#000000] mt-[43px] text-2xl ml-6 font-semibold w-[70%]">
+                Unsuccessful Transactions
+            </h1>
+
+            <form action="/admin/wallet" method="GET" class="flex flex-col md:flex-row">
+                <div class="flex relative ml-5 lg:ml-0 mt-[40px]">
+                    <input type="text" name="transaction_search" placeholder="Search"
+                        value="{{ request('transaction_search') }}"
+                        class="bg-[#F9FBFF] text-[#22222280] dm-sans-regular text-[12px] rounded-lg w-[216px] h-[38px] pl-11 relative" />
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg" class="m-2 W-[24px] h-[24px] absolute">
+                        <path
+                            d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z"
+                            stroke="#7E7E7E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M20.9999 21L16.6499 16.65" stroke="#7E7E7E" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+
+                <div class="flex ml-5">
+                    <select name="sort" onchange="this.form.submit()"
+                        class="dm-sans-regular text-[12px] text-[#7E7E7E] rounded-lg h-[38px] w-[154px] pl-[14px] mr-[50px] mt-[40px] bg-[#F9FBFF] hover:border-[#F9FBFF]">
+                        <option value="newest">Sort by : Newest</option>
+                        <option value="oldest">Sort by : Oldest</option>
+                        <option value="recent">Sort by : Recent</option>
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" ,>
+                            <path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="#3D3C42" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </select>
+                </div>
+            </form>
+        </div>
+
+        <table class="min-w-full mt-8">
+            <thead>
+                <tr class="border-b border-gray-300">
+                    <th class="px-8 py-5 pl-6 text-left text-[#22222280] dm-sans-medium text-[14px]">
+
+                    </th>
+                    <th class="px-8 py-5 text-left text-[#22222280] dm-sans-medium text-[14px]">
+                        Email
+                    </th>
+                    <th class="px-8 py-5 text-left text-[#22222280] dm-sans-medium text-[14px]">
+                        Amount
+                    </th>
+                    <th class="px-8 py-5 text-left text-[#22222280] dm-sans-medium text-[14px]">
+                        Status
+                    </th>
+                    <th class="px-8 py-5 text-left text-[#22222280] dm-sans-medium text-[14px]">
+                        Order Date
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach ($transactions as $transaction)
+                    <tr class="border-b border-gray-300 text-[#222222] dm-sans-medium text-[14px]">
+                        <td class="px-8 py-5 whitespace-nowrap text-green-500">
+                            <a href="/admin/payments/re-verify/{{ $transaction->id }}">Re-Verify</a>
+                        </td>
+                        <td class="px-8 py-5 whitespace-nowrap">{{ $transaction->user->email }}</td>
+                        <td class="px-8 py-5 whitespace-nowrap">
+                            {{ number_format($transaction->amount, 2) }}
+                        </td>
+                        <td class="px-8 py-5 whitespace-nowrap">
+                            {{ $transaction->status == 'pending' ? 'Pending' : 'Failed' }}
+                        </td>
+                        <td class="px-8 py-5 whitespace-nowrap">
+                            {{ \Carbon\Carbon::parse($transaction->created_at)->format('jS F, Y') }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <div class="flex flex-row items-center justify-between mt-5 mb-5">
+            <div class="ml-6">
+                {{ $transactions->links() }}
+            </div>
+        </div>
+    </div>
+
+    {{-- Wallets History --}}
     <div class="flex flex-col bg-white w-full lg:w-[80%] min-h-[600px] mb-4 mt-8 rounded-xl overflow-x-scroll">
         <div class="flex flex-col md:flex-row">
             <h1 class="dm-sans-medium text-[22px] text-[#000000] mt-[43px] text-2xl ml-6 font-semibold w-[70%]">
@@ -132,27 +190,33 @@
             </thead>
 
             <tbody>
-                @foreach ($transactions as $transaction)
+                @foreach ($wallets as $wallet)
                     <tr class="border-b border-gray-300 text-[#222222] dm-sans-medium text-[14px]">
-                        <td class="px-8 py-5 whitespace-nowrap">{{ $transaction->user->email }}</td>
+                        <td class="px-8 py-5 whitespace-nowrap">{{ $wallet->user->email }}</td>
                         <td class="px-8 py-5 whitespace-nowrap">
-                            {{ $transaction->type == 'refund' ? 'Purchase Refunded' : ($transaction->type == 'credit' ? 'Account Funding' : 'Purchased Number') }}
+                            {{ $wallet->type == 'refund' ? 'Purchase Refunded' : ($wallet->type == 'credit' ? 'Account Funding' : 'Purchased Number') }}
                         </td>
                         <td class="px-8 py-5 whitespace-nowrap">
-                            {{ \Carbon\Carbon::parse($transaction->updated_at)->format('jS F, Y') }}</td>
+                            {{ \Carbon\Carbon::parse($wallet->updated_at)->format('jS F, Y') }}</td>
                         <td
-                            class="px-8 py-5 whitespace-nowrap {{ $transaction->type == 'credit' ? 'text-[#00B087]' : ($transaction->type == 'refund' ? 'text-blue-400' : 'text-[#DF5C0C]') }}">
-                            @if ($transaction->type == 'credit')
-                                +{{ number_format($transaction->amount, 2) }}
-                            @elseif ($transaction->type == 'refund')
-                                +{{ number_format($transaction->amount, 2) }} (Refunded)
+                            class="px-8 py-5 whitespace-nowrap {{ $wallet->type == 'credit' ? 'text-[#00B087]' : ($wallet->type == 'refund' ? 'text-blue-400' : 'text-[#DF5C0C]') }}">
+                            @if ($wallet->type == 'credit')
+                                +{{ number_format($wallet->amount, 2) }}
+                            @elseif ($wallet->type == 'refund')
+                                +{{ number_format($wallet->amount, 2) }} (Refunded)
                             @else
-                                -{{ number_format($transaction->amount, 2) }}
+                                -{{ number_format($wallet->amount, 2) }}
                             @endif
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+
+        <div class="flex flex-row items-center justify-between mt-5 mb-5">
+            <div class="ml-6">
+                {{ $wallets->links() }}
+            </div>
+        </div>
     </div>
 </x-admin-dashboard>

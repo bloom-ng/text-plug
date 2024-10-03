@@ -34,15 +34,17 @@ class WalletController extends Controller
             });
         }
 
-        $transactions = $query->latest()->paginate(10);
+        $wallets = $query->latest()->paginate(10);
         $balance = User::where('id', Auth::user()->id)->first()->walletBalance();
         $amount_spent = User::where('id', Auth::user()->id)->first()->amountSpent();
+        $transactions = Transaction::with('user')->where('user_id', Auth::user()->id)->where('status', '!=', Transaction::PAYMENT_SUCCESSFUL)->latest()->paginate();
 
         return view('wallet')->with([
-            'transactions' => $transactions,
+            'wallets' => $wallets,
             'balance' => $balance,
             'amount_spent' => $amount_spent,
-            'search' => $request->input('search')
+            'search' => $request->input('search'),
+            'transactions' => $transactions
         ]);
     }
 
@@ -62,12 +64,26 @@ class WalletController extends Controller
             });
         }
 
-        $transactions = $query->latest()->paginate(10);
+        $wallets = $query->latest()->paginate(10);
         $balance = Wallet::where('type', Wallet::CREDIT)->sum('amount');
         $amount_spent = Wallet::where('type', Wallet::DEBIT)->sum('amount');
+        $transaction = Transaction::with('user')->where('status', '!=', Transaction::PAYMENT_SUCCESSFUL);
 
-        return view('admin.wallets.index', compact('transactions', 'balance', 'amount_spent'))
-            ->with('search', $request->input('search'));
+        if ($request->has('transaction_search')) {
+            $search = $request->input('transaction_search');
+            $transaction->where(function ($q) use ($search) {
+                $q->where('amount', 'like', "%$search%")
+                    ->orWhereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'like', "%$search%")
+                            ->orWhere('email', 'like', "%$search%");
+                    })
+                    ->orWhere('created_at', 'like', "%$search%");
+            });
+        }
+        $transactions = $transaction->latest()->paginate(10);
+
+        return view('admin.wallets.index', compact('transactions', 'wallets', 'balance', 'amount_spent'))
+            ->with('search', $request->input('search'), $request->input('transaction_search'));
     }
 
     public function fundWallet(Request $request)
@@ -203,6 +219,120 @@ class WalletController extends Controller
         Wallet::create(['user_id' => $request->user_id, 'amount' => $request->amount, 'type' => Wallet::DEBIT]);
 
         return redirect('/admin/users')->with('success', 'Wallet debited successfully');
+    }
+
+    public function adminReVerify(Transaction $transaction)
+    {
+        $apiKey = $this->apiKey;
+        $transactionReferenceId = $transaction['reference_id'];
+        $url = 'https://api.flutterwave.com/v3/transactions/verify_by_reference/';
+
+        $ch = curl_init($url);
+        curl_setopt(
+            $ch,
+            CURLOPT_RETURNTRANSFER,
+            true
+        );
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Authorization: Bearer ' . $apiKey
+        ]);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+            'tx_ref' => $transactionReferenceId
+        ]));
+
+        $maxRetries = 3;
+        $retries = 0;
+        $success = false;
+        $response = null;
+
+        while (!$success && $retries < $maxRetries) {
+            $response = curl_exec($ch);
+            $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            if ($statusCode == 200) {
+                $success = true;
+            } else {
+                $retries++;
+                // You may want to add a delay here before retrying
+            }
+        }
+
+        curl_close($ch);
+
+        if (
+            $success && json_decode($response, true)['data']['status'] == 'successful'
+        ) {
+            Wallet::create(['user_id' => $transaction['user_id'], 'amount' => $transaction['amount'], 'type' => Wallet::CREDIT]);
+
+            $transaction->update([
+                'status' => Transaction::PAYMENT_SUCCESSFUL
+            ]);
+
+            return redirect('/admin/wallet')->with('success', 'This payment was successful and has been verified successfully');
+        } else {
+            $transaction->update([
+                'status' => Transaction::PAYMENT_FAILED
+            ]);
+            $errorMessage = json_decode($response, true)['message'] ?? 'Payment verification failed.';
+            return redirect('/admin/wallet')->with('error', $errorMessage);
+        }
+    }
+
+    public function userReVerify(Transaction $transaction)
+    {
+        $apiKey = $this->apiKey;
+        $transactionReferenceId = $transaction['reference_id'];
+        $url = 'https://api.flutterwave.com/v3/transactions/verify_by_reference/';
+
+        $ch = curl_init($url);
+        curl_setopt(
+            $ch,
+            CURLOPT_RETURNTRANSFER,
+            true
+        );
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Authorization: Bearer ' . $apiKey
+        ]);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+            'tx_ref' => $transactionReferenceId
+        ]));
+
+        $maxRetries = 3;
+        $retries = 0;
+        $success = false;
+        $response = null;
+
+        while (!$success && $retries < $maxRetries) {
+            $response = curl_exec($ch);
+            $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            if ($statusCode == 200) {
+                $success = true;
+            } else {
+                $retries++;
+                // You may want to add a delay here before retrying
+            }
+        }
+
+        curl_close($ch);
+
+        if (
+            $success && json_decode($response, true)['data']['status'] == 'successful'
+        ) {
+            Wallet::create(['user_id' => $transaction['user_id'], 'amount' => $transaction['amount'], 'type' => Wallet::CREDIT]);
+
+            $transaction->update([
+                'status' => Transaction::PAYMENT_SUCCESSFUL
+            ]);
+
+            return redirect('/user/wallet')->with('success', 'This payment was successful and has been verified successfully');
+        } else {
+            $transaction->update([
+                'status' => Transaction::PAYMENT_FAILED
+            ]);
+            $errorMessage = json_decode($response, true)['message'] ?? 'Payment verification failed.';
+            return redirect('/user/wallet')->with('error', $errorMessage);
+        }
     }
 
     private function adminVerify(Transaction $transaction)
