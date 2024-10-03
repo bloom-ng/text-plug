@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class RefundService
 {
@@ -56,11 +57,10 @@ class RefundService
         Wallet::create([
             'user_id' => $user->id,
             'amount' => $amount,
-            'type' => 'refunded',
-            'description' => 'Refund adjustment for orders'
+            'type' => Wallet::REFUND,
         ]);
 
         // Log the refund creation
-        logger()->info("Created wallet refund for user {$user->id} for the amount of {$amount}");
+        Log::info("Created wallet refund for user {$user->id} for the amount of {$amount}");
     }
 }
