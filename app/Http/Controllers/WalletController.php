@@ -334,16 +334,45 @@ class WalletController extends Controller
 
     private function adminVerify(Transaction $transaction)
     {
-        // dump($transaction['reference_id']);
-        $response = Http::retry(3, 500)->withToken($this->apiKey, 'Bearer')
-            ->get('https://api.flutterwave.com/v3/transactions/verify_by_reference/', [
-                'tx_ref' => $transaction['reference_id']
-            ]);
+        $apiKey = $this->apiKey;
+        $transactionReferenceId = $transaction['reference_id'];
+        $url = 'https://api.flutterwave.com/v3/transactions/verify_by_reference/?tx_ref=' . $transactionReferenceId;
+
+        $ch = curl_init($url);
+        curl_setopt(
+            $ch,
+            CURLOPT_RETURNTRANSFER,
+            true
+        );
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Authorization: Bearer ' . $apiKey
+        ]);
+
+        $maxRetries = 3;
+        $retries = 0;
+        $success = false;
+        $response = null;
+
+        while (!$success && $retries < $maxRetries) {
+            $response = curl_exec($ch);
+            $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            if ($statusCode == 200) {
+                $success = true;
+            } else {
+                $retries++;
+                // You may want to add a delay here before retrying
+            }
+        }
+
+        curl_close($ch);
 
         Log::info('Transaction verification attempt for ID: ' . $transaction['id'] . ' with reference ID: ' . $transaction['reference_id']);
-        Log::info('Transaction response body: ' . $response->body());
+        // Log::info('Transaction response body: ' . $response->body());
 
-        if ($response->successful() && $response['data']['status'] == 'successful') {
+        if (
+            $success && json_decode($response, true)['data']['status'] == 'successful'
+        ) {
             Wallet::create(['user_id' => $transaction['user_id'], 'amount' => $transaction['amount'], 'type' => Wallet::CREDIT]);
 
             $transaction->update([
@@ -352,7 +381,7 @@ class WalletController extends Controller
 
             Log::info('Transaction ID: ' . $transaction['id'] . ' verification successful');
             return;
-        } elseif ($response->successful() && $response['data']['status'] == 'failed') {
+        } else {
             $transaction->update([
                 'status' => Transaction::PAYMENT_FAILED
             ]);
@@ -360,6 +389,32 @@ class WalletController extends Controller
             Log::error('Transaction ID: ' . $transaction['id'] . ' verification failed');
             return;
         }
+
+        // $response = Http::retry(3, 500)->withToken($this->apiKey, 'Bearer')
+        //     ->get('https://api.flutterwave.com/v3/transactions/verify_by_reference/', [
+        //         'tx_ref' => $transaction['reference_id']
+        //     ]);
+
+        // Log::info('Transaction verification attempt for ID: ' . $transaction['id'] . ' with reference ID: ' . $transaction['reference_id']);
+        // Log::info('Transaction response body: ' . $response->body());
+
+        // if ($response->successful() && $response['data']['status'] == 'successful') {
+        //     Wallet::create(['user_id' => $transaction['user_id'], 'amount' => $transaction['amount'], 'type' => Wallet::CREDIT]);
+
+        //     $transaction->update([
+        //         'status' => Transaction::PAYMENT_SUCCESSFUL
+        //     ]);
+
+        //     Log::info('Transaction ID: ' . $transaction['id'] . ' verification successful');
+        //     return;
+        // } elseif ($response->successful() && $response['data']['status'] == 'failed') {
+        //     $transaction->update([
+        //         'status' => Transaction::PAYMENT_FAILED
+        //     ]);
+
+        //     Log::error('Transaction ID: ' . $transaction['id'] . ' verification failed');
+        //     return;
+        // }
     }
 
     public function getPendings()
