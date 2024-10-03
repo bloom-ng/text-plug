@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -259,13 +260,26 @@ class WalletController extends Controller
         if (
             $success && json_decode($response, true)['data']['status'] == 'successful'
         ) {
-            Wallet::create(['user_id' => $transaction['user_id'], 'amount' => $transaction['amount'], 'type' => Wallet::CREDIT]);
+            DB::beginTransaction();
+            try {
+                $transaction->refresh();
+                if ($transaction->status != Transaction::PAYMENT_SUCCESSFUL) {
+                    Wallet::create(['user_id' => $transaction['user_id'], 'amount' => $transaction['amount'], 'type' => Wallet::CREDIT]);
 
-            $transaction->update([
-                'status' => Transaction::PAYMENT_SUCCESSFUL
-            ]);
+                    $transaction->update([
+                        'status' => Transaction::PAYMENT_SUCCESSFUL
+                    ]);
 
-            return redirect('/admin/wallet')->with('success', 'This payment was successful and has been verified successfully');
+                    DB::commit();
+                    return redirect('/admin/wallet')->with('success', 'This payment was successful and has been verified successfully');
+                } else {
+                    DB::rollBack();
+                    return redirect('/admin/wallet')->with('error', 'This payment has already been verified successfully.');
+                }
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return redirect('/admin/wallet')->with('error', 'Failed to verify and credit wallet.');
+            }
         } else {
             $transaction->update([
                 'status' => Transaction::PAYMENT_FAILED
@@ -314,14 +328,26 @@ class WalletController extends Controller
         if (
             $success && json_decode($response, true)['data']['status'] == 'successful'
         ) {
-            // dd("got here");
-            Wallet::create(['user_id' => $transaction['user_id'], 'amount' => $transaction['amount'], 'type' => Wallet::CREDIT]);
+            DB::beginTransaction();
+            try {
+                $transaction->refresh();
+                if ($transaction->status != Transaction::PAYMENT_SUCCESSFUL) {
+                    Wallet::create(['user_id' => $transaction['user_id'], 'amount' => $transaction['amount'], 'type' => Wallet::CREDIT]);
 
-            $transaction->update([
-                'status' => Transaction::PAYMENT_SUCCESSFUL
-            ]);
+                    $transaction->update([
+                        'status' => Transaction::PAYMENT_SUCCESSFUL
+                    ]);
 
-            return redirect('/user/wallet')->with('success', 'This payment was successful and has been verified successfully');
+                    DB::commit();
+                    return redirect('/user/wallet')->with('success', 'This payment was successful and has been verified successfully');
+                } else {
+                    DB::rollBack();
+                    return redirect('/user/wallet')->with('error', 'This payment has already been verified successfully.');
+                }
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return redirect('/user/wallet')->with('error', 'An error occurred while processing your payment.');
+            }
         } else {
             $transaction->update([
                 'status' => Transaction::PAYMENT_FAILED
@@ -373,14 +399,28 @@ class WalletController extends Controller
         if (
             $success && json_decode($response, true)['data']['status'] == 'successful'
         ) {
-            Wallet::create(['user_id' => $transaction['user_id'], 'amount' => $transaction['amount'], 'type' => Wallet::CREDIT]);
+            DB::beginTransaction();
+            try {
+                $transaction->refresh();
 
-            $transaction->update([
-                'status' => Transaction::PAYMENT_SUCCESSFUL
-            ]);
+                if ($transaction->status != Transaction::PAYMENT_SUCCESSFUL) {
+                    Wallet::create(['user_id' => $transaction['user_id'], 'amount' => $transaction['amount'], 'type' => Wallet::CREDIT]);
+                    $transaction->update([
+                        'status' => Transaction::PAYMENT_SUCCESSFUL
+                    ]);
+                    Log::info('Transaction ID: ' . $transaction['id'] . ' verification successful');
+                } else {
+                    DB::rollBack();
+                    Log::info('Transaction ID: ' . $transaction['id'] . ' verification failed. Transaction already successful.');
+                }
 
-            Log::info('Transaction ID: ' . $transaction['id'] . ' verification successful');
-            return;
+                DB::commit();
+                return;
+            } catch (\Exception $e) {
+                DB::rollBack();
+                Log::error('Transaction ID: ' . $transaction['id'] . ' verification failed during wallet credit: ' . $e->getMessage());
+                return;
+            }
         } else {
             $transaction->update([
                 'status' => Transaction::PAYMENT_FAILED
