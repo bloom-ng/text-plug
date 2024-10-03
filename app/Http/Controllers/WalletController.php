@@ -225,7 +225,7 @@ class WalletController extends Controller
     {
         $apiKey = $this->apiKey;
         $transactionReferenceId = $transaction['reference_id'];
-        $url = 'https://api.flutterwave.com/v3/transactions/verify_by_reference/';
+        $url = 'https://api.flutterwave.com/v3/transactions/verify_by_reference/?tx_ref=' . $transactionReferenceId;
 
         $ch = curl_init($url);
         curl_setopt(
@@ -282,7 +282,7 @@ class WalletController extends Controller
     {
         $apiKey = $this->apiKey;
         $transactionReferenceId = $transaction['reference_id'];
-        $url = 'https://api.flutterwave.com/v3/transactions/verify_by_reference/';
+        $url = 'https://api.flutterwave.com/v3/transactions/verify_by_reference/?tx_ref=' . $transactionReferenceId;
 
         $ch = curl_init($url);
         curl_setopt(
@@ -293,9 +293,7 @@ class WalletController extends Controller
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Authorization: Bearer ' . $apiKey
         ]);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-            'tx_ref' => $transactionReferenceId
-        ]));
+
 
         $maxRetries = 3;
         $retries = 0;
@@ -319,6 +317,7 @@ class WalletController extends Controller
         if (
             $success && json_decode($response, true)['data']['status'] == 'successful'
         ) {
+            // dd("got here");
             Wallet::create(['user_id' => $transaction['user_id'], 'amount' => $transaction['amount'], 'type' => Wallet::CREDIT]);
 
             $transaction->update([
@@ -331,6 +330,7 @@ class WalletController extends Controller
                 'status' => Transaction::PAYMENT_FAILED
             ]);
             $errorMessage = json_decode($response, true)['message'] ?? 'Payment verification failed.';
+
             return redirect('/user/wallet')->with('error', $errorMessage);
         }
     }
@@ -362,7 +362,7 @@ class WalletController extends Controller
 
             Log::error('Transaction ID: ' . $transaction['id'] . ' verification failed');
             return;
-        } 
+        }
     }
 
     public function getPendings()

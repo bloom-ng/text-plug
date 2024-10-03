@@ -102,7 +102,7 @@
                 Unsuccessful Transactions
             </h1>
 
-            <form action="/admin/wallet" method="GET" class="flex flex-col md:flex-row">
+            {{-- <form action="/admin/wallet" method="GET" class="flex flex-col md:flex-row">
                 <div class="flex relative ml-5 lg:ml-0 mt-[40px]">
                     <input type="text" name="transaction_search" placeholder="Search"
                         value="{{ request('transaction_search') }}"
@@ -130,7 +130,7 @@
                         </svg>
                     </select>
                 </div>
-            </form>
+            </form> --}}
         </div>
 
         <table class="min-w-full mt-8">
@@ -140,10 +140,10 @@
 
                     </th>
                     <th class="px-8 py-5 text-left text-[#22222280] dm-sans-medium text-[14px]">
-                        Email
+                        Amount
                     </th>
                     <th class="px-8 py-5 text-left text-[#22222280] dm-sans-medium text-[14px]">
-                        Amount
+                        Email
                     </th>
                     <th class="px-8 py-5 text-left text-[#22222280] dm-sans-medium text-[14px]">
                         Status
@@ -160,10 +160,10 @@
                         <td class="px-8 py-5 whitespace-nowrap text-green-500">
                             <a href="/user/payments/re-verify/{{ $transaction->id }}">Re-Verify</a>
                         </td>
-                        <td class="px-8 py-5 whitespace-nowrap">{{ $transaction->user->email }}</td>
                         <td class="px-8 py-5 whitespace-nowrap">
                             {{ number_format($transaction->amount, 2) }}
                         </td>
+                        <td class="px-8 py-5 whitespace-nowrap">{{ $transaction->user->email }}</td>
                         <td class="px-8 py-5 whitespace-nowrap">
                             {{ $transaction->status == 'pending' ? 'Pending' : 'Failed' }}
                         </td>
