@@ -225,14 +225,14 @@ class WalletController extends Controller
 
             Log::info('Transaction ID: ' . $transaction['id'] . ' verification successful');
             return;
-        } else {
+        } elseif ($response->successful() && $response['data']['status'] == 'failed') {
             $transaction->update([
                 'status' => Transaction::PAYMENT_FAILED
             ]);
 
             Log::error('Transaction ID: ' . $transaction['id'] . ' verification failed');
             return;
-        }
+        } 
     }
 
     public function getPendings(Request $request)
