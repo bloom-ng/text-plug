@@ -237,6 +237,7 @@ class WalletController extends Controller
 
     public function getPendings(Request $request)
     {
+        ini_set('max_execution_time', 600);
         $transactions = Transaction::where('status', Transaction::PAYMENT_PENDING)->get();
 
         foreach ($transactions as $transaction) {
@@ -262,6 +263,7 @@ class WalletController extends Controller
 
     public function checkFailed(Request $request)
     {
+        ini_set('max_execution_time', 600);
         $transactions = Transaction::where('status', Transaction::PAYMENT_FAILED)
             ->where('updated_at', '<', now()->subDays(1))
             ->latest()
