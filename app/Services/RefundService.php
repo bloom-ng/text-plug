@@ -22,9 +22,9 @@ class RefundService
     {
         // Step 1: Get all users with their orders
         $users = User::has('orders')->with(['orders' => function ($query) {
-            $query->where('status', 'refunded');
+            $query->where('status', Order::ORDER_REFUNDED);
         }, 'wallets' => function ($query) {
-            $query->where('type', 'refunded');
+            $query->where('type', Wallet::REFUND);
         }])->get();
 
         // Step 2: Loop through each user
@@ -39,6 +39,8 @@ class RefundService
             $totalOrderRefunds = $refundedOrders->sum('price') * $this->rate; // Assuming refund_amount is the field in the Order model
             $totalWalletRefunds = $walletRefunds->sum('amount'); // Assuming amount is the field in the Wallet model
 
+            Log::info('Total Order Refunds: ' . $totalOrderRefunds);
+            Log::info('Total Wallet Refunds: ' . $totalWalletRefunds);
             // Step 3: If order refunds are greater than wallet refunds
             if ($totalOrderRefunds > $totalWalletRefunds) {
                 // Calculate the difference
