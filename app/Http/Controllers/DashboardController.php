@@ -38,12 +38,14 @@ class DashboardController extends Controller
         $orders = Order::all()->count();
         $amount_spent = $debit;
         $received_codes = SmsCode::all()->count();
+        $users = User::all()->count();
 
         return view('admin.index')->with([
             'balance' => $balance,
             'orders' => $orders,
             'amount_spent' => $amount_spent,
             'received_codes' => $received_codes,
+            'users' => $users,
         ]);
     }
 }

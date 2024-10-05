@@ -68,6 +68,27 @@
                         </h1>
                         <p class="ml-4 dm-sans-medium text-[15px] text-[#22222299]">Received Codes</p>
                     </div>
+
+                    <div class="bg-[#d2591d33] w-full h-[138px] shadow-lg mt-7 rounded-xl mb-6">
+                        <svg width="31" height="30" viewBox="-2.4 -2.4 28.80 28.80" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" class="ml-4 mt-4">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0">
+                                <rect x="-2.4" y="-2.4" width="28.80" height="28.80" rx="14.4" fill="#d2591d"
+                                    strokewidth="0"></rect>
+                            </g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <circle cx="12" cy="6" r="4" fill="#fff"></circle>
+                                <path
+                                    d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z"
+                                    fill="#fff"></path>
+                            </g>
+                        </svg>
+                        <h1 class="dm-sans-medium text-[18px] text-[#222222] lg:text-2xl font-semibold mt-2 ml-4">
+                            {{ $users }}
+                        </h1>
+                        <p class="ml-4 dm-sans-medium text-[15px] text-[#22222299]">Total Users</p>
+                    </div>
                 </div>
             </div>
         </div>
