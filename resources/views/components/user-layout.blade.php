@@ -7,6 +7,7 @@
     <title>{{ $pageTitle ?? 'Dashboard' }}</title>
     <meta name="description" content="" />
     <link rel="icon" href="/img/tp_logo.svg" type="image/svg+xml">
+    <script src="//unpkg.com/alpinejs" defer></script>
 
     <!-- Tailwind --><!-- Scripts -->
     <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet" /> --}} -->
