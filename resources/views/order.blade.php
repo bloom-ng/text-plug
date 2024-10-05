@@ -272,6 +272,14 @@
                     })
                 }).then(response => response.json()).then(data => {
                     availableNumbers.innerHTML = data.availableNumbers;
+
+                    if (data.availableNumbers == 0) {
+                        purchaseButton.disabled = true;
+                        purchaseButton.textContent = 'Out of stock';
+                    } else {
+                        purchaseButton.disabled = false;
+                        purchaseButton.textContent = 'Order Now';
+                    }
                 });
             }, 300); // 300ms delay
         }

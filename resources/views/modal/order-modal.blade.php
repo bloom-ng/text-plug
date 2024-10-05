@@ -164,7 +164,7 @@
                         <p class="text-[16px] font-bold">Service</p>
                         <select id="smsPoolService" name="service"
                             class="dm-sans-regular text-[14px] h-[45px] text-[#7E7E7E] bg-[#F9FBFF] border border-[#D9D9D9D9] rounded-md">
-                            <option value="">Search or select a service</option>
+                            <option value="null">Search or select a service</option>
                             @foreach ($smsPoolServices as $service)
                                 <option value="{{ $service['ID'] }}">{{ $service['name'] }}</option>
                             @endforeach
@@ -298,6 +298,7 @@
     let service_2 = document.getElementById('service_2');
     let details = document.getElementById('details');
     let orderForm = document.getElementById('orderForm');
+    // let numberPrice = document.getElementById('numberPrice');
 
     service_1.classList.add('hidden');
     service_2.classList.add('hidden');
@@ -319,6 +320,10 @@
             details.classList.add('hidden');
 
         }
+
+        document.getElementById('numberPrice').innerHTML = 0;
+        document.getElementById('availableNumbers').innerHTML = 0;
+
     });
 
     orderForm.addEventListener('submit', function(e) {
