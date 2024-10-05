@@ -39,11 +39,12 @@
         <table class="min-w-full mt-8">
             <thead>
                 <tr class="border-b border-gray-300">
+                    <th class="px-8 py-5 text-left  text-[#22222280] dm-sans-medium text-[14px]">Action</th>
                     <th class="px-8 py-5 text-left  text-[#22222280] dm-sans-medium text-[14px]">Name</th>
                     <th class="px-8 py-5 text-left  text-[#22222280] dm-sans-medium text-[14px]">Email</th>
+                    <th class="px-8 py-5 text-left  text-[#22222280] dm-sans-medium text-[14px]">Balance</th>
                     <th class="px-8 py-5 text-left  text-[#22222280] dm-sans-medium text-[14px]">Joined On
                     </th>
-                    <th class="px-8 py-5 text-left  text-[#22222280] dm-sans-medium text-[14px]">Action</th>
                 </tr>
             </thead>
 
@@ -51,27 +52,48 @@
             <tbody>
                 @foreach ($users as $user)
                     <tr class="border-b border-gray-300 text-[#222222] dm-sans-medium text-[14px]">
-                        <td class="px-8 py-5 whitespace-nowrap">{{ $user->name }}</td>
-                        <td class="px-8 py-5 whitespace-nowrap">{{ $user->email }}</td>
-                        <td class="px-8 py-5 whitespace-nowrap">{{ date('d-m-Y', strtotime($user->created_at)) }}</td>
+                        <td x-data="{ open: false }" class="relative inline-block text-left px-8 py-5">
+                            <div>
+                                <button @click="open = !open" type="button"
+                                    class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                                    id="menu-button" aria-expanded="true" aria-haspopup="true">
+                                    Manage
+                                    <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor"
+                                        aria-hidden="true" data-slot="icon">
+                                        <path fill-rule="evenodd"
+                                            d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
 
-                        <td class="px-8 py-5 whitespace-nowrap">
-                            <div class="flex flex-row space-x-2">
-                                {{-- <a href="/admin/edit-users/{{ $user->id }}"
-                                    class="text-blue-500 hover:text-blue-700 font-bold mr-2">Manage</a> --}}
-                                <a href="/admin/edit-users/{{ $user->id }}"
-                                    class="text-green-500 hover:text-green-700 font-bold mr-2">Edit</a>
-                                <a href="/admin/credit-users/{{ $user->id }}"
-                                    class="text-blue-500 hover:text-blue-700 font-bold mr-2">Credit</a>
-                                <a href="/admin/debit-users/{{ $user->id }}"
-                                    class="text-orange-500 hover:text-orange-700 font-bold mr-2">Debit</a>
-                                <form action="/admin/delete-users/{{ $user->id }}" method="POST" class="inline">
-                                    @csrf
-                                    <button type="submit"
-                                        class="text-red-500 hover:text-red-700 font-bold mr-2">Delete</button>
-                                </form>
+                            <div x-show="open"
+                                class="absolute right-0 z-10 mt-2 w-fit origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                                <div class="p-4 flex flex-col gap-2" role="none">
+                                    <a href="/admin/edit-users/{{ $user->id }}"
+                                        class="text-gray-500 hover:text-gray-700 font-bold mr-2">Edit</a>
+                                    <a href="/admin/credit-users/{{ $user->id }}"
+                                        class="text-gray-500 hover:text-gray-700 font-bold mr-2">Credit</a>
+                                    <a href="/admin/debit-users/{{ $user->id }}"
+                                        class="text-gray-500 hover:text-gray-700 font-bold mr-2">Debit</a>
+                                    <a href="/admin/user-orders/{{ $user->id }}"
+                                        class="text-gray-500 hover:text-gray-700 font-bold mr-2">Orders</a>
+                                    <a href="/admin/user-transactions/{{ $user->id }}"
+                                        class="text-gray-500 hover:text-gray-700 font-bold mr-2">Transactions</a>
+                                    <form action="/admin/delete-users/{{ $user->id }}" method="POST"
+                                        class="inline">
+                                        @csrf
+                                        <button type="submit"
+                                            class="text-red-500 hover:text-red-700 font-bold mr-2">Delete</button>
+                                    </form>
+                                </div>
                             </div>
                         </td>
+                        <td class="px-8 py-5 whitespace-nowrap">{{ $user->name }}</td>
+                        <td class="px-8 py-5 whitespace-nowrap">{{ $user->email }}</td>
+                        <td class="px-8 py-5 whitespace-nowrap">{{ $user->walletBalance() }}</td>
+                        <td class="px-8 py-5 whitespace-nowrap">{{ date('d-m-Y', strtotime($user->created_at)) }}</td>
                     </tr>
                 @endforeach
             </tbody>

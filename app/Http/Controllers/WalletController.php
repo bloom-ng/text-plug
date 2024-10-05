@@ -511,4 +511,22 @@ class WalletController extends Controller
 
         return;
     }
+
+    public function userTransactions(Request $request, $user)
+    {
+        $query = Transaction::with('user')->where('user_id', $user);
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('amount', 'like', "%$search%")
+                    ->orWhere('created_at', 'like', "%$search%");
+            });
+        }
+
+        $transactions = $query->latest()->paginate(10);
+        $user = User::find($user);
+
+        return view('admin.users.transaction', compact('transactions', 'user'));
+    }
 }

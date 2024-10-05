@@ -386,4 +386,81 @@ class OrderController extends Controller
 
         return;
     }
+
+    public function userOrders(Request $request, $user)
+    {
+        $query = Order::where('user_id', $user)->get();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('amount', 'like', "%$search%")
+                    ->orWhere('status', 'like', "%$search%")
+                    ->orWhere('created_at', 'like', "%$search%");
+            });
+        }
+
+        $response = $this->getServiceName($query, $request);
+
+        $paginatedOrders = $this->paginateOrders($response, $request);
+
+        $orders = $paginatedOrders;
+        $user = User::find($user);
+
+        return view('admin.users.orders', compact('orders', 'user'));
+    }
+
+    protected function getServiceName($orders, $request)
+    {
+        $smsPoolServices = $this->smsPoolService->getServices();
+        $daisyServices = $this->daisyService->listServicesWithPrices();
+
+        // Prepare service name mappings
+        $decodedSmsPoolServices = json_decode($smsPoolServices, true);
+        $decodedDaisyServices = json_decode($daisyServices['response'], true);
+
+        $filteredOrders = $orders->filter(function ($order) use ($request, $decodedSmsPoolServices, $decodedDaisyServices) {
+            if ($order->server === 'server_1') {
+                $serviceName = collect($decodedSmsPoolServices)->firstWhere('ID', $order->service)['name'] ?? $order->service;
+            } else {
+                $serviceName = $order->service;
+                foreach ($decodedDaisyServices as $key => $serviceDatas) {
+                    foreach ($serviceDatas as $serviceKey => $serviceData) {
+                        if ($key == $order->service) {
+                            $serviceName = $serviceData['name'];
+                            break 2;
+                        }
+                    }
+                }
+            }
+            $order->service_name = $serviceName;
+
+            if ($request->has('search')) {
+                $search = strtolower($request->input('search'));
+                return stripos($order->order_id, $search) !== false
+                    || stripos($order->service, $search) !== false
+                    || stripos($order->phone_number, $search) !== false
+                    || stripos($serviceName, $search) !== false;
+            }
+            return true;
+        });
+
+        return $filteredOrders;
+    }
+
+    protected function paginateOrders($filteredOrders, $request)
+    {
+        // Paginate the results manually
+        $page = $request->input('page', 1);
+        $perPage = 10;
+        $paginatedOrders = new \Illuminate\Pagination\LengthAwarePaginator(
+            $filteredOrders->forPage($page, $perPage),
+            $filteredOrders->count(),
+            $perPage,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
+        return $paginatedOrders;
+    }
 }

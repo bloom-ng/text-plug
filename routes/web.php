@@ -104,6 +104,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::post('/debit-users/{user}', [WalletController::class, 'adminDebit']);
     Route::get('/debit-users/{user}', [WalletController::class, 'adminDebitShow']);
 
+    Route::get("/user-orders/{user}", [OrderController::class, 'userOrders']);
+
+    Route::get("/user-transactions/{user}", [WalletController::class, 'userTransactions']);
+
     Route::get('/orders', [OrderController::class, 'adminIndex']);
     Route::get('/orders/{id}', [OrderController::class, 'getCode']);
 
