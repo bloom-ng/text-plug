@@ -222,7 +222,7 @@ class OrderController extends Controller
         if ($validated['server'] == 'server_1') {
             //SMS POOL IMPLEMENTATION
 
-            if ($validated['sms_pool_price'] > Auth::user()->walletBalance()) {
+            if (intval($validated['sms_pool_price']) > Auth::user()->walletBalance()) {
                 return redirect('/user/orders')->with('error', 'Insufficient Balance to order number. Please fund your account and try again.');
             }
 
@@ -242,7 +242,7 @@ class OrderController extends Controller
         } else {
             //DAISY IMPLEMENTATION
 
-            if ($validated['daisy_price'] > Auth::user()->walletBalance()) {
+            if (intval($validated['daisy_price']) > Auth::user()->walletBalance()) {
                 return redirect('/user/orders')->with('error', 'Insufficient Balance to order number. Please fund your account and try again.');
             }
 
