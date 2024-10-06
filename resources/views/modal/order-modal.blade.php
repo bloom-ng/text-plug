@@ -211,6 +211,8 @@
                             </svg>
                         </select>
                     </div>
+
+                    <input type="text" name="daisy_price" id="daisy_price" hidden />
                 </div>
             </div>
 
@@ -346,6 +348,7 @@
     function updateDetailPrice(selectElement) {
         const selectedOption = selectElement.options[selectElement.selectedIndex];
         const cost = selectedOption.getAttribute('data-cost');
+        const daisy_price = document.getElementById('daisy_price');
 
         const purchaseButton = document.getElementById('purchaseButton');
         const balance = {{ $balance }};
@@ -358,6 +361,7 @@
                 document.getElementById('numberPrice').innerHTML = finalPrice;
 
                 // var newPrice = finalPrice;
+                daisy_price.value = finalPrice;
 
                 if (finalPrice > balance) {
                     purchaseButton.disabled = true;

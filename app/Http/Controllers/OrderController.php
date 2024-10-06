@@ -214,12 +214,18 @@ class OrderController extends Controller
             'service' => 'required|string',
             'country' => 'nullable|string',
             'sms_pool_price' => 'nullable|string',
+            'daisy_price' => 'nullable|string',
         ]);
 
         $rate = Config::where('key', 'rate')->value('value') ??  Config::RATE;
 
         if ($validated['server'] == 'server_1') {
             //SMS POOL IMPLEMENTATION
+
+            if ($validated['sms_pool_price'] > Auth::user()->walletBalance()) {
+                return redirect('/user/orders')->with('error', 'Insufficient Balance to order number. Please fund your account and try again.');
+            }
+
             $response = $this->smsPoolService->orderSMS($validated['service'], $validated['country']);
 
             if (str_contains($response, 'Error: ')) {
@@ -235,6 +241,11 @@ class OrderController extends Controller
             $orderId = $response['order_id'];
         } else {
             //DAISY IMPLEMENTATION
+
+            if ($validated['daisy_price'] > Auth::user()->walletBalance()) {
+                return redirect('/user/orders')->with('error', 'Insufficient Balance to order number. Please fund your account and try again.');
+            }
+
             $response = $this->daisyService->rentNumber($validated['service'], null, null);
 
             if ($response['status'] !== 'success') {
