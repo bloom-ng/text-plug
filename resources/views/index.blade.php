@@ -34,6 +34,19 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script defer src="https://static.getbutton.io/widget/bundle.js?id=hnXnK"></script>
     <script type="text/javascript" async src="//l.getsitecontrol.com/pwp3xv54.js"></script>
+
+    <!-- Twitter conversion tracking base code -->
+    <script>
+        ! function(e, t, n, s, u, a) {
+            e.twq || (s = e.twq = function() {
+                    s.exe ? s.exe.apply(s, arguments) : s.queue.push(arguments);
+                }, s.version = '1.1', s.queue = [], u = t.createElement(n), u.async = !0, u.src =
+                'https://static.ads-twitter.com/uwt.js',
+                a = t.getElementsByTagName(n)[0], a.parentNode.insertBefore(u, a))
+        }(window, document, 'script');
+        twq('config', 'oobj0');
+    </script>
+    <!-- End Twitter conversion tracking base code -->
 </head>
 
 <body class="w-full items-center justify-center leading-relaxed tracking-wide flex flex-col overflow-x-hidden">

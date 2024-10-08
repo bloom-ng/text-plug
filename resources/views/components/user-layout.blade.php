@@ -43,6 +43,19 @@
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script type="text/javascript" async src="//l.getsitecontrol.com/pwp3xv54.js"></script>
+    <!-- Twitter conversion tracking base code -->
+    <script>
+        ! function(e, t, n, s, u, a) {
+            e.twq || (s = e.twq = function() {
+                    s.exe ? s.exe.apply(s, arguments) : s.queue.push(arguments);
+                }, s.version = '1.1', s.queue = [], u = t.createElement(n), u.async = !0, u.src =
+                'https://static.ads-twitter.com/uwt.js',
+                a = t.getElementsByTagName(n)[0], a.parentNode.insertBefore(u, a))
+        }(window, document, 'script');
+        twq('config', 'oobj0');
+    </script>
+    <!-- End Twitter conversion tracking base code -->
 </head>
 
 <body class="bg-gray-100 font-family-karla flex w-full">
