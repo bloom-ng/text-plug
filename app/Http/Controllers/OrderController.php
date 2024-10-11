@@ -208,6 +208,8 @@ class OrderController extends Controller
 
     public function order(Request $request)
     {
+        $min_balance = Config::where('key', 'min_balance')->value('value') ??  Config::MINIMUMBALANCEUSD;
+        $rate = Config::where('key', 'rate')->value('value') ??  Config::RATE;
         //validate
         $validated = $request->validate([
             'server' => 'required|string',
@@ -217,7 +219,13 @@ class OrderController extends Controller
             'daisy_price' => 'nullable|string',
         ]);
 
-        $rate = Config::where('key', 'rate')->value('value') ??  Config::RATE;
+        if (Auth::user()->walletBalance() <= 0) {
+            return redirect('/user/orders')->with('error', 'Insufficient Balance to order number. Please fund your account and try again.');
+        }
+
+        if (Auth::user()->walletBalance() <= $min_balance * $rate) {
+            return redirect('/user/orders')->with('error', 'Insufficient Balance to order number. Please fund your account and try again.');
+        }
 
         if ($validated['server'] == 'server_1') {
             //SMS POOL IMPLEMENTATION
