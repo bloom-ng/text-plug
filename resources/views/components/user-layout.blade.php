@@ -375,6 +375,11 @@
                     Sign Out
                 </a>
 
+                <a href="https://socialvault.net"
+                    class="flex items-center py-2 pl-4 nav-item bg-yellow-400 rounded-lg text-white my-4">
+                    SocialVault
+                </a>
+
             </nav>
         </header>
         <!-- /mobile header -->
