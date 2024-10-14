@@ -284,9 +284,9 @@
                     <p class="dm-sans-regular text-[14px]"><strong>3.</strong> Forbidden to use the service for any
                         illegal purposes as well as not to take actions that harm the service and (or) third parties.
                     </p>
-                    <p class="dm-sans-regular text-[14px]"><strong>4.</strong> All phone numbers are temporary (not
-                        permanent), when sms has been received with phone number it'll become invalid.category and start
-                        performing tasks to earn money.</p>
+                    <p class="dm-sans-regular text-[14px]"><strong>4.</strong> Sms codes are only sent once per number
+                        verification so do well to make use of the codes you receive on the website
+                    </p>
                 </div>
             </div>
         </form>

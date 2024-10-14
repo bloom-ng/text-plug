@@ -75,7 +75,7 @@
             <h1 class="flex-row text-3xl plus-jakarta-sans-bold lg:text-[34px] text-center text-[#222222] mt-28">Sign in
                 to your account</h1>
             <h3 class="text-[#222222] text-[18px] dm-sans-regular text-center mt-2 mb-5">Sign in to your TextPlug
-                account to access your secure temporary <br>numbers and manage your account settings.</h3>
+                account to access your secure non-voip <br>numbers and manage your account settings.</h3>
 
 
             <!-- form section -->
