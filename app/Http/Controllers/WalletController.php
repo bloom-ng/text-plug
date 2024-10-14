@@ -6,6 +6,7 @@ use App\Models\Config;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Wallet;
+use App\Services\VerifyPaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -39,6 +40,21 @@ class WalletController extends Controller
         $balance = User::where('id', Auth::user()->id)->first()->walletBalance();
         $amount_spent = User::where('id', Auth::user()->id)->first()->amountSpent();
         $transactions = Transaction::with('user')->where('user_id', Auth::user()->id)->where('status', '!=', Transaction::PAYMENT_SUCCESSFUL)->latest()->paginate();
+
+        $lastTwoTransactions = Transaction::where('user_id', Auth::user()->id)
+            ->where(function ($query) {
+                $query->where('status', Transaction::PAYMENT_PENDING)
+                    ->orWhere('status', Transaction::PAYMENT_FAILED);
+            })
+            ->orderBy('created_at', 'desc')
+            ->take(3)
+            ->get();
+
+        $verification = new VerifyPaymentService();
+
+        foreach ($lastTwoTransactions as $transaction) {
+            $verification->verify($transaction);
+        }
 
         return view('wallet')->with([
             'wallets' => $wallets,

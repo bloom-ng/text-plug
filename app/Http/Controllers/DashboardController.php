@@ -10,6 +10,8 @@ use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Config;
+use App\Models\Transaction;
+use App\Services\VerifyPaymentService;
 
 class DashboardController extends Controller
 {
@@ -21,6 +23,22 @@ class DashboardController extends Controller
         $amount_spent = User::where('id', $user_id)->first()->amountSpent();
         $received_codes = SmsCode::where('user_id', $user_id)->count();
         $youtube = Config::where('key', 'youtube')->first()->value ?? Config::YOUTUBE;
+
+        $lastTwoTransactions = Transaction::where('user_id', $user_id)
+            ->where(function ($query) {
+                $query->where('status', Transaction::PAYMENT_PENDING)
+                    ->orWhere('status', Transaction::PAYMENT_FAILED);
+            })
+            ->orderBy('created_at', 'desc')
+            ->take(3)
+            ->get();
+
+        $verification = new VerifyPaymentService();
+
+        foreach ($lastTwoTransactions as $transaction) {
+            $verification->verify($transaction);
+        }
+
         return view('dashboard')->with([
             'balance' => $balance,
             'orders' => $orders,
