@@ -50,18 +50,6 @@
 </head>
 
 <body class="w-full items-center justify-center leading-relaxed tracking-wide flex flex-col overflow-x-hidden">
-    @if ($globalMessage)
-        <script>
-            Swal.fire({
-                title: 'NOTICE !',
-                text: "{{ $globalMessage }}",
-                icon: 'info',
-                confirmButtonText: 'Get Started',
-                confirmButtonColor: '#DF5C0C',
-            });
-        </script>
-    @endif
-
     @if (session('success'))
         <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script>
@@ -132,8 +120,9 @@
         </div>
     </nav>
 
-    <main class="w-screen h-[80vh] flex items-center justify-center">
-        <button class="text-white bg-orange-500 rounded-lg shadow-sm"
+    <main class="w-screen h-[80vh] flex flex-col items-center justify-center">
+        <h1 class="text-center text-4xl md:text-6xl lg:text-8xl font-bold text-gray-400 mb-6">An error occured</h1>
+        <button class="text-white bg-orange-500 rounded-lg shadow-sm px-6 py-2 text-xl font-medium"
             onclick="window.location.reload();">Reload</button>
     </main>
 
