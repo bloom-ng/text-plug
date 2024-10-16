@@ -43,6 +43,7 @@
                     <th class="px-8 py-5 text-left  text-[#22222280] dm-sans-medium text-[14px]">Service</th>
                     <th class="px-8 py-5 text-left  text-[#22222280] dm-sans-medium text-[14px]">Phone Number
                     </th>
+                    <th class="px-8 py-5 text-left  text-[#22222280] dm-sans-medium text-[14px]">Price</th>
                     <th class="px-8 py-5 text-left  text-[#22222280] dm-sans-medium text-[14px]">Order Date
                     </th>
                     <th class="px-8 py-5 text-left  text-[#22222280] dm-sans-medium text-[14px]">Status</th>
@@ -56,6 +57,7 @@
                         <td class="px-8 py-5 whitespace-nowrap">{{ $order->order_id }}</td>
                         <td class="px-8 py-5 whitespace-nowrap">{{ $order->service_name }}</td>
                         <td class="px-8 py-5 whitespace-nowrap">{{ $order->phone_number }}</td>
+                        <td class="px-8 py-5 whitespace-nowrap">${{ $order->price }} (USD)</td>
                         <td class="px-8 py-5 whitespace-nowrap">{{ date('d-m-Y', strtotime($order->created_at)) }}</td>
                         <td class="px-8 py-5">
                             <div
