@@ -70,7 +70,7 @@ class User extends Authenticatable
         $debit = $this->wallets()->where('type', 'debit')->sum('amount');
         $refund = $this->wallets()->where('type', 'refund')->sum('amount');
 
-        return $credit - $debit + $refund;
+        return ($credit - $debit) + $refund;
     }
 
     public function amountSpent()
