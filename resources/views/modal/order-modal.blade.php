@@ -255,10 +255,12 @@
 
             <div class="flex justify-end items-end mb-4">
                 {{-- @if ($can_purchase) --}}
-                <button id="purchaseButton" type="submit"
-                    class="bg-[#DF5C0C]/100 cursor-pointer lg:mt-5 mt-3 lg:w-[180px] lg:h-[49px] text-white lg:py-2 p-2 rounded-lg dm-sans-extrabold text[12px] mr-6">
-                    Order Now
-                </button>
+                @if ($can_purchase)
+                    <button id="purchaseButton" type="submit"
+                        class="bg-[#DF5C0C]/100 cursor-pointer lg:mt-5 mt-3 lg:w-[180px] lg:h-[49px] text-white lg:py-2 p-2 rounded-lg dm-sans-extrabold text[12px] mr-6">
+                        Order Now
+                    </button>
+                @endif
                 {{-- @else
                     <a href="/user/wallet"
                         class="bg-[#DF5C0C]/100 cursor-pointer lg:mt-5 mt-3 lg:w-[180px] lg:h-[49px] text-white lg:py-2 p-2 rounded-lg dm-sans-extrabold text[12px] mr-6 inline-block text-center">
@@ -345,37 +347,35 @@
 </script>
 
 <script>
-    function updateDetailPrice(selectElement) {
+    async function updateDetailPrice(selectElement) {
         const selectedOption = selectElement.options[selectElement.selectedIndex];
         const cost = selectedOption.getAttribute('data-cost');
         const daisy_price = document.getElementById('daisy_price');
 
         const purchaseButton = document.getElementById('purchaseButton');
         const balance = {{ $balance }};
+        let finalPrice = 0;
+        let rate = 0;
 
-        fetch('/get-rate')
-            .then(response => response.json())
-            .then(data => {
-                const rate = data.rate;
-                const finalPrice = cost ? (parseFloat(cost) * rate).toFixed(2) : '0';
-                document.getElementById('numberPrice').innerHTML = finalPrice;
+        try {
+            const response = await fetch('/get-rate');
+            const data = await response.json();
+            rate = data.rate;
+            finalPrice = cost ? (parseFloat(cost) * rate).toFixed(2) : '0';
+            document.getElementById('numberPrice').innerHTML = finalPrice;
+            daisy_price.value = finalPrice;
+        } catch (error) {
+            console.error('Error:', error);
+            finalPrice = cost ? parseFloat(cost) : '0';
+            document.getElementById('numberPrice').innerHTML = finalPrice;
+        }
 
-                // var newPrice = finalPrice;
-                daisy_price.value = finalPrice;
-
-                if (finalPrice > balance) {
-                    purchaseButton.disabled = true;
-                    purchaseButton.textContent = 'Insufficient Funds';
-                } else {
-                    purchaseButton.disabled = false;
-                    purchaseButton.textContent = 'Order Now';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                const finalPrice = cost ? parseFloat(cost) : '0';
-                document.getElementById('numberPrice').innerHTML = finalPrice;
-            });
-
+        if (finalPrice > balance && purchaseButton) {
+            purchaseButton.disabled = true;
+            purchaseButton.textContent = 'Insufficient Funds';
+        } else {
+            purchaseButton.disabled = false;
+            purchaseButton.textContent = 'Order Now';
+        }
     }
 </script>

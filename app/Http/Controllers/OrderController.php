@@ -219,11 +219,13 @@ class OrderController extends Controller
             'daisy_price' => 'nullable|string',
         ]);
 
+        dd(gettype($min_balance * $rate), intval($min_balance * $rate));
+
         if (Auth::user()->walletBalance() <= 0) {
             return redirect('/user/orders')->with('error', 'Insufficient Balance to order number. Please fund your account and try again.');
         }
 
-        if (Auth::user()->walletBalance() <= $min_balance * $rate) {
+        if (intval(Auth::user()->walletBalance()) <= intval($min_balance * $rate)) {
             return redirect('/user/orders')->with('error', 'Insufficient Balance to order number. Please fund your account and try again.');
         }
 

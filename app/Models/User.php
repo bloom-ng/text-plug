@@ -54,11 +54,14 @@ class User extends Authenticatable
 
     public function walletBalance()
     {
-        $credit = $this->wallets()->where('type', 'credit')->sum('amount');
-        $debit = $this->wallets()->where('type', 'debit')->sum('amount');
-        $refund = $this->wallets()->where('type', 'refund')->sum('amount');
-
-        return $credit - $debit + $refund;
+        return $this->wallets()->sum(function ($wallet) {
+            if ($wallet->type == 'credit' || $wallet->type == 'refund') {
+                return $wallet->amount;
+            } elseif ($wallet->type == 'debit') {
+                return -$wallet->amount;
+            }
+            return 0;
+        });
     }
 
     public function amountSpent()
