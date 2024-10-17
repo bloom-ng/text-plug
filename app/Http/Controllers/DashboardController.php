@@ -50,13 +50,21 @@ class DashboardController extends Controller
 
     public function adminIndex()
     {
-        $credit = Wallet::all()->where('type', 'credit')->sum('amount');
-        $debit =  Wallet::all()->where('type', 'debit')->sum('amount');
-        $balance = $credit;
-        $orders = Order::all()->count();
-        $amount_spent = $debit;
-        $received_codes = SmsCode::all()->count();
-        $users = User::all()->count();
+        $credit = 0;
+        $debit =  0;
+        $balance = 0;
+        $orders = 0;
+        $amount_spent = 0;
+        $received_codes = 0;
+        $users = 0;
+
+        // $credit = Wallet::all()->where('type', 'credit')->sum('amount');
+        // $debit =  Wallet::all()->where('type', 'debit')->sum('amount');
+        // $balance = $credit;
+        // $orders = Order::all()->count();
+        // $amount_spent = $debit;
+        // $received_codes = SmsCode::all()->count();
+        // $users = User::all()->count();
 
         return view('admin.index')->with([
             'balance' => $balance,
