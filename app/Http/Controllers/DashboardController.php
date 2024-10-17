@@ -56,7 +56,6 @@ class DashboardController extends Controller
         $orders = 0;
         $amount_spent = 0;
         $received_codes = 0;
-        $users = 0;
 
         // $credit = Wallet::all()->where('type', 'credit')->sum('amount');
         // $debit =  Wallet::all()->where('type', 'debit')->sum('amount');
@@ -64,7 +63,7 @@ class DashboardController extends Controller
         // $orders = Order::all()->count();
         // $amount_spent = $debit;
         // $received_codes = SmsCode::all()->count();
-        // $users = User::all()->count();
+        $users = User::all()->count();
 
         return view('admin.index')->with([
             'balance' => $balance,
