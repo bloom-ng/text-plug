@@ -50,12 +50,12 @@ class DashboardController extends Controller
 
     public function adminIndex()
     {
-        $orders = 0;
+        // $orders = 0;
 
         $credit = Wallet::all()->where('type', 'credit')->sum('amount');
         $debit =  Wallet::all()->where('type', 'debit')->sum('amount');
         $balance = $credit;
-        // $orders = Order::all()->count();
+        $orders = Order::count();
         $amount_spent = $debit;
         $received_codes = SmsCode::all()->count();
         $users = User::all()->count();
