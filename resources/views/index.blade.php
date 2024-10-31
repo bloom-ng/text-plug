@@ -344,8 +344,14 @@
     </div>
 
     <!-- Footer -->
-    <footer class="w-full flex flex-row items-center bg-white justify-between py-10 px-8">
+    <footer class="w-full flex flex-col md:flex-row items-center bg-white justify-between py-10 px-8">
         <img src="/img/image_4.jpg" alt="logo" class="w-[95.74px] h-[30px] lg:w-[95.74px] lg:h-[30px]">
+
+        <div class="flex space-x-6 my-4 md:my-0">
+            <a href="/about" class="text-gray-600 hover:text-gray-900">About</a>
+            <a href="/privacy" class="text-gray-600 hover:text-gray-900">Privacy Policy</a>
+            <a href="/terms" class="text-gray-600 hover:text-gray-900">Terms of Use</a>
+        </div>
 
         <div class="lg:text-[16px] text-[12px] dm-sans-medium">Copyrights reserved © 2024</div>
     </footer>

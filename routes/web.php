@@ -29,6 +29,18 @@ Route::get('/', function () {
     return view('index', compact('globalMessage'));
 });
 
+Route::get('/about', function () {
+    return view('about');
+});
+
+Route::get('/privacy', function () {
+    return view('privacy');
+});
+
+Route::get('/terms', function () {
+    return view('terms');
+});
+
 Route::get('/dashboard', function () {
     return redirect('/');
 });
@@ -61,7 +73,9 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
 
     Route::get('/wallet', [WalletController::class, 'index']);
     Route::post('/fund-wallet', [WalletController::class, 'fundWallet']);
+    Route::post('/fund-wallet-squadco', [WalletController::class, 'fundWalletSquadco']);
     Route::get('/fund-confirm', [WalletController::class, 'confirmFunding']);
+    Route::get('/squadco/fund-confirm', [WalletController::class, 'confirmSquadcoFunding']);
 
     Route::get('/orders', [OrderController::class, 'index']);
     Route::post('/orders', [OrderController::class, 'order']);
